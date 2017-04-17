@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+    defaultConfig {
+        applicationId 'com.sanxiongdi.stopcar'
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //    compile 'com.android.support:appcompat-v7:23.2.1'
+    ////自定义titlebar +沉浸式状态栏
+    //    compile 'com.iiseeuu:basetitlebar:1.0'
+
+    compile files('libs/commons-codec-1.8.jar')
+    compile files('libs/BRTSDK-5.0.7-beta.jar')
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    //底部导航栏
+    compile 'me.majiajie:pager-bottom-tab-strip:1.0.0'
+
+//    compile 'devlight.io:navigationtabbar:1.2.5'
+
+    compile 'com.android.support:design:25.1.0'
+//    compile "biz.laenger.android:vpbs:0.0.4"
+    //RefreshRecyclerView 支持下拉刷新，上拉加载
+    compile 'cn.lemon:RefreshRecyclerView:1.1.9'
+    compile 'com.android.support:support-v4:25.2.0'
+    testCompile 'junit:junit:4.12'
+
+}

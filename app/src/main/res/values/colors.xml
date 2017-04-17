@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#FF8D6E63</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="defalutTitleColor" >#4682B4</color>
+    <color name="defalutStatusBarColor">#60000000</color>
+
+</resources>

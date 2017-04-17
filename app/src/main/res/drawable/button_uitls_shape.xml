@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    //四个角的圆角半径，左边右边中间的区别就是在这里体现的
+    <corners
+    android:topLeftRadius="5dp"
+    android:bottomLeftRadius="5dp"
+    android:topRightRadius="0.1dp"
+    android:bottomRightRadius="0.1dp" />
+    //指定边框，边框必须要的
+    <stroke
+    android:width="0.5dp"
+    android:color="@android:color/darker_gray" />
+   //填充颜色，选中和未选中的区别就在这里还有文字颜色
+    <solid
+    android:color="@android:color/white" />
+</shape>
