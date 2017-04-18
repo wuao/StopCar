@@ -11,23 +11,24 @@ import com.sanxiongdi.stopcar.holder.ProceedRecylerHolder;
 
 import java.util.List;
 
+
 /**
  *
- *  进行中的order 的Adapter 数据类型
+ *   授权的order 的Adapter 数据类型
  *
  * Created by wuaomall@gmail.com on 2017/4/10.
  */
 
-public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecylerHolder>{
+public class AuthorizeRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecylerHolder>{
 
     private static final int NORMAL_ITEM = 0;
     private static final int GROUP_ITEM = 1;
-    private List<String>  mDatas;
+    private List<String> mDatas;
     private Context  mcontext;
     private LayoutInflater mLayoutInflater;
 
     ProceedRecylerHolder mProceedRecylerHolder;
-    public ProceedRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
+    public AuthorizeRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
         this.mDatas = mDatas;
         this.mcontext = mcontext;
         this.mLayoutInflater = mLayoutInflater;

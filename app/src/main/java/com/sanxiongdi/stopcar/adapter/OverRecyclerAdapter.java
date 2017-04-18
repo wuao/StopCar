@@ -1,24 +1,21 @@
 package com.sanxiongdi.stopcar.adapter;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.holder.ProceedRecylerHolder;
-
 import java.util.List;
 
 /**
  *
- *  进行中的order 的Adapter 数据类型
+ *  完成的order 的Adapter 数据类型
  *
  * Created by wuaomall@gmail.com on 2017/4/10.
  */
 
-public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecylerHolder>{
+public class OverRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecylerHolder>{
 
     private static final int NORMAL_ITEM = 0;
     private static final int GROUP_ITEM = 1;
@@ -27,7 +24,7 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
     private LayoutInflater mLayoutInflater;
 
     ProceedRecylerHolder mProceedRecylerHolder;
-    public ProceedRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
+    public OverRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
         this.mDatas = mDatas;
         this.mcontext = mcontext;
         this.mLayoutInflater = mLayoutInflater;

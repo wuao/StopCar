@@ -16,7 +16,7 @@ import com.sanxiongdi.stopcar.R;
  * Created by wuaomall@gmail.com on 2017/4/15.
  */
 
-public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
+public class AuthorizeRecylerHolder extends RecyclerView.ViewHolder{
 
 
     public   TextView  user_info_name;      //订单创建人
@@ -31,7 +31,7 @@ public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
     public Button  button1;
     public Button  button2;
     public Button  button3;
-    public ProceedRecylerHolder(View itemView) {
+    public AuthorizeRecylerHolder(View itemView) {
         super(itemView);
         init(itemView);
     }

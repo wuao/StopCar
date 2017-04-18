@@ -27,13 +27,63 @@
 
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal" />
+            <RelativeLayout
+                android:id="@+id/rly_clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="清理缓存"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/cash_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:orientation="horizontal" />
+        </LinearLayout>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="设置"
-            android:textSize="40sp"
-            android:background="#FF607D8B"
-            />
-    </LinearLayout>
+            android:id="@+id/btn_etit_login"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:text="退出登录"
+            android:layout_gravity="center_horizontal"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginTop="65dp"
+            android:background="@android:color/white"/>
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
 </FrameLayout>

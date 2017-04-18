@@ -1,5 +1,4 @@
 package com.sanxiongdi.stopcar.holder;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewStub;
@@ -16,10 +15,10 @@ import com.sanxiongdi.stopcar.R;
  * Created by wuaomall@gmail.com on 2017/4/15.
  */
 
-public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
+public class CancelRecylerHolder extends RecyclerView.ViewHolder{
 
 
-    public   TextView  user_info_name;      //订单创建人
+    public TextView user_info_name;      //订单创建人
     public  TextView  user_info_order_time;// 订单创建时间
     public  TextView  order_info_proceed;  //是否在进行中
     public  LinearLayout  inc_order_number;    //订单编号
@@ -31,7 +30,7 @@ public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
     public Button  button1;
     public Button  button2;
     public Button  button3;
-    public ProceedRecylerHolder(View itemView) {
+    public CancelRecylerHolder(View itemView) {
         super(itemView);
         init(itemView);
     }
