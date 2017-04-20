@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * @author: wuaomall@gmail.com
  * Created at 2016/11/2  14:50
  */
-public abstract   class BaseFrament   extends Fragment{
+public abstract   class BaseFrament   extends Fragment implements View.OnClickListener{
     /**
      * 1 初始化布局文件
      * 2 初始化数据
@@ -30,6 +30,8 @@ public abstract   class BaseFrament   extends Fragment{
         super.onAttach(activity);
         this.mActivity = (BaseActivity) activity;
     }
+
+
 
     /**
      * 获取宿主Activity

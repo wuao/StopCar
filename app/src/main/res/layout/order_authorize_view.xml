@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:background="@android:color/darker_gray"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-
-
-    <Button
-        android:text="授权的订单"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/layout_authorize_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/athorize_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:refresh_able="true"
+            app:load_more_able="false"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
 </LinearLayout>

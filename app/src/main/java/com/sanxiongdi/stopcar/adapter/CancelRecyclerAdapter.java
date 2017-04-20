@@ -46,7 +46,7 @@ public class CancelRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecylerH
      */
     @Override
     public ProceedRecylerHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_uitls_item_view,viewGroup,false);
+        View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_cancel_list_item_view,viewGroup,false);
 
          mProceedRecylerHolder=new ProceedRecylerHolder(view);
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sanxiongdi.stopcar.R;
-import com.sanxiongdi.stopcar.holder.ProceedRecylerHolder;
+import com.sanxiongdi.stopcar.holder.AuthorizeRecylerHolder;
 
 import java.util.List;
 
@@ -19,15 +19,14 @@ import java.util.List;
  * Created by wuaomall@gmail.com on 2017/4/10.
  */
 
-public class AuthorizeRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecylerHolder>{
+public class AuthorizeRecyclerAdapter extends  RecyclerView.Adapter<AuthorizeRecylerHolder>{
 
     private static final int NORMAL_ITEM = 0;
     private static final int GROUP_ITEM = 1;
     private List<String> mDatas;
     private Context  mcontext;
     private LayoutInflater mLayoutInflater;
-
-    ProceedRecylerHolder mProceedRecylerHolder;
+      AuthorizeRecylerHolder authorizeRecylerHolder;
     public AuthorizeRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
         this.mDatas = mDatas;
         this.mcontext = mcontext;
@@ -46,18 +45,19 @@ public class AuthorizeRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecyl
      * @return
      */
     @Override
-    public ProceedRecylerHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_uitls_item_view,viewGroup,false);
-
-         mProceedRecylerHolder=new ProceedRecylerHolder(view);
-
-        return  mProceedRecylerHolder ;
+    public AuthorizeRecylerHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_authorize_list_item_view,viewGroup,false);
+        authorizeRecylerHolder=new AuthorizeRecylerHolder(view);
+        return  authorizeRecylerHolder ;
     }
+
 
     @Override
-    public void onBindViewHolder(ProceedRecylerHolder holder, int position) {
+    public void onBindViewHolder(AuthorizeRecylerHolder holder, int position) {
         holder.user_info_name.setText(mDatas.get(position).toString());
     }
+
+
 
     @Override
     public int getItemCount() {

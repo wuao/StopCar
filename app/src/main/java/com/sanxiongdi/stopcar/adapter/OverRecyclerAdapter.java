@@ -43,7 +43,7 @@ public class OverRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecylerHol
      */
     @Override
     public ProceedRecylerHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_uitls_item_view,viewGroup,false);
+        View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_over_list_view,viewGroup,false);
 
          mProceedRecylerHolder=new ProceedRecylerHolder(view);
 

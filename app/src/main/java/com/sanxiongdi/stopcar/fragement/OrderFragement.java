@@ -39,7 +39,7 @@ public class OrderFragement extends BaseFrament{
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.order_main, container, false);
+          view = inflater.inflate(R.layout.order_main, container, false);
         viewPager=(ViewPager) view.findViewById(R.id.viewpager);
         tableLayout=(TabLayout) view.findViewById(R.id.tablayout);
         toolbar=(Toolbar)view.findViewById(R.id.tool_bar);

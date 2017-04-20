@@ -81,20 +81,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1.0"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <Button
-                android:id="@+id/authorize_btn_order"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_uitls_shape"
-                android:text="授   权"
-                android:layout_marginTop="2dp"
-                android:textSize="14sp"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
