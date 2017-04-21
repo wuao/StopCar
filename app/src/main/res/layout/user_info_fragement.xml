@@ -3,10 +3,15 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/tool_bar"
@@ -17,7 +22,7 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:text="个人中心"
+                android:text="我"
                 android:textSize="20sp"
                 android:textColor="#2B2B2B"
                 android:layout_marginTop="1dp"
@@ -26,15 +31,193 @@
 
         </android.support.v7.widget.Toolbar>
 
+ </LinearLayout>
 
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="用户中心"
-            android:textSize="40sp"
-            android:background="#FF2196F3"
-            />
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="43.5dp"
+                android:background="@android:color/white" >
+            <LinearLayout
+                android:id="@+id/lly_back"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="23dp"
+                 >
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/user_info"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    />
+                <TextView
+                    android:text="个人信息"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_centerInParent="true"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:background="@drawable/common_refigt"
+                android:layout_alignParentRight="true"
+                android:layout_width="21dp"
+                android:layout_centerVertical="true"
+                android:layout_height="21dp"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="43.5dp"
+                android:background="@android:color/white" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="23dp"
+                     >
+
+                    <ImageView
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/car_manage"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        />
+                    <TextView
+                        android:text="车辆管理"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_centerInParent="true"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:background="@drawable/common_refigt"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="21dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="21dp"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="43.5dp"
+                android:background="@android:color/white" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="23dp"
+                    >
+
+                    <ImageView
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/my_meony"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        />
+                    <TextView
+                        android:text="钱        包"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_centerInParent="true"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:background="@drawable/common_refigt"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="21dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="21dp"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="43.5dp"
+                android:background="@android:color/white" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="23dp"
+                    >
+
+
+                    <ImageView
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/cilentnumber"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        />
+                    <TextView
+                        android:text="客服中心"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_centerInParent="true"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:background="@drawable/common_refigt"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="21dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="21dp"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
     </LinearLayout>
+<View
+    android:background="@android:color/black"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"/>
+
+
 
 </FrameLayout>

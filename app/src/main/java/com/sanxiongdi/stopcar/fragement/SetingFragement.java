@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +29,7 @@ public class SetingFragement extends BaseFrament {
     private Toolbar toolbar;
     private RootLayout mrootLayout;
     private TextView cash_size;
-    private RelativeLayout rly_clear_cache;
+    private LinearLayout rly_clear_cache;
     private Button btn_etit_login;
     @Override
     public void onAttach(Context context) {
@@ -50,7 +50,7 @@ public class SetingFragement extends BaseFrament {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rly_clear_cache=(RelativeLayout)view.findViewById(R.id.rly_clear_cache);
+        rly_clear_cache=(LinearLayout)view.findViewById(R.id.rly_clear_cache);
         rly_clear_cache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

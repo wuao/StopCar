@@ -114,7 +114,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5">
             <Button
-                android:id="@+id/see_btn_order_viewstub"
+                android:id="@+id/see_btn_order"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_uitls_shape"

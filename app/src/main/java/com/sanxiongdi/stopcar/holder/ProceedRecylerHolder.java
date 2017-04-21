@@ -1,14 +1,16 @@
 package com.sanxiongdi.stopcar.holder;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.R;
+import com.sanxiongdi.stopcar.base.BaseRecyclerViewHolder;
+
+import java.util.List;
 
 /**
  *
@@ -17,25 +19,23 @@ import com.sanxiongdi.stopcar.R;
  * Created by wuaomall@gmail.com on 2017/4/15.
  */
 
-public class ProceedRecylerHolder  extends RecyclerView.ViewHolder {
-
+public class ProceedRecylerHolder  extends BaseRecyclerViewHolder {
     public   TextView  user_info_name;      //订单创建人
     public  TextView  user_info_order_time;// 订单创建时间
     public  TextView  order_info_proceed;  //是否在进行中
     public  LinearLayout  inc_order_number;    //订单编号
     public  LinearLayout  inc_order_time;      //订单创建时间
     public  LinearLayout  inc_order_money;     //金额
-    public  ViewStub  btu_viewstub_uitls;  // 按钮
-    public  ViewStub  remove_btn_order;
-    public  ViewStub  see_btn_order_viewstub;
-    public Button  button1;
-    public Button  button2;
-    public Button  button3;
+    public Button  button1;  //取消
+    public Button  button2;  //授权
+    public Button  button3;  //查看
     private Context context;
     public ProceedRecylerHolder(View itemView) {
         super(itemView);
         init(itemView);
+
     }
+
 
     /**
      *  初始化
@@ -48,12 +48,36 @@ public class ProceedRecylerHolder  extends RecyclerView.ViewHolder {
         this.inc_order_number=(LinearLayout) view.findViewById(R.id.inc_order_number);
         this.inc_order_time=(LinearLayout) view.findViewById(R.id.inc_order_time);
         this.inc_order_money=(LinearLayout) view.findViewById(R.id.inc_order_money);
-        button1=(Button)view.findViewById(R.id.see_btn_order);
-        button2=(Button)view.findViewById(R.id.see_btn_order);
+        button1=(Button)view.findViewById(R.id.cancle_btn_order);
+        button2=(Button)view.findViewById(R.id.authorize_btn_order);
         button3=(Button)view.findViewById(R.id.see_btn_order);
    }
 
 
+    @Override
+    public void onBindViewHolder(final int position, List<String> mData) {
+         button1.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Toast.makeText(mContext,"第"+position+"个按钮",Toast.LENGTH_SHORT).show();
+             }
+         });
+
+         button2.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Toast.makeText(mContext,"第"+position+"个按钮",Toast.LENGTH_SHORT).show();
+
+             }
+         });
 
 
+         button3.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Toast.makeText(mContext,"第"+position+"个按钮",Toast.LENGTH_SHORT).show();
+
+             }
+         });
+    }
 }

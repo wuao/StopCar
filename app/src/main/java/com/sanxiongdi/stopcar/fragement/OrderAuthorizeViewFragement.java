@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.adapter.CancelRecyclerAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
-import com.sanxiongdi.stopcar.base.BaseRecyclerAdapter;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
 
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ public class OrderAuthorizeViewFragement extends BaseFrament {
 
     private Context mContext;
     private View view;
-    private BaseRecyclerAdapter madapter;
     private List<String> mData;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout layout_swipe_refresh;

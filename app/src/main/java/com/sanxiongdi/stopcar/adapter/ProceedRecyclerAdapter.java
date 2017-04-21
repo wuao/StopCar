@@ -26,8 +26,6 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
     private Context  mcontext;
     private LayoutInflater mLayoutInflater;
     private ProceedRecylerHolder mProceedRecylerHolder;
-    private OnSingleItemClickListener clickListener;
-
 
     public ProceedRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
         this.mDatas = mDatas;
@@ -49,46 +47,17 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
     @Override
     public ProceedRecylerHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view =mLayoutInflater.from(mcontext).inflate(R.layout.order_uitls_item_view,viewGroup,false);
-
          mProceedRecylerHolder=new ProceedRecylerHolder(view);
-
         return  mProceedRecylerHolder ;
     }
 
     @Override
     public void onBindViewHolder(final ProceedRecylerHolder holder, final int position) {
+
         holder.user_info_name.setText(mDatas.get(position).toString());
-      if (clickListener!=null){
-
-          holder.button1.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-
-                  clickListener.onButtonone(position);
-              }
-          });
-
-          holder.button2.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-
-                  clickListener.onButtonTwo(position);
-              }
-          });
-          holder.button3.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-
-                  clickListener.onButtonThere(position);
-              }
-          });
-
+        holder.onBindViewHolder(position,mDatas);
       }
 
-
-
-
-    }
 
     @Override
     public int getItemCount() {
@@ -96,11 +65,5 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
     }
 
 
-
-    public interface OnSingleItemClickListener {
-        void onButtonone(int position);
-        void onButtonTwo(int position);
-        void onButtonThere(int position);
-    }
 
 }

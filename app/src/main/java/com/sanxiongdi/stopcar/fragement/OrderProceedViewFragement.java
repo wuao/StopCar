@@ -1,7 +1,6 @@
 package com.sanxiongdi.stopcar.fragement;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,9 +14,7 @@ import android.widget.Toast;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.adapter.ProceedRecyclerAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
-import com.sanxiongdi.stopcar.base.BaseRecyclerAdapter;
 import com.sanxiongdi.stopcar.holder.ItemClickSupport;
-import com.sanxiongdi.stopcar.uitls.DividerDecoration;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
 
 import java.util.ArrayList;
@@ -30,14 +27,12 @@ public class OrderProceedViewFragement extends BaseFrament    {
 
     private Context mContext;
     private View view;
-    private BaseRecyclerAdapter madapter;
     private List<String> mData;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout layout_swipe_refresh;
     private RootLayout mrootLayout;
     private ProceedRecyclerAdapter proceedRecyclerAdapter;
 
-    private ProceedRecyclerAdapter.OnSingleItemClickListener adapterListener;
     private ItemClickSupport supportListener;
 
     @Override
@@ -51,7 +46,7 @@ public class OrderProceedViewFragement extends BaseFrament    {
         view = inflater.inflate(R.layout.order_proceed_view, container, false);
         init_View(inflater);
         String type =getActivity().getIntent().getStringExtra("type");
-        setClickListenerWithSupport();
+//        setClickListenerWithSupport();
 
         return view;
     }
@@ -81,11 +76,6 @@ public class OrderProceedViewFragement extends BaseFrament    {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         proceedRecyclerAdapter = new ProceedRecyclerAdapter(mData, mContext, inflater);
-
-        DividerDecoration decoration = new DividerDecoration(mContext, DividerDecoration.VERTICAL_LIST);
-        Drawable drawable = getResources().getDrawable(R.drawable.user);
-        decoration.setDivider(drawable);
-        mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.setAdapter(proceedRecyclerAdapter);
 
         layout_swipe_refresh.setProgressViewOffset(true,0,200);
