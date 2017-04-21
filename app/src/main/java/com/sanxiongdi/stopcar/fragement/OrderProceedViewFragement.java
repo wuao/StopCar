@@ -1,6 +1,7 @@
 package com.sanxiongdi.stopcar.fragement;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,11 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.adapter.ProceedRecyclerAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.base.BaseRecyclerAdapter;
+import com.sanxiongdi.stopcar.holder.ItemClickSupport;
+import com.sanxiongdi.stopcar.uitls.DividerDecoration;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
 
 import java.util.ArrayList;
@@ -22,7 +26,7 @@ import java.util.List;
  * 进行中的列表界面
  * Created by wuaomall@gmail.com on 2017/4/10.
  */
-public class OrderProceedViewFragement extends BaseFrament {
+public class OrderProceedViewFragement extends BaseFrament    {
 
     private Context mContext;
     private View view;
@@ -32,6 +36,9 @@ public class OrderProceedViewFragement extends BaseFrament {
     private SwipeRefreshLayout layout_swipe_refresh;
     private RootLayout mrootLayout;
     private ProceedRecyclerAdapter proceedRecyclerAdapter;
+
+    private ProceedRecyclerAdapter.OnSingleItemClickListener adapterListener;
+    private ItemClickSupport supportListener;
 
     @Override
     public void onAttach(Context context) {
@@ -43,6 +50,9 @@ public class OrderProceedViewFragement extends BaseFrament {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.order_proceed_view, container, false);
         init_View(inflater);
+        String type =getActivity().getIntent().getStringExtra("type");
+        setClickListenerWithSupport();
+
         return view;
     }
 
@@ -54,6 +64,13 @@ public class OrderProceedViewFragement extends BaseFrament {
     protected void initView() {
 
     }
+
+    @Override
+    public void  onClick(View view){
+
+
+    }
+
     protected void init_View(LayoutInflater inflater) {
         mData = new ArrayList<String>();
         for (int i = 'A'; i < 'z'; i++) {
@@ -64,7 +81,13 @@ public class OrderProceedViewFragement extends BaseFrament {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         proceedRecyclerAdapter = new ProceedRecyclerAdapter(mData, mContext, inflater);
+
+        DividerDecoration decoration = new DividerDecoration(mContext, DividerDecoration.VERTICAL_LIST);
+        Drawable drawable = getResources().getDrawable(R.drawable.user);
+        decoration.setDivider(drawable);
+        mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.setAdapter(proceedRecyclerAdapter);
+
         layout_swipe_refresh.setProgressViewOffset(true,0,200);
         layout_swipe_refresh.setDistanceToTriggerSync(20);
         layout_swipe_refresh.setColorSchemeResources(android.R.color.holo_red_light,
@@ -81,10 +104,14 @@ public class OrderProceedViewFragement extends BaseFrament {
                 layout_swipe_refresh.setRefreshing(false);
             }
         });
+
+
+
     }
 
     @Override
     protected void onsetListener() {
+
 
     }
 
@@ -96,4 +123,25 @@ public class OrderProceedViewFragement extends BaseFrament {
     }
 
 
+
+
+    private void setClickListenerWithSupport() {
+        ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                Toast.makeText(mContext, "support click name:" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        ItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int position) {
+                Toast.makeText(mContext, "support click name:" + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+
+    }
 }
+
+

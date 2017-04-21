@@ -32,7 +32,6 @@ public abstract   class BaseFrament   extends Fragment implements View.OnClickLi
     }
 
 
-
     /**
      * 获取宿主Activity
      */

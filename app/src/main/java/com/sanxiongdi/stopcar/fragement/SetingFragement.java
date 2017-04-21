@@ -91,6 +91,12 @@ public class SetingFragement extends BaseFrament {
         return  view;
     }
 
+    @Override
+    public void  onClick(View view){
+
+
+    }
+
 
     @Override
     protected void initDate(Bundle  mbundle) {

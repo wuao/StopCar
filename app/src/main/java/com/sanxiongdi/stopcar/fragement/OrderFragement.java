@@ -53,6 +53,13 @@ public class OrderFragement extends BaseFrament{
     @Override
     protected void initDate(Bundle  mbundle) {
     }
+
+    @Override
+    public void  onClick(View view){
+
+
+    }
+
     protected void initView() {
         tableLayout.setTabMode(TabLayout.MODE_FIXED);
         viewList.add(new OrderProceedViewFragement() );

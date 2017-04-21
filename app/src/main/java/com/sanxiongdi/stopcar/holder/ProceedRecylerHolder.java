@@ -1,5 +1,6 @@
 package com.sanxiongdi.stopcar.holder;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewStub;
@@ -16,8 +17,7 @@ import com.sanxiongdi.stopcar.R;
  * Created by wuaomall@gmail.com on 2017/4/15.
  */
 
-public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
-
+public class ProceedRecylerHolder  extends RecyclerView.ViewHolder {
 
     public   TextView  user_info_name;      //订单创建人
     public  TextView  user_info_order_time;// 订单创建时间
@@ -31,6 +31,7 @@ public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
     public Button  button1;
     public Button  button2;
     public Button  button3;
+    private Context context;
     public ProceedRecylerHolder(View itemView) {
         super(itemView);
         init(itemView);
@@ -51,6 +52,8 @@ public class ProceedRecylerHolder  extends RecyclerView.ViewHolder{
         button2=(Button)view.findViewById(R.id.see_btn_order);
         button3=(Button)view.findViewById(R.id.see_btn_order);
    }
+
+
 
 
 }

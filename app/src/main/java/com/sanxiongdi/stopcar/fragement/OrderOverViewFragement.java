@@ -51,6 +51,13 @@ public class OrderOverViewFragement extends BaseFrament {
     protected void initDate(Bundle  mbundle) {
 
     }
+
+    @Override
+    public void  onClick(View view){
+
+
+    }
+
     @Override
     protected void initView() {
     }

@@ -31,6 +31,7 @@ public class OverRecylerHolder extends RecyclerView.ViewHolder{
     public Button  button1;
     public Button  button2;
     public Button  button3;
+    private MyItemClickListener  itemClickListener;
     public OverRecylerHolder(View itemView) {
         super(itemView);
         init(itemView);
@@ -51,6 +52,12 @@ public class OverRecylerHolder extends RecyclerView.ViewHolder{
         button2=(Button)view.findViewById(R.id.see_btn_order);
         button3=(Button)view.findViewById(R.id.see_btn_order);
    }
+    public void setOnItemClickListener(MyItemClickListener listener){
+        this.itemClickListener = listener;
+    }
 
+    public void setOnItemLongClickListener(MyItemClickListener listener){
+        this.itemClickListener = listener;
+    }
 
 }

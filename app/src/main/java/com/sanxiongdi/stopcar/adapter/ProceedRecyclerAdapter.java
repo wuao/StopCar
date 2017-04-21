@@ -25,8 +25,10 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
     private List<String>  mDatas;
     private Context  mcontext;
     private LayoutInflater mLayoutInflater;
+    private ProceedRecylerHolder mProceedRecylerHolder;
+    private OnSingleItemClickListener clickListener;
 
-    ProceedRecylerHolder mProceedRecylerHolder;
+
     public ProceedRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
         this.mDatas = mDatas;
         this.mcontext = mcontext;
@@ -54,12 +56,51 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
     }
 
     @Override
-    public void onBindViewHolder(ProceedRecylerHolder holder, int position) {
+    public void onBindViewHolder(final ProceedRecylerHolder holder, final int position) {
         holder.user_info_name.setText(mDatas.get(position).toString());
+      if (clickListener!=null){
+
+          holder.button1.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+                  clickListener.onButtonone(position);
+              }
+          });
+
+          holder.button2.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+                  clickListener.onButtonTwo(position);
+              }
+          });
+          holder.button3.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+                  clickListener.onButtonThere(position);
+              }
+          });
+
+      }
+
+
+
+
     }
 
     @Override
     public int getItemCount() {
         return mDatas.size();
     }
+
+
+
+    public interface OnSingleItemClickListener {
+        void onButtonone(int position);
+        void onButtonTwo(int position);
+        void onButtonThere(int position);
+    }
+
 }

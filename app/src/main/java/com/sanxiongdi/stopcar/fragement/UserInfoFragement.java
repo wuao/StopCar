@@ -28,7 +28,11 @@ public class UserInfoFragement extends BaseFrament {
     }
 
 
+    @Override
+    public void  onClick(View view){
+     
 
+    }
 
 
     @Override
