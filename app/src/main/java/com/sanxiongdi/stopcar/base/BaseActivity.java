@@ -28,10 +28,6 @@ public  abstract   class BaseActivity  extends AppCompatActivity  implements Too
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findView();
-        getInstance();
-        setListeners();
-        setUpDate(savedInstanceState);
 
 
 

@@ -53,7 +53,6 @@ public class ProceedRecyclerAdapter  extends  RecyclerView.Adapter<ProceedRecyle
 
     @Override
     public void onBindViewHolder(final ProceedRecylerHolder holder, final int position) {
-
         holder.user_info_name.setText(mDatas.get(position).toString());
         holder.onBindViewHolder(position,mDatas);
       }

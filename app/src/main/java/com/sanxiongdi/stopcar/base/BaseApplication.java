@@ -2,6 +2,7 @@ package com.sanxiongdi.stopcar.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.DisplayMetrics;
 
@@ -10,6 +11,7 @@ import com.brtbeacon.sdk.IBle;
 import com.brtbeacon.sdk.utils.L;
 import com.sanxiongdi.stopcar.uitls.BaseSyatemHelperUitls;
 import com.sanxiongdi.stopcar.uitls.LogUtils;
+import com.sanxiongdi.stopcar.uitls.SharedPreferencesUtil;
 
 /**
  * Application config
@@ -22,30 +24,27 @@ public class BaseApplication extends Application {
 
     private static BaseApplication sBaseApplication;
     private static Context mContext;
+    private SharedPreferencesUtil sharedPreferencesUtil;
     private static String TAG = BaseApplication.class.getName();
     private BRTBeaconManager beaconManager;
-
-
     public BaseApplication() {
     }
-
     public BaseApplication(Context context) {
         context = this.getApplicationContext();
-
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this.getApplicationContext();
+        setFristInstallApplication();
         if (suuorpsdk(mContext)) {
             //初始化第三方的sdk
             InstanceSDK();
             printAppParameter();
+            //第一次启动
+
         }
-
     }
-
     /**
      * @Description: 获取BaseApplication实例初始化
      * @Author: wuaomall@gmail.com
@@ -56,9 +55,7 @@ public class BaseApplication extends Application {
             sBaseApplication = new BaseApplication(context.getApplicationContext());
         }
         return sBaseApplication;
-
     }
-
     /**
      * @Description: 获取BaseApplication实例初始化
      * @Author: wuaomall@gmail.com
@@ -69,13 +66,10 @@ public class BaseApplication extends Application {
             sBaseApplication = new BaseApplication();
         }
         return sBaseApplication;
-
     }
-
     public static Context getContextObject() {
         return mContext;
     }
-
     public static boolean suuorpsdk(Context context) {
         boolean fa;
         //在创建的时候我们需要做一些必要的操作如 关于版本sdk的最小支持，和第三方的sdk 的初始化参数设置
@@ -96,7 +90,6 @@ public class BaseApplication extends Application {
      */
     public   void InstanceSDK() {
         startBletooch();
-
     }
 
 
@@ -142,4 +135,19 @@ public class BaseApplication extends Application {
     public BRTBeaconManager getBRTBeaconManager() {
         return beaconManager;
     }
+
+    /**
+     * 第一安装APP 打开 设置 偏好设置
+     */
+     public    void   setFristInstallApplication(){
+         SharedPreferences sPreferences = getSharedPreferences("first", Context.MODE_PRIVATE);
+         SharedPreferences.Editor    editor = sPreferences.edit();
+         editor.putString("FIRST_INSTALL","1");
+         editor.commit();
+     }
+     public  String getFristInstallApplication (){
+         SharedPreferences sPreferences = getSharedPreferences("first", Context.MODE_PRIVATE);
+         return  sPreferences.getString("FIRST_INSTALL","");
+     }
+
 }

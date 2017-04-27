@@ -46,7 +46,6 @@ public class OrderProceedViewFragement extends BaseFrament    {
         view = inflater.inflate(R.layout.order_proceed_view, container, false);
         init_View(inflater);
         String type =getActivity().getIntent().getStringExtra("type");
-//        setClickListenerWithSupport();
 
         return view;
     }
@@ -75,8 +74,13 @@ public class OrderProceedViewFragement extends BaseFrament    {
         layout_swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.layout_swipe_refresh);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        proceedRecyclerAdapter = new ProceedRecyclerAdapter(mData, mContext, inflater);
-        mRecyclerView.setAdapter(proceedRecyclerAdapter);
+        if (mData!=null&&mData.size()>3){
+            proceedRecyclerAdapter = new ProceedRecyclerAdapter(mData, mContext, inflater);
+            mRecyclerView.setAdapter(proceedRecyclerAdapter);
+        }else{
+//            mRecyclerView.setBackground(getResources().getDrawable(R.drawable.nodateh));
+            mRecyclerView.setBackgroundResource(R.drawable.bitmap_hot_1);
+        }
 
         layout_swipe_refresh.setProgressViewOffset(true,0,200);
         layout_swipe_refresh.setDistanceToTriggerSync(20);

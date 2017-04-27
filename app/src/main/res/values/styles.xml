@@ -26,4 +26,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">20dp</item>
     </style>
+    <!-- 分享面板的动画效果 -->
+    <style name="anim_menu_bottombar">
+        <item name="android:windowEnterAnimation">@anim/menu_bottombar_in</item>
+        <item name="android:windowExitAnimation">@anim/menu_bottombar_out</item>
+    </style>
 </resources>

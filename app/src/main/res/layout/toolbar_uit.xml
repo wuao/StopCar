@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="43.5dp"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:id="@+id/lly_back"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="23dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/img_back"
+                            android:layout_width="11dp"
+                            android:layout_height="21dp"
+                            android:background="@drawable/common_back" />
+
+                        <TextView
+                            android:id="@+id/text_back_uitls"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:text="编   辑"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/edit_uitl_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+
+</LinearLayout>

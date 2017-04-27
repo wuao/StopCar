@@ -26,6 +26,20 @@
     <!-- BRTSDK服务 -->
 
 
+
+
+       <!--  百度语音合成 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+
+
+
+
     <application
         android:name=".base.BaseApplication"
         android:supportsRtl="true"
@@ -66,8 +80,11 @@
             android:name="com.sanxiongdi.stopcar.activity.OrderActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:enabled="true"/>
-        <!--    -->
-
+        <!--  用户修改界面  -->
+        <activity
+            android:name="com.sanxiongdi.stopcar.activity.mine.UserMineSeting"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:enabled="true"/>
         <!--    -->
         <!--    -->
 
