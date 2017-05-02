@@ -13,14 +13,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.tts.client.SpeechSynthesizer;
+import com.google.gson.Gson;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.entity.RandomNumberEntity;
 import com.sanxiongdi.stopcar.fragement.OrderFragement;
 import com.sanxiongdi.stopcar.fragement.SearchFragement;
 import com.sanxiongdi.stopcar.fragement.SetingFragement;
 import com.sanxiongdi.stopcar.fragement.UserInfoFragement;
+import com.sanxiongdi.stopcar.network.inter.RandomService;
+import com.sanxiongdi.stopcar.network.inter.RandomUserService;
+import com.sanxiongdi.stopcar.uitls.AppNetWorkPrams;
 import com.sanxiongdi.stopcar.uitls.view.PupopWindowUitls;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.majiajie.pagerbottomtabstrip.Controller;
@@ -28,6 +35,13 @@ import me.majiajie.pagerbottomtabstrip.PagerBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.TabItemBuilder;
 import me.majiajie.pagerbottomtabstrip.TabLayoutMode;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectListener;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 首页
@@ -37,8 +51,12 @@ import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectListener;
 
 public class IndexActivity extends BaseActivity  implements View.OnClickListener{
     private PagerBottomTabLayout page_botton_tavlayout;
+    private ArrayList<HashMap<String ,Object>>  pr;
     private SpeechSynthesizer speechSynthesizer;
     private PupopWindowUitls pupopWindowUitls;
+    private RandomService  randomService;
+    private RandomUserService randomUserService;
+    private  RequestBody body;
     private TextView textView1 ,textView2,textView3,textView4;
     private View pupopview;
     private  Context context;
@@ -178,35 +196,79 @@ public class IndexActivity extends BaseActivity  implements View.OnClickListener
                      pupopWindowUitls.initShareView(pupopview);
                      getInstance();
                      setListeners();
+                     getRandomNumber();
                  }
              }
          }, 1000);
      }
 
+     public  void  getRandomNumber(){
+         Retrofit retrofit = new Retrofit.Builder()
+                 .baseUrl(AppNetWorkPrams.URL)
+                 .addConverterFactory(GsonConverterFactory.create())
+                 .build();
+         randomService = retrofit.create(RandomService.class);
+         Call<RandomNumberEntity> call= randomService.getRandomNumber(star());
+         call.enqueue(new Callback<RandomNumberEntity>() {
+             @Override
+             public void onResponse(Call<RandomNumberEntity> call, Response<RandomNumberEntity> response) {
+                 Toast.makeText(getApplicationContext(),  response.body().getState(),Toast.LENGTH_SHORT).show();
+
+             }
+
+             @Override
+             public void onFailure(Call<RandomNumberEntity> call, Throwable t) {
+                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_SHORT).show();
+             }
+         });
 
 
-
-
-     public  void  star(){
-
-//         // 获取 tts 实例
-//         speechSynthesizer = SpeechSynthesizer.getInstance();
-//         // 设置 app 上下文(必需参数)
-//         speechSynthesizer.setContext(Context);
-//         // 设置 tts 监听器
-//         speechSynthesizer.setSpeechSynthesizerListener(SpeechSynthesizerListener);
-//         // 文本模型文件路径，文件的绝对路径 (离线引擎使用)
-//         speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, TEXT_MODEL_FILE_FULL_PATH_NAME);
-//         // 声学模型文件路径，文件的绝对路径 (离线引擎使用) speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE,
-//         SPEECH_MODEL_FILE_FULL_PATH_NAME);
-//         // 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径， LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行 设置，如果在[应用管理]中开通了离线授权，不需要设置该参数，建议将该行代码删除(离线引擎)
-//         speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, LICENSE_FILE_FULL_PATH_NAME);
-//         // 请替换为语音开发者平台上注册应用得到的 App ID (离线授权) speechSynthesizer.setAppId("your_app_id");
-//         // 请替换为语音开发者平台注册应用得到的 apikey 和 secretkey (在线授权) speechSynthesizer.setApiKey("your_api_key", "your_secret_key");
-//         // 授权检测接口
-//         AuthInfo authInfo = speechSynthesizer.auth(TtsMode);
-//         // 引擎初始化接口
-//         speechSynthesizer.initTts(TtsMode);
      }
+
+
+     public RequestBody     star(){
+         Gson gson=new Gson();
+        pr= new ArrayList<HashMap<String ,Object>>();
+         HashMap<String, Object> paramsMap = new HashMap<String, Object>();
+         HashMap<String, Object> pr2 = new HashMap<String, Object>();
+         pr2.put("name","title");
+         paramsMap.put("login","admin");
+         paramsMap.put("passwrod","admin");
+         paramsMap.put("method","res.users.random_id");
+         paramsMap.put("args",pr2);
+         pr.add(paramsMap);
+         String strEntity = gson.toJson(pr);
+         String sd=strEntity.substring(1,strEntity.length()).substring(0,strEntity.length()-1);
+         body=  RequestBody.create(MediaType.parse("application/json; charset=utf-8"),"args="+sd);
+         return body;
+     }
+
+    public RequestBody     starcareat(){
+        Gson gson=new Gson();
+        pr= new ArrayList<HashMap<String ,Object>>();
+        HashMap<String, Object> paramsMap = new HashMap<String, Object>();
+        HashMap<String, Object> pr2 = new HashMap<String, Object>();
+        pr2.put("name","gouwa");
+        pr2.put("login","gouwa");
+        paramsMap.put("login","admin");
+        paramsMap.put("passwrod","admin");
+        paramsMap.put("method","res.users.create");
+        paramsMap.put("args",pr2);
+        pr.add(paramsMap);
+        String strEntity = gson.toJson(pr);
+        String sd=strEntity.substring(1,strEntity.length()).substring(0,strEntity.length()-1);
+        body=  RequestBody.create(MediaType.parse("application/json; charset=utf-8"),"args="+sd);
+        return body;
+    }
+
+
+
+
+
+
+
+
+
+
 
 }
