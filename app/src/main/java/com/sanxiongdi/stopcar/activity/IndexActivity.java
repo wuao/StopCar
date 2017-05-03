@@ -21,6 +21,7 @@ import com.sanxiongdi.stopcar.fragement.OrderFragement;
 import com.sanxiongdi.stopcar.fragement.SearchFragement;
 import com.sanxiongdi.stopcar.fragement.SetingFragement;
 import com.sanxiongdi.stopcar.fragement.UserInfoFragement;
+import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
 import com.sanxiongdi.stopcar.network.inter.RandomService;
 import com.sanxiongdi.stopcar.network.inter.RandomUserService;
 import com.sanxiongdi.stopcar.uitls.AppNetWorkPrams;
@@ -43,6 +44,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.Subject;
 
 /**
  * 首页
@@ -197,34 +202,55 @@ public class IndexActivity extends BaseActivity  implements View.OnClickListener
                      pupopWindowUitls.initShareView(pupopview);
                      getInstance();
                      setListeners();
-                     getRandomNumber();
+//                     getRandomNumber();
+                     test();
                  }
              }
          }, 1000);
      }
+private void test(){
+    ApiExecutor.getInstance().getRandomNumber(star())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Subscriber<RandomNumberEntity>() {
+                @Override
+                public void onCompleted() {
 
-     public  void  getRandomNumber(){
-         Retrofit retrofit = new Retrofit.Builder()
-                 .baseUrl(AppNetWorkPrams.URL)
-                 .addConverterFactory(GsonConverterFactory.create())
-                 .build();
-         randomService = retrofit.create(RandomService.class);
-         Call<RandomNumberEntity> call= randomService.getRandomNumber(star());
-         call.enqueue(new Callback<RandomNumberEntity>() {
-             @Override
-             public void onResponse(Call<RandomNumberEntity> call, Response<RandomNumberEntity> response) {
-//                 Toast.makeText(getApplicationContext(),  response.body().getState(),Toast.LENGTH_SHORT).show();
-                 System.out.println(response.body().toString());
-             }
+                }
 
-             @Override
-             public void onFailure(Call<RandomNumberEntity> call, Throwable t) {
-                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_SHORT).show();
-             }
-         });
+                @Override
+                public void onError(Throwable e) {
 
+                }
 
-     }
+                @Override
+                public void onNext(RandomNumberEntity randomNumberEntity) {
+                    Toast.makeText(IndexActivity.this,randomNumberEntity.getResult().get(0),1).show();
+                }
+            });
+}
+//     public  void  getRandomNumber(){
+//         Retrofit retrofit = new Retrofit.Builder()
+//                 .baseUrl(AppNetWorkPrams.URL)
+//                 .addConverterFactory(GsonConverterFactory.create())
+//                 .build();
+//         randomService = retrofit.create(RandomService.class);
+//         Call<RandomNumberEntity> call= randomService.getRandomNumber(star());
+//         call.enqueue(new Callback<RandomNumberEntity>() {
+//             @Override
+//             public void onResponse(Call<RandomNumberEntity> call, Response<RandomNumberEntity> response) {
+////                 Toast.makeText(getApplicationContext(),  response.body().getState(),Toast.LENGTH_SHORT).show();
+//                 System.out.println(response.body().toString());
+//             }
+//
+//             @Override
+//             public void onFailure(Call<RandomNumberEntity> call, Throwable t) {
+//                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_SHORT).show();
+//             }
+//         });
+//
+//
+//     }
 
 
      public RequestBody     star(){
