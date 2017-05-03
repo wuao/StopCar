@@ -26,6 +26,7 @@ import com.sanxiongdi.stopcar.network.inter.RandomUserService;
 import com.sanxiongdi.stopcar.uitls.AppNetWorkPrams;
 import com.sanxiongdi.stopcar.uitls.view.PupopWindowUitls;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,8 +213,8 @@ public class IndexActivity extends BaseActivity  implements View.OnClickListener
          call.enqueue(new Callback<RandomNumberEntity>() {
              @Override
              public void onResponse(Call<RandomNumberEntity> call, Response<RandomNumberEntity> response) {
-                 Toast.makeText(getApplicationContext(),  response.body().getState(),Toast.LENGTH_SHORT).show();
-
+//                 Toast.makeText(getApplicationContext(),  response.body().getState(),Toast.LENGTH_SHORT).show();
+                 System.out.println(response.body().toString());
              }
 
              @Override
@@ -233,12 +234,12 @@ public class IndexActivity extends BaseActivity  implements View.OnClickListener
          HashMap<String, Object> pr2 = new HashMap<String, Object>();
          pr2.put("name","title");
          paramsMap.put("login","admin");
-         paramsMap.put("passwrod","admin");
+         paramsMap.put("password","admin");
          paramsMap.put("method","res.users.random_id");
-         paramsMap.put("args",pr2);
+         paramsMap.put("args",new Array[]{});
          pr.add(paramsMap);
          String strEntity = gson.toJson(pr);
-         String sd=strEntity.substring(1,strEntity.length()).substring(0,strEntity.length()-1);
+         String sd=strEntity.substring(1,strEntity.length()).substring(0,strEntity.length()-2);
          body=  RequestBody.create(MediaType.parse("application/json; charset=utf-8"),"args="+sd);
          return body;
      }
