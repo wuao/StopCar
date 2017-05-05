@@ -12,13 +12,13 @@ import java.util.List;
  * Created by wuaomall@gmail.com on 2017/4/14.
  */
 
-public   abstract class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
     protected Context mContext;
     public BaseRecyclerViewHolder(View itemView) {
         super(itemView);
         mContext = itemView.getContext();
     }
-    public abstract void onBindViewHolder(int position,List<String> mData);
+    public abstract void onBindViewHolder(int position,List<T> mData);
 
 
 
