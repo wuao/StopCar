@@ -1,12 +1,10 @@
 package com.sanxiongdi.stopcar.activity;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +17,11 @@ import com.sanxiongdi.stopcar.fragement.OrderFragement;
 import com.sanxiongdi.stopcar.fragement.SearchFragement;
 import com.sanxiongdi.stopcar.fragement.SetingFragement;
 import com.sanxiongdi.stopcar.fragement.UserInfoFragement;
-import com.sanxiongdi.stopcar.network.inter.ApiService;
+import com.sanxiongdi.stopcar.presenter.CreateAccountPresenter;
+import com.sanxiongdi.stopcar.presenter.CreateOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.GetRandomIdPresenter;
+import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
+import com.sanxiongdi.stopcar.presenter.view.ICreateOrder;
 import com.sanxiongdi.stopcar.presenter.view.IGetRandomId;
 import com.sanxiongdi.stopcar.uitls.view.PupopWindowUitls;
 
@@ -42,21 +43,24 @@ import okhttp3.RequestBody;
  * Created by wuaomall@gmail.com on 2017/4/6.
  */
 
-public class IndexActivity extends BaseActivity implements View.OnClickListener, IGetRandomId {
+public class IndexActivity extends BaseActivity implements View.OnClickListener, IGetRandomId,
+        ICreateAccount,ICreateOrder {
     private PagerBottomTabLayout page_botton_tavlayout;
     private ArrayList<HashMap<String, Object>> pr;
     private SpeechSynthesizer speechSynthesizer;
     private PupopWindowUitls pupopWindowUitls;
-    private ApiService randomService;
     private RequestBody body;
     private TextView textView1, textView2, textView3, textView4;
     private View pupopview;
-    private Context context;
     int[] testColors = {0xFF00796B, 0xFF8D6E63, 0xFF2196F3, 0xFF607D8B, 0xFFF57C00};
     Controller controller;
-    LayoutInflater inflater;
     List<Fragment> mFragments;
+    //获取随机号
     private GetRandomIdPresenter presenter;
+    //创建账号
+    private CreateAccountPresenter createAccountPresenter;
+    private CreateOrderPresenter orderPresenter;
+    private List<String> randomIds;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,9 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         findView();
         presenter = new GetRandomIdPresenter(this, this);
-        startPupopwindow();
+        createAccountPresenter = new CreateAccountPresenter(this, this);
+        orderPresenter = new CreateOrderPresenter(this, this);
+        presenter.getRandomId();
     }
 
 
@@ -107,12 +113,14 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v == textView1) {
-            Toast.makeText(getApplicationContext(), textView1.getText(), Toast.LENGTH_LONG).show();
-            pupopWindowUitls.dismiss();
+            createAccountPresenter.getRandomId(textView1.getText().toString(), randomIds.get(0));
+//            Toast.makeText(getApplicationContext(), textView1.getText(), Toast.LENGTH_LONG).show();
+//            pupopWindowUitls.dismiss();
 
         } else if (v == textView2) {
-            Toast.makeText(getApplicationContext(), textView2.getText(), Toast.LENGTH_LONG).show();
-            pupopWindowUitls.dismiss();
+            orderPresenter.createOrder(randomIds.get(0));
+//            Toast.makeText(getApplicationContext(), textView2.getText(), Toast.LENGTH_LONG).show();
+//            pupopWindowUitls.dismiss();
 
         } else if (v == textView3) {
             Toast.makeText(getApplicationContext(), textView3.getText(), Toast.LENGTH_LONG).show();
@@ -178,37 +186,19 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         pupopWindowUitls = new PupopWindowUitls(this);
         pupopview = pupopWindowUitls.resoultPopupWindowView(R.layout.pupopwindow_uitls_view);
     }
-boolean isFirst = true;
+
+
     /**
      * 启动Pupopwindow
      */
-    public void startPupopwindow() {
-        page_botton_tavlayout.post(new Runnable() {
-            @Override
-            public void run() {
-                if(isFirst) {
-                    isFirst = false;
-                    showPupopwindow();
-                    pupopWindowUitls.initShareView(pupopview);
-                    getInstance();
-                    setListeners();
-                    presenter.getRandomId();
-                }
-            }
-        });
-
-//         new Handler().postDelayed(new Runnable() {
-//             @Override
-//             public void run() {
-//                 if ("1".equals(getApplicationContext().getSharedPreferences("first", Context.MODE_PRIVATE).getString("FIRST_INSTALL",""))){
-//                     showPupopwindow();
-//                     pupopWindowUitls.initShareView(pupopview);
-//                     getInstance();
-//                     setListeners();
-//                     presenter.getRandomId();
-//                 }
-//             }
-//         }, 1000);
+    public void startPupopwindow(final List<String> list) {
+        showPupopwindow();
+        pupopWindowUitls.initShareView(pupopview);
+        getInstance();
+        textView1.setText("用户名1");
+        textView2.setText("用户名2");
+        textView3.setText("用户名3");
+        textView4.setText("用户名4");
     }
 
 
@@ -230,18 +220,36 @@ boolean isFirst = true;
         return body;
     }
 
-
+    //获取随机号
     @Override
     public void getRandomIdSuccess(List<String> list) {
-        textView1.setText(list.get(0));
-        textView2.setText(list.get(1));
-        textView3.setText(list.get(2));
-        textView4.setText(list.get(3));
-        startPupopwindow();
+        randomIds = list;
+        startPupopwindow(list);
     }
 
     @Override
     public void getRandomIdFailure(boolean isRequest, int code, String msg) {
+
+    }
+
+    //创建账号
+    @Override
+    public void createAccountSuccess() {
+
+    }
+
+    @Override
+    public void createAccountFailure(boolean isRequest, int code, String msg) {
+
+    }
+
+    @Override
+    public void createOrderSuccess() {
+
+    }
+
+    @Override
+    public void createOrderFailure(boolean isRequest, int code, String msg) {
 
     }
 }

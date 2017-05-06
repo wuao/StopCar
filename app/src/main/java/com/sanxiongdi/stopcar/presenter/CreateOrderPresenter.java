@@ -2,51 +2,51 @@ package com.sanxiongdi.stopcar.presenter;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
-import com.sanxiongdi.stopcar.presenter.view.IGetRandomId;
+import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 获取随机生成的ID
+ * 创建订单
  * Created by lin.woo on 2017/5/5.
  */
 
-public class GetRandomIdPresenter extends BasePresenter<IGetRandomId> {
-    public GetRandomIdPresenter(Context context, IGetRandomId view) {
+public class CreateOrderPresenter extends BasePresenter<ICreateAccount> {
+    public CreateOrderPresenter(Context context, ICreateAccount view) {
         super(context, view);
     }
 
-    public void getRandomId() {
-        put("method", "res.users.random_id");
-        put("args", map2);
-        ;
-        ApiExecutor.getInstance().getRandomNumber(initGson().toJson(map1))
+    public void createOrder(String userId) {
+        put("method", "park.order.create");
+        put2("car_order_user_id", 123);
+        List<HashMap<String,Object>> list = new ArrayList<>();
+        list.add(map2);
+        put("args",list);
+
+        ApiExecutor.getInstance().getCreateOrder(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WrapperEntity>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
                     public void onNext(WrapperEntity wrapperEntity) {
-                        view.getRandomIdSuccess((List<String>) wrapperEntity.result);
                     }
                 });
     }

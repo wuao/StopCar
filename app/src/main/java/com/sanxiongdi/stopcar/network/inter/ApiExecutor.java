@@ -5,6 +5,7 @@ import android.util.Log;
 import com.sanxiongdi.stopcar.uitls.AppNetWorkPrams;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -62,7 +63,7 @@ public class ApiExecutor {
                     .method(oldRequest.method(), oldRequest.body())
                     .url(authorizedUrlBuilder.build())
                     .build();
-            System.out.println(java.net.URLEncoder.encode(newRequest.url().toString()));
+            Log.d("log---", URLDecoder.decode(oldRequest.toString(),"UTF-8"));
             return chain.proceed(newRequest);
         }
     }
