@@ -7,6 +7,11 @@ import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
 import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -21,16 +26,9 @@ public class QueryOrderPresenter extends BasePresenter<ICreateAccount> {
         super(context, view);
     }
 
-    public void getRandomId(String name, String login) {
-        put("method", "park.order.search_read");
+    public void getRandomId() {
 
-
-        put("args",map2);
-
-//                               [[['user_id','=',14]],['name','car_order_start_date']],
-//        'kwargs':{'limit':10,'offset':0}
-
-
+        setData1();
         ApiExecutor.getInstance().getQueryOrder(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,6 +45,50 @@ public class QueryOrderPresenter extends BasePresenter<ICreateAccount> {
                     public void onNext(WrapperEntity wrapperEntity) {
                     }
                 });
+    }
+
+    private void setData1() {
+        put("method", "park.order.search_read");
+
+        List<Object> lists = new ArrayList<>();
+        List<String> list = new ArrayList<>();
+        lists.add(list);
+        list = new ArrayList<>();
+        list.add("name");
+        list.add("car_order_number");
+        list.add("car_order_start_date");
+        list.add("car_order_user_id");
+        list.add("car_order_stop_date");
+        list.add("car_order_authorize_id");
+        list.add("car_order_state");
+        list.add("car_order_stop_state");
+        list.add("car_order_user_id");
+        list.add("car_order_id");
+        put("args", map2);
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("limit", 10);
+        maps.put("offset", 0);
+        put("kwargs", maps);
+    }
+
+    private void setData2() {
+        put("method", "park.order.search_read");
+        List<Object> lists = new ArrayList<>();
+        List<List<Object>> lists2 = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
+
+        list.add("car_order_state");
+        list.add("=");
+        list.add("1");
+        lists2.add(list);
+        lists.add(lists2);
+        put("args", map2);
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("limit", 10);
+        maps.put("offset", 0);
+        put("kwargs", maps);
     }
 
 }
