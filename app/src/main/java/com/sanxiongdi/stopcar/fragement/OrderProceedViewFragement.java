@@ -17,6 +17,7 @@ import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.holder.ItemClickSupport;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
+import com.sanxiongdi.stopcar.uitls.recyclerview.OnLoadListener;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class OrderProceedViewFragement extends BaseFrament implements IQueryOrde
     private SwipeRefreshLayout layout_swipe_refresh;
     private OrderListAdapter adapter;
     private QueryOrderPresenter presenter;
+    private LinearLayoutManager llm;
 
     @Override
     public void onAttach(Context context) {
@@ -51,12 +53,12 @@ public class OrderProceedViewFragement extends BaseFrament implements IQueryOrde
         mRecyclerView.setAdapter(adapter);
         presenter.queryProceedOrder();
     }
-
     @Override
     protected void initView() {
+        llm = new LinearLayoutManager(getContext());
         mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.proceed_recycler_view);
         layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_swipe_refresh);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 //            mRecyclerView.setBackgroundResource(R.drawable.bitmap_hot_1);
         layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
@@ -88,6 +90,12 @@ public class OrderProceedViewFragement extends BaseFrament implements IQueryOrde
                 return false;
             }
         });
+        mRecyclerView.addOnScrollListener(new OnLoadListener(llm) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                presenter.queryProceedOrderMore();
+            }
+        });
     }
     @Override
     public void onClick(View view) {
@@ -97,6 +105,9 @@ public class OrderProceedViewFragement extends BaseFrament implements IQueryOrde
 
     @Override
     public void queryOrderSuccess(List<QueryOrderEntity> list) {
+        if (presenter.getOffset() == 0) {
+            adapter.getData().clear();
+        }
         adapter.getData().addAll(list);
         adapter.notifyDataSetChanged();
         layout_swipe_refresh.post(new Runnable() {

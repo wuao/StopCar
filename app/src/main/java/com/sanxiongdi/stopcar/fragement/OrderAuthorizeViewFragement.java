@@ -18,6 +18,7 @@ import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
+import com.sanxiongdi.stopcar.uitls.recyclerview.OnLoadListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
     private SwipeRefreshLayout layout_swipe_refresh;
     private OrderListAdapter adapter;
     private QueryOrderPresenter presenter;
+    private LinearLayoutManager llm;
 
     @Override
     public void onAttach(Context context) {
@@ -58,7 +60,7 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
     protected void initView() {
         mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.athorize_recycler_view);
         layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_authorize_swipe_refresh);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
         layout_swipe_refresh.setDistanceToTriggerSync(20);
@@ -76,7 +78,12 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
 
     @Override
     protected void onsetListener() {
-
+        mRecyclerView.addOnScrollListener(new OnLoadListener(llm) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                presenter.queryAuthOrderMore();
+            }
+        });
     }
 
     @Override
@@ -87,6 +94,9 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
 
     @Override
     public void queryOrderSuccess(List<QueryOrderEntity> list) {
+        if (presenter.getOffset() == 0) {
+            adapter.getData().clear();
+        }
         adapter.getData().addAll(list);
         adapter.notifyDataSetChanged();
         layout_swipe_refresh.post(new Runnable() {

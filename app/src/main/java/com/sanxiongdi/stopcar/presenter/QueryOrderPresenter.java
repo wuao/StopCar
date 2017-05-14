@@ -77,6 +77,9 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
                 });
     }
 
+    public int getOffset() {
+        return offset;
+    }
 
     private void setData1() {
         put("method", "park.order.search_read");
