@@ -70,7 +70,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         presenter = new GetRandomIdPresenter(this, this);
         createAccountPresenter = new CreateAccountPresenter(this, this);
         orderPresenter = new CreateOrderPresenter(this, this);
-        presenter.getRandomId();
+//        presenter.getRandomId();
     }
 
 

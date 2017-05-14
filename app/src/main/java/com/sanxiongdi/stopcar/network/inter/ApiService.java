@@ -1,9 +1,11 @@
 package com.sanxiongdi.stopcar.network.inter;
 
+import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.entity.RandomUser;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -39,6 +41,6 @@ public interface ApiService {
 
     //订单查询
     @GET("api/rest")
-    Observable<WrapperEntity> getQueryOrder(@Query("args") String args);
+    Observable<WrapperEntity<List<QueryOrderEntity>>> getQueryOrder(@Query("args") String args);
 
 }

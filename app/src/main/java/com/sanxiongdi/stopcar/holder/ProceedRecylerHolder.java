@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseRecyclerViewHolder;
+import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Created by wuaomall@gmail.com on 2017/4/15.
  */
 
-public class ProceedRecylerHolder  extends BaseRecyclerViewHolder<String> {
+public class ProceedRecylerHolder  extends BaseRecyclerViewHolder<QueryOrderEntity> {
     public   TextView  user_info_name;      //订单创建人
     public  TextView  user_info_order_time;// 订单创建时间
     public  TextView  order_info_proceed;  //是否在进行中
@@ -55,7 +56,7 @@ public class ProceedRecylerHolder  extends BaseRecyclerViewHolder<String> {
 
 
     @Override
-    public void onBindViewHolder(final int position, List<String> mData) {
+    public void onBindViewHolder(final int position, List<QueryOrderEntity> mData) {
          button1.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.adapter.CancelRecyclerAdapter;
+import com.sanxiongdi.stopcar.adapter.OrderListAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
+import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
+import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
+import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
 
 import java.util.ArrayList;
@@ -23,51 +27,40 @@ import java.util.List;
  * Created by wuaomall@gmail.com on 2017/4/10.
  */
 
-public class OrderAuthorizeViewFragement extends BaseFrament {
+public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOrder {
 
     private Context mContext;
-    private View view;
-    private List<String> mData;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout layout_swipe_refresh;
-    private RootLayout rootLayout;
-    private CancelRecyclerAdapter cancelRecyclerAdapter;
-    private RootLayout mrootLayout;
+    private OrderListAdapter adapter;
+    private QueryOrderPresenter presenter;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
     }
 
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-          view = inflater.inflate(R.layout.order_authorize_view, container, false);
-        init_View(inflater);
-        return  view;
+    protected int setLayoutResouceId() {
+        return R.layout.order_authorize_view;
     }
 
     @Override
-    protected void initDate(Bundle  mbundle) {
-
+    protected void initDate(Bundle mbundle) {
+        presenter = new QueryOrderPresenter(mContext, this);
+        adapter = new OrderListAdapter(mContext, null);
+        mRecyclerView.setAdapter(adapter);
+        presenter.queryAuthOrder();
     }
+
     @Override
     protected void initView() {
-    }
-
-    protected void init_View(LayoutInflater inflater) {
-        mData = new ArrayList<String>();
-        for (int i = 'A'; i < 'z'; i++) {
-            mData.add("" + (char) i);
-        }
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.athorize_recycler_view);
-        layout_swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.layout_authorize_swipe_refresh);
+        mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.athorize_recycler_view);
+        layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_authorize_swipe_refresh);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        cancelRecyclerAdapter = new CancelRecyclerAdapter(mData, mContext, inflater);
-        mRecyclerView.setAdapter(cancelRecyclerAdapter);
-        layout_swipe_refresh.setProgressViewOffset(true,0,200);
+        layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
         layout_swipe_refresh.setDistanceToTriggerSync(20);
         layout_swipe_refresh.setColorSchemeResources(android.R.color.holo_red_light,
                 android.R.color.holo_blue_light,
@@ -76,29 +69,42 @@ public class OrderAuthorizeViewFragement extends BaseFrament {
         layout_swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                for (int i = 'A'; i < 'z'; i++) {
-                    mData.add((char) i + "加载数据");
-                }
-                cancelRecyclerAdapter.notifyDataSetChanged();
-                layout_swipe_refresh.setRefreshing(false);
+                presenter.queryAuthOrder();
             }
         });
     }
+
     @Override
     protected void onsetListener() {
-
-    }
-    @Override
-    protected int setLayoutResouceId(){
-
-        return R.layout.order_authorize_view;
 
     }
 
     @Override
     public void onClick(View v) {
 
-        
+
     }
 
+    @Override
+    public void queryOrderSuccess(List<QueryOrderEntity> list) {
+        adapter.getData().addAll(list);
+        adapter.notifyDataSetChanged();
+        layout_swipe_refresh.post(new Runnable() {
+            @Override
+            public void run() {
+                layout_swipe_refresh.setRefreshing(false);
+            }
+        });
+
+    }
+
+    @Override
+    public void queryOrderFailure(boolean isRequest, int code, String msg) {
+        layout_swipe_refresh.post(new Runnable() {
+            @Override
+            public void run() {
+                layout_swipe_refresh.setRefreshing(false);
+            }
+        });
+    }
 }

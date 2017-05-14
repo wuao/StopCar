@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.adapter.AuthorizeRecyclerAdapter;
+import com.sanxiongdi.stopcar.adapter.OrderListAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
+import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
+import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
+import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
 
 import java.util.ArrayList;
@@ -20,59 +24,57 @@ import java.util.List;
 
 /**
  * 取消列表界面
- *
+ * <p>
  * Created by wuaomall@gmail.com on 2017/4/10.
  */
 
-public class OrderCancelViewFragement extends BaseFrament {
+public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder {
 
     private Context mContext;
-    private View view;
-    private List<String> mData;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout layout_swipe_refresh;
-    private RootLayout rootLayout;
-    private AuthorizeRecyclerAdapter authorizeRecyclerAdapter;
-    private RootLayout mrootLayout;
+    private OrderListAdapter adapter;
+    private QueryOrderPresenter presenter;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-          view = inflater.inflate(R.layout.order_cancel_view, container, false);
-        init_View(inflater);
-
-        return  view;
-    }
 
     @Override
-    protected void initDate(Bundle  mbundle) {
+    protected int setLayoutResouceId() {
+
+        return R.layout.order_cancel_view;
 
     }
 
     @Override
-    public void  onClick(View view){
+    protected void initDate(Bundle mbundle) {
+        adapter = new OrderListAdapter(mContext, null);
+        mRecyclerView.setAdapter(adapter);
+        presenter = new QueryOrderPresenter(mContext, this);
+        presenter.queryCancelOrder();
+    }
+
+    @Override
+    protected void onsetListener() {
+
+    }
+
+    @Override
+    public void onClick(View view) {
 
 
     }
 
     @Override
     protected void initView() {
-    }
-    protected void init_View(LayoutInflater inflater) {
-        mData = new ArrayList<String>();
-        for (int i = 'A'; i < 'z'; i++) {
-            mData.add("" + (char) i);
-        }
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.cancle_recycler_view);
-        layout_swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.layout_cancel_swipe_refresh);
+        mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.cancle_recycler_view);
+        layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_cancel_swipe_refresh);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        authorizeRecyclerAdapter = new AuthorizeRecyclerAdapter(mData, mContext, inflater);
-        mRecyclerView.setAdapter(authorizeRecyclerAdapter);
-        layout_swipe_refresh.setProgressViewOffset(true,0,200);
+        layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
         layout_swipe_refresh.setDistanceToTriggerSync(20);
         layout_swipe_refresh.setColorSchemeResources(android.R.color.holo_red_light,
                 android.R.color.holo_blue_light,
@@ -81,23 +83,30 @@ public class OrderCancelViewFragement extends BaseFrament {
         layout_swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                for (int i = 'A'; i < 'z'; i++) {
-                    mData.add((char) i + "加载数据");
-                }
-                authorizeRecyclerAdapter.notifyDataSetChanged();
+                presenter.queryCancelOrder();
+            }
+        });
+    }
+
+    @Override
+    public void queryOrderSuccess(List<QueryOrderEntity> list) {
+        adapter.getData().addAll(list);
+        adapter.notifyDataSetChanged();
+        layout_swipe_refresh.post(new Runnable() {
+            @Override
+            public void run() {
                 layout_swipe_refresh.setRefreshing(false);
             }
         });
     }
+
     @Override
-    protected void onsetListener() {
-
+    public void queryOrderFailure(boolean isRequest, int code, String msg) {
+        layout_swipe_refresh.post(new Runnable() {
+            @Override
+            public void run() {
+                layout_swipe_refresh.setRefreshing(false);
+            }
+        });
     }
-    @Override
-    protected int setLayoutResouceId(){
-
-        return R.layout.order_cancel_view;
-
-    }
-
 }

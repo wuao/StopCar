@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sanxiongdi.stopcar.R;
+import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.holder.ProceedRecylerHolder;
 
 import java.util.List;
@@ -22,12 +23,12 @@ public class SearchRecyclerAdapter extends  RecyclerView.Adapter<ProceedRecylerH
 
     private static final int NORMAL_ITEM = 0;
     private static final int GROUP_ITEM = 1;
-    private List<String>  mDatas;
+    private List<QueryOrderEntity>  mDatas;
     private Context  mcontext;
     private LayoutInflater mLayoutInflater;
     private ProceedRecylerHolder mProceedRecylerHolder;
 
-    public SearchRecyclerAdapter(List<String> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
+    public SearchRecyclerAdapter(List<QueryOrderEntity> mDatas, Context mcontext, LayoutInflater mLayoutInflater) {
         this.mDatas = mDatas;
         this.mcontext = mcontext;
         this.mLayoutInflater = mLayoutInflater;
