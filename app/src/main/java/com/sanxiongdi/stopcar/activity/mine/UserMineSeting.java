@@ -2,6 +2,7 @@ package com.sanxiongdi.stopcar.activity.mine;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -10,51 +11,63 @@ import android.widget.TextView;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.entity.RandomUser;
+import com.sanxiongdi.stopcar.entity.UserInfoEntity;
+import com.sanxiongdi.stopcar.entity.WrapperEntity;
+import com.sanxiongdi.stopcar.presenter.UserInfoSetingPresenter;
+import com.sanxiongdi.stopcar.presenter.view.IUserInfoSeting;
+
+import java.util.List;
 
 /**
  * 用户修改界面
  * Created by wuaomall@gmail.com on 2017/4/22.
  */
 
-public class UserMineSeting extends BaseActivity  implements View.OnClickListener{
+public class UserMineSeting extends BaseActivity implements View.OnClickListener ,IUserInfoSeting{
 
-     private EditText  nicheng_edit,age_edit,sex_edit,suijihao_number_edit,number_edit,addess_edit;
-     private ImageView img_back;
-     private TextView text_back_uitls,edit_uitl_save, nicheng_text,age_text,sex_text,suijihao_number_text,number_text,addess_text;
+    private EditText nicheng_edit, age_edit, sex_edit, suijihao_number_edit, number_edit, addess_edit;
+    private ImageView img_back;
+    private TextView text_back_uitls, edit_uitl_save, nicheng_text, age_text, sex_text, suijihao_number_text, number_text, addess_text;
     private View view;
-     @Override
+    private UserInfoSetingPresenter userInfoSetingPresenter;
+
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       this.setContentView(R.layout.usermenage_updata_info);
-         findView();
+        this.setContentView(R.layout.usermenage_updata_info);
+        userInfoSetingPresenter=new UserInfoSetingPresenter(getApplicationContext(),this);
+        findView();
         setListeners();
     }
 
     @Override
     protected void findView() {
-        img_back=(ImageView)findViewById(R.id.user_menage_tool_bar).findViewById(R.id.img_back);
-        text_back_uitls=(TextView)findViewById(R.id.user_menage_tool_bar).findViewById(R.id.text_back_uitls);
-        edit_uitl_save=(TextView)findViewById(R.id.user_menage_tool_bar).findViewById(R.id.edit_uitl_save);
+        img_back = (ImageView) findViewById(R.id.user_menage_tool_bar).findViewById(R.id.img_back);
+        text_back_uitls = (TextView) findViewById(R.id.user_menage_tool_bar).findViewById(R.id.text_back_uitls);
+        edit_uitl_save = (TextView) findViewById(R.id.user_menage_tool_bar).findViewById(R.id.edit_uitl_save);
 
-        nicheng_text=(TextView) findViewById(R.id.nicheng).findViewById(R.id.text_nicheng);
-        age_text=(TextView) findViewById(R.id.age).findViewById(R.id.text_nicheng);
-        sex_text=(TextView) findViewById(R.id.sex).findViewById(R.id.text_nicheng);
-        suijihao_number_text=(TextView) findViewById(R.id.suijihao_number).findViewById(R.id.text_nicheng);
-        number_text=(TextView) findViewById(R.id.number).findViewById(R.id.text_nicheng);
-        addess_text=(TextView) findViewById(R.id.addess).findViewById(R.id.text_nicheng);
+        nicheng_text = (TextView) findViewById(R.id.nicheng).findViewById(R.id.text_nicheng);
+        age_text = (TextView) findViewById(R.id.age).findViewById(R.id.text_nicheng);
+        sex_text = (TextView) findViewById(R.id.sex).findViewById(R.id.text_nicheng);
+        suijihao_number_text = (TextView) findViewById(R.id.suijihao_number).findViewById(R.id.text_nicheng);
+        number_text = (TextView) findViewById(R.id.number).findViewById(R.id.text_nicheng);
+        addess_text = (TextView) findViewById(R.id.addess).findViewById(R.id.text_nicheng);
         nicheng_text.setText("昵  称");
-        age_text.setText    ("年  龄");
-        sex_text.setText    ("性  别");
+        age_text.setText("年  龄");
+        sex_text.setText("性  别");
         suijihao_number_text.setText("随机号");
-        number_text.setText ("电  话");
-        addess_text.setText ("地  址");
-        edit_uitl_save.setTextColor(Color.rgb(82,181,239));
-        nicheng_edit=(EditText)findViewById(R.id.nicheng).findViewById(R.id.edit_uitls);
-        age_edit=(EditText)findViewById(R.id.age).findViewById(R.id.edit_uitls);
-        sex_edit=(EditText)findViewById(R.id.sex).findViewById(R.id.edit_uitls);
-        suijihao_number_edit=(EditText)findViewById(R.id.suijihao_number).findViewById(R.id.edit_uitls);
-        number_edit=(EditText)findViewById(R.id.number).findViewById(R.id.edit_uitls);
-        addess_edit=(EditText)findViewById(R.id.addess).findViewById(R.id.edit_uitls);
+        number_text.setText("电  话");
+        addess_text.setText("地  址");
+        edit_uitl_save.setTextColor(Color.rgb(82, 181, 239));
+        nicheng_edit = (EditText) findViewById(R.id.nicheng).findViewById(R.id.edit_uitls);
+        age_edit = (EditText) findViewById(R.id.age).findViewById(R.id.edit_uitls);
+        sex_edit = (EditText) findViewById(R.id.sex).findViewById(R.id.edit_uitls);
+        suijihao_number_edit = (EditText) findViewById(R.id.suijihao_number).findViewById(R.id.edit_uitls);
+        number_edit = (EditText) findViewById(R.id.number).findViewById(R.id.edit_uitls);
+        addess_edit = (EditText) findViewById(R.id.addess).findViewById(R.id.edit_uitls);
 
         setednbeldfalse();
 
@@ -62,7 +75,6 @@ public class UserMineSeting extends BaseActivity  implements View.OnClickListene
 
     @Override
     protected void getInstance() {
-
 
     }
 
@@ -78,12 +90,16 @@ public class UserMineSeting extends BaseActivity  implements View.OnClickListene
     @Override
     public void onClick(View v) {
 
-        if (v==img_back){
+        if (v == img_back) {
+            userInfoSetingPresenter.queryuserinfo(15);
             finish();
-        }if (v == edit_uitl_save){
-            if ("编   辑".equals(edit_uitl_save.getText().toString().trim())){
+        }
+        if (v == edit_uitl_save) {
+            if ("编   辑".equals(edit_uitl_save.getText().toString().trim())) {
                 setsave();
-            }else if("完   成".equals(edit_uitl_save.getText().toString().trim())){
+
+
+            } else if ("完   成".equals(edit_uitl_save.getText().toString().trim())) {
 
                 setsuccful();
                 //提交数据
@@ -115,19 +131,20 @@ public class UserMineSeting extends BaseActivity  implements View.OnClickListene
     }
 
 
+    public void setsave() {
+        edit_uitl_save.setText("完   成");
+        edit_uitl_save.setTextColor(Color.GRAY);
+        setendbed();
 
 
-       public  void  setsave(){
-           edit_uitl_save.setText("完   成");
-           edit_uitl_save.setTextColor(Color.GRAY);
-           setendbed();
-       }
+    }
+
 
     /**
      * 设置空间参数
      * 获取值
      */
-    public  void  setsuccful(){
+    public void setsuccful() {
         edit_uitl_save.setText("编   辑");
         setednbeldfalse();
         img_back.setVisibility(View.VISIBLE);
@@ -135,18 +152,41 @@ public class UserMineSeting extends BaseActivity  implements View.OnClickListene
 
     }
 
+    @Override
+    public void updataUserInfoSeting(List<RandomUser> list) {
+
+    }
+
+    @Override
+    public void queryOrderSuccess(List<UserInfoEntity> list) {
 
 
-     public  void  setendbed(){
-         nicheng_edit.setEnabled(true);
-         age_edit.setEnabled(true);
-         sex_edit.setEnabled(true);
-         suijihao_number_edit.setEnabled(true);
-         number_edit.setEnabled(true);
-         addess_edit.setEnabled(true);
-     }
+    }
 
-    public  void  setednbeldfalse(){
+    @Override
+    public void queryOrderFailure(boolean isRequest, int code, String msg) {
+
+    }
+
+
+
+    @Override
+    public void queryUserInfoSeting(WrapperEntity<List<UserInfoEntity>> list) {
+
+        Log.i("log++",list.toString());
+
+    }
+
+    public void setendbed() {
+        nicheng_edit.setEnabled(true);
+        age_edit.setEnabled(true);
+        sex_edit.setEnabled(true);
+        suijihao_number_edit.setEnabled(true);
+        number_edit.setEnabled(true);
+        addess_edit.setEnabled(true);
+    }
+
+    public void setednbeldfalse() {
         nicheng_edit.setEnabled(false);
         age_edit.setEnabled(false);
         sex_edit.setEnabled(false);
@@ -155,7 +195,6 @@ public class UserMineSeting extends BaseActivity  implements View.OnClickListene
         addess_edit.setEnabled(false);
 
     }
-
 
 
 }

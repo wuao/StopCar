@@ -1,22 +1,15 @@
 package com.sanxiongdi.stopcar.network.inter;
 
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
-import com.sanxiongdi.stopcar.entity.RandomUser;
+import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 
-import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -42,5 +35,13 @@ public interface ApiService {
     //订单查询
     @GET("api/rest")
     Observable<WrapperEntity<List<QueryOrderEntity>>> getQueryOrder(@Query("args") String args);
+
+    //更新用户信息
+    @POST("api/rest")
+    Observable<UserInfoEntity>  UpdataUser(@Field("args") String args);
+
+    //获取用户信息
+    @GET("api/rest")
+    Observable<WrapperEntity<List<UserInfoEntity>>>  queryUser(@Query("args") String args);
 
 }
