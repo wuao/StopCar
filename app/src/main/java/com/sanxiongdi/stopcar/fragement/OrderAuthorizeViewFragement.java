@@ -58,6 +58,7 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
 
     @Override
     protected void initView() {
+        llm = new LinearLayoutManager(getContext());
         mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.athorize_recycler_view);
         layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_authorize_swipe_refresh);
         mRecyclerView.setLayoutManager(llm);

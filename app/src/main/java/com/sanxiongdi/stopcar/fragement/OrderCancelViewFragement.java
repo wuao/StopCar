@@ -77,6 +77,7 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
 
     @Override
     protected void initView() {
+        llm = new LinearLayoutManager(getContext());
         mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.cancle_recycler_view);
         layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_cancel_swipe_refresh);
         mRecyclerView.setLayoutManager(llm);
