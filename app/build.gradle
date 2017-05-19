@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.1'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId 'com.sanxiongdi.stopcar'
         minSdkVersion 19
@@ -37,7 +37,7 @@ dependencies {
     //底部导航栏
     compile 'me.majiajie:pager-bottom-tab-strip:1.0.0'
     //    compile 'devlight.io:navigationtabbar:1.2.5'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:design:25.2.0'
     //    compile "biz.laenger.android:vpbs:0.0.4"
     //对话框
     compile 'cn.pedant.sweetalert:library:1.3'
