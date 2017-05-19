@@ -19,7 +19,7 @@ import java.util.List;
  * Created by wuaomall@gmail.com on 2017/4/15.
  */
 
-public class SearchRecylerHolder extends BaseRecyclerViewHolder {
+public class SearchRecylerHolder extends BaseRecyclerViewHolder<String> {
     public   TextView  user_info_name;      //订单创建人
     public  TextView  user_info_order_time;// 订单创建时间
     public  TextView  order_info_proceed;  //是否在进行中
