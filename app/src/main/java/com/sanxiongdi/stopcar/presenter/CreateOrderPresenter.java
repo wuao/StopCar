@@ -28,10 +28,12 @@ public class CreateOrderPresenter extends BasePresenter<ICreateAccount> {
 
     public void createOrder(String userId) {
         put("method", "park.order.create");
-        put2("car_order_user_id", 123);
-        List<HashMap<String,Object>> list = new ArrayList<>();
+        List<HashMap<String, Object>> list = new ArrayList<>();
+        put2("car_order_stop_state", "2");
+        put2("car_order_state", "1");
+        put2("car_order_user_id", userId);
         list.add(map2);
-        put("args",list);
+        put("args", list);
 
         ApiExecutor.getInstance().getCreateOrder(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())

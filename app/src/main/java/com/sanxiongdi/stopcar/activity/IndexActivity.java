@@ -44,7 +44,7 @@ import okhttp3.RequestBody;
  */
 
 public class IndexActivity extends BaseActivity implements View.OnClickListener, IGetRandomId,
-        ICreateAccount,ICreateOrder {
+        ICreateAccount,ICreateOrder{
     private PagerBottomTabLayout page_botton_tavlayout;
     private ArrayList<HashMap<String, Object>> pr;
     private SpeechSynthesizer speechSynthesizer;
@@ -70,7 +70,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         presenter = new GetRandomIdPresenter(this, this);
         createAccountPresenter = new CreateAccountPresenter(this, this);
         orderPresenter = new CreateOrderPresenter(this, this);
-//        presenter.getRandomId();
+        presenter.getRandomId();
     }
 
 
