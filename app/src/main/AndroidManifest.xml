@@ -27,7 +27,8 @@
 
     <!-- BRTSDK服务 -->
 
-
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL" />
     <!--  百度语音合成 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -80,7 +81,18 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--  用户修改界面  -->
         <activity
-            android:name="com.sanxiongdi.stopcar.activity.mine.UserMineSeting"
+        android:name="com.sanxiongdi.stopcar.activity.mine.UserMineSeting"
+        android:enabled="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!--  车辆修改界面  -->
+        <activity
+            android:name="com.sanxiongdi.stopcar.activity.mine.CarInfoActivity"
+            android:enabled="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!--  问题反馈  -->
+        <activity
+            android:name="com.sanxiongdi.stopcar.activity.setting.HelpInfoActivity"
             android:enabled="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--    -->

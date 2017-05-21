@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.tts.client.SpeechSynthesizer;
-import com.google.gson.Gson;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.fragement.OrderFragement;
@@ -34,7 +33,6 @@ import me.majiajie.pagerbottomtabstrip.PagerBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.TabItemBuilder;
 import me.majiajie.pagerbottomtabstrip.TabLayoutMode;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectListener;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 /**
@@ -200,26 +198,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         textView3.setText("用户名3");
         textView4.setText("用户名4");
     }
-
-
-    public RequestBody starcareat() {
-        Gson gson = new Gson();
-        pr = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> paramsMap = new HashMap<String, Object>();
-        HashMap<String, Object> pr2 = new HashMap<String, Object>();
-        pr2.put("name", "gouwa");
-        pr2.put("login", "gouwa");
-        paramsMap.put("login", "admin");
-        paramsMap.put("passwrod", "admin");
-        paramsMap.put("method", "res.users.create");
-        paramsMap.put("args", pr2);
-        pr.add(paramsMap);
-        String strEntity = gson.toJson(pr);
-        String sd = strEntity.substring(1, strEntity.length()).substring(0, strEntity.length() - 1);
-        body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "args=" + sd);
-        return body;
-    }
-
     //获取随机号
     @Override
     public void getRandomIdSuccess(List<String> list) {

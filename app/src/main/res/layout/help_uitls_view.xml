@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -15,6 +15,8 @@
             android:background="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"/>
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="43.5dp"
@@ -31,6 +33,7 @@
             <TextView
                 android:id="@+id/text_nicheng"
                 android:layout_alignParentLeft="true"
+                android:text=" "
                 android:textSize="17sp"
                 android:layout_marginLeft="15dp"
                 android:textColor="@android:color/black"
@@ -40,12 +43,16 @@
         </LinearLayout>
             <EditText
                 android:id="@+id/edit_uitls"
-                android:layout_centerVertical="true"
+                android:text=" "
                 android:background="@null"
+                android:height="800dp"
                 android:layout_marginLeft="86dp"
                 android:cursorVisible="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
+
+
+
     </LinearLayout>
 </LinearLayout>

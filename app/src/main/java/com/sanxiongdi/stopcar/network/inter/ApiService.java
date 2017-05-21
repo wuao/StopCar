@@ -37,11 +37,26 @@ public interface ApiService {
     Observable<WrapperEntity<List<QueryOrderEntity>>> getQueryOrder(@Query("args") String args);
 
     //更新用户信息
+    @FormUrlEncoded
     @POST("api/rest")
-    Observable<UserInfoEntity>  UpdataUser(@Field("args") String args);
+    Observable<WrapperEntity>  updataUser(@Field("args") String args);
 
     //获取用户信息
     @GET("api/rest")
     Observable<WrapperEntity<List<UserInfoEntity>>>  queryUser(@Query("args") String args);
+
+
+    //提交反馈信息
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity>  createHelpInfo(@Field("args") String args);
+
+
+
+    //提交反馈信息
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity>  updataCarInfo(@Field("args") String args);
+
 
 }

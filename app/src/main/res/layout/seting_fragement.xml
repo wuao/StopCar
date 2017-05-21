@@ -78,6 +78,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:id="@+id/pake_help"
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -120,6 +121,7 @@
 
 
         <LinearLayout
+            android:id="@+id/help_center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -163,6 +165,7 @@
 
 
         <LinearLayout
+            android:id="@+id/about_start"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

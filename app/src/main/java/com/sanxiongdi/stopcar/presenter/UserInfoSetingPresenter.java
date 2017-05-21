@@ -1,6 +1,7 @@
 package com.sanxiongdi.stopcar.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
@@ -29,6 +30,7 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         super(context, view);
         maps = new HashMap<>();
     }
+
     public void queryuserinfo(int id) {
         put("method", "res.users.search_read");
         List<Object> lists = new ArrayList<>();
@@ -40,10 +42,14 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         lists.add(list);
         list = new ArrayList<>();
         list.add("name");
-        list.add("car_user_callphone_number");
+        list.add("login");
+        list.add("ref");
+        list.add("image");
+        list.add("car_user_phone_id");
+        list.add("phone");
+        list.add("street");
         list.add("car_user_state");
-        list.add("car_user_address");
-        list.add("car_user_login_time");
+        list.add("login_date");
         list.add("car_user_online");
         list.add("car_user_vip_out_date");
         lists2.add(lists);
@@ -55,40 +61,62 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
                 .subscribe(new Subscriber<WrapperEntity<List<UserInfoEntity>>>() {
                     @Override
                     public void onCompleted() {
-//                        Log.d("log---", URLDecoder.decode(oldRequest.toString(),"UTF-8"));
+                        //                        Log.d("log---", URLDecoder.decode(oldRequest.toString(),"UTF-8"));
                     }
+
                     @Override
                     public void onError(Throwable e) {
                     }
+
                     @Override
                     public void onNext(WrapperEntity<List<UserInfoEntity>> listWrapperEntity) {
-//                        if (listWrapperEntity == null || listWrapperEntity.state != 1) {
-//                            view.queryOrderFailure(false, -1, "");
-//                        } else
-//                            view.queryOrderSuccess(listWrapperEntity.result);
+                        if (listWrapperEntity == null || listWrapperEntity.state != 1) {
+                            view.queryUserInfoFailure(false, -1, "获取用户信息失败,请检查网络！");
+                        } else
+                            view.queryUserInfoSuccess(listWrapperEntity.result);
                     }
                 });
     }
 
 
-    public void updataUserInfoSeting(String userid, UserInfoEntity userInfoEntity) {
-        put("method", "park.order.search_read");
+    public void updataUserInfoSeting(int userid, UserInfoEntity userInfoEntity) {
+        put("method", "res.users.write");
         List<Object> lists = new ArrayList<>();
         Map<String, Object> listparam = new HashMap<>();
-        List<List<Object>> lists2 = new ArrayList<>();
         List<Object> list = new ArrayList<>();
         list.add(userid);
         listparam.put("name", userInfoEntity.name);
-        listparam.put("car_user_callphone_number", userInfoEntity.car_user_callphone_number);
-        listparam.put("car_user_state", userInfoEntity.car_user_state);
-        listparam.put("car_user_address", userInfoEntity.car_user_address);
-        listparam.put("car_user_login_time", userInfoEntity.car_user_login_time);
-        listparam.put("car_user_online", userInfoEntity.car_user_online);
-        listparam.put("car_user_vip_out_date", userInfoEntity.car_user_vip_out_date);
-        lists2.add(list);
-        lists.add(lists2);
+        listparam.put("phone", userInfoEntity.phone);
+        listparam.put("age", userInfoEntity.age);
+        listparam.put("sex", userInfoEntity.sex);
+        listparam.put("street", userInfoEntity.street);
+        lists.add(list);
         lists.add(listparam);
-        put("args", map2);
+        put("args", lists);
+        Log.i("++", map1.values().toString());
+        ApiExecutor.getInstance().updataUser(initGson().toJson(map1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<WrapperEntity>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(WrapperEntity wrapperEntity) {
+                        if (wrapperEntity == null || wrapperEntity.state != 1) {
+                            view.queryUserInfoFailure(false, -1, "更新用户信息失败,请检查网络！");
+                        } else
+                            view.updataUserInfoSuccess(wrapperEntity);
+                    }
+                });
+
+
     }
 
 }

@@ -1,6 +1,5 @@
 package com.sanxiongdi.stopcar.presenter.view;
 
-import com.sanxiongdi.stopcar.entity.RandomUser;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 
@@ -12,12 +11,9 @@ import java.util.List;
 
 public interface IUserInfoSeting {
 
-    void queryUserInfoSeting(WrapperEntity<List<UserInfoEntity>> list);
 
-    void updataUserInfoSeting(List<RandomUser> list);
-
-    void queryOrderFailure(boolean isRequest, int code, String msg);
-    void queryOrderSuccess(List<UserInfoEntity> list);
-
+    void queryUserInfoFailure(boolean isRequest, int code, String msg);
+    void queryUserInfoSuccess(List<UserInfoEntity> list);
+    void updataUserInfoSuccess(WrapperEntity list);
 
 }
