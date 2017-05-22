@@ -13,7 +13,6 @@ public class QueryOrderEntity extends BaseEntity {
     public String car_order_stop_state;//停放状态(0停放 1离开 2进场)
     public String car_order_user_id;//"1234",用户id
     public int id;//订单id 指的数据库id
-
     public String display_name;
 
 }

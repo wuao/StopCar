@@ -11,8 +11,13 @@ import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.entity.CarInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
+import com.sanxiongdi.stopcar.presenter.CarInfoPresenter;
 import com.sanxiongdi.stopcar.presenter.view.ICarInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wuaomall@gmail.com on 2017/5/20.
@@ -23,13 +28,20 @@ public class CarInfoActivity extends BaseActivity implements View.OnClickListene
     private EditText car_name_edit, car_number_edit, car_pailiang_edit, car_color_edit, car_shuoming_edit;
     private TextView car_name_text, car_number_text, car_pailiang_text, car_color_text, car_shuoming_text, text_back_uitls, edit_uitl_save;
     private ImageView img_back;
-    private View view;
+    private CarInfoPresenter carInfoPresenter;
+    private CarInfoEntity carInfoEntity;
+    private CarInfoEntity  wrapperEntity;
+    private List<CarInfoEntity> list1 = new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.car_updata_info);
+        carInfoPresenter=new CarInfoPresenter(getApplicationContext(),this);
+        carInfoPresenter.getCarInfo(7);
+        wrapperEntity=new CarInfoEntity();
         findView();
         setListeners();
 
@@ -106,10 +118,22 @@ public class CarInfoActivity extends BaseActivity implements View.OnClickListene
             if ("编   辑".equals(edit_uitl_save.getText().toString().trim())) {
                 setendbed();
                 setsave();
-
             } else if ("完   成".equals(edit_uitl_save.getText().toString().trim())) {
                 //提交数据
+                carInfoEntity=new CarInfoEntity();
+                carInfoEntity.car_brand_name=car_name_edit.getText().toString().trim();
+                carInfoEntity.name=car_number_edit.getText().toString().trim();
+                carInfoEntity.vol=car_pailiang_edit.getText().toString().trim();
+                carInfoEntity.color=car_color_edit.getText().toString().trim();
+                carInfoEntity.note=car_shuoming_edit.getText().toString().trim();
+                carInfoEntity.user_id=7;
 
+                if (list1.size()==0){//如果是第一次  就是创建
+                    carInfoPresenter.createCarInfo(carInfoEntity);
+                }else  {
+                    carInfoPresenter.updataCarInfo(7,carInfoEntity);
+
+                }
                 setsuccful();
 
             }
@@ -154,19 +178,53 @@ public class CarInfoActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void createCarInfoSuccess(WrapperEntity list) {
-        if (list.result!=null||list.result.equals("")) {
-            Toast.makeText(getApplicationContext(), "更新成功", Toast.LENGTH_SHORT).show();
+        if (list.result!=null) {
+            wrapperEntity.color="1";
+            list1.add(wrapperEntity);
+            Toast.makeText(getApplicationContext(), "保存成功", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(), "更新失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "保存失败", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     @Override
     public void queryCarFailure(boolean isRequest, int code, String msg) {
-
         if (code == -1) {
             Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void queryCarSuccess(List<CarInfoEntity> list2) {
+        if (list2.size()!=0){
+            list1 = list2;
+            if (list1.get(0).name.equals("false")||list1.get(0).name==null) {
+                car_name_edit.setText("");
+            } else {
+                car_name_edit.setText(list1.get(0).name);
+            }
+            if (list1.get(0).name.equals("false")||list1.get(0).name==null) {
+                car_number_edit.setText("");
+            } else {
+                car_number_edit.setText(list1.get(0).name);
+            }
+            if (list1.get(0).vol.equals("false")||list1.get(0).vol==null) {
+                car_pailiang_edit.setText("");
+            } else {
+                car_pailiang_edit.setText(list1.get(0).vol);
+            }
+            if (list1.get(0).color.equals("false")||list1.get(0).color==null) {
+                car_color_edit.setText("");
+            } else {
+                car_color_edit.setText(list1.get(0).color);
+            }
+            if (list1.get(0).note.equals("false")||list1.get(0).note==null) {
+                car_shuoming_edit.setText("");
+            } else {
+                car_shuoming_edit.setText(list1.get(0).note);
+            }
+
         }
 
     }

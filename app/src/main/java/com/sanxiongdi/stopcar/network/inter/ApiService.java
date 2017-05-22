@@ -1,5 +1,6 @@
 package com.sanxiongdi.stopcar.network.inter;
 
+import com.sanxiongdi.stopcar.entity.CarInfoEntity;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
@@ -53,10 +54,20 @@ public interface ApiService {
 
 
 
-    //提交反馈信息
+    //创建车辆信息
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity>  createCarInfo(@Field("args") String args);
+
+      //更新车辆信息
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity>  updataCarInfo(@Field("args") String args);
 
+
+    //获取车辆信息
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity<List<CarInfoEntity>>>  getCarInfo(@Field("args") String args);
 
 }

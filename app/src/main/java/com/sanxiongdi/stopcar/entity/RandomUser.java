@@ -4,7 +4,7 @@ package com.sanxiongdi.stopcar.entity;
  * Created by wuaomall@gmail.com on 2017/5/1.
  */
 
-public class RandomUser {
+public class RandomUser  extends BaseEntity{
     private  int state;
 
     private  int result;

@@ -6,8 +6,12 @@ package com.sanxiongdi.stopcar.entity;
 
 public class CarInfoEntity extends BaseEntity {
 
+
     public String   name;//车牌
-    public String  user_id;//用户id
+    public int      user_id;//用户id
     public String  note;//备注
+    public String  color;
+    public String  vol;//排量
+    public String  car_brand_name;//车子型号
 
 }
