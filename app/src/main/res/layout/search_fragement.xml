@@ -7,6 +7,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:background="@android:color/darker_gray"
         android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
@@ -40,12 +41,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_recycler_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:refresh_able="true"
-            app:load_more_able="false"/>
+        <ListView
+            android:id="@+id/device_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
 
 
 

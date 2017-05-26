@@ -1,13 +1,11 @@
 package com.sanxiongdi.stopcar.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
-import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 获取随机生成的ID
+ *
  * Created by lin.woo on 2017/5/5.
  */
 
@@ -59,14 +57,10 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
                 .subscribe(new Subscriber<WrapperEntity<List<QueryOrderEntity>>>() {
                     @Override
                     public void onCompleted() {
-
                     }
-
                     @Override
                     public void onError(Throwable e) {
-
                     }
-
                     @Override
                     public void onNext(WrapperEntity<List<QueryOrderEntity>> wrapperEntity) {
                         if (wrapperEntity == null || wrapperEntity.state != 1) {
@@ -83,7 +77,6 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
 
     private void setData1() {
         put("method", "park.order.search_read");
-
         List<Object> lists = new ArrayList<>();
         List<String> list = new ArrayList<>();
         lists.add(list);
