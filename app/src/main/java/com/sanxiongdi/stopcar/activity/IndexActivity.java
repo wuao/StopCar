@@ -19,6 +19,7 @@ import com.sanxiongdi.stopcar.fragement.UserInfoFragement;
 import com.sanxiongdi.stopcar.presenter.CreateAccountPresenter;
 import com.sanxiongdi.stopcar.presenter.CreateOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.GetRandomIdPresenter;
+import com.sanxiongdi.stopcar.presenter.ModifyOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
 import com.sanxiongdi.stopcar.presenter.view.ICreateOrder;
 import com.sanxiongdi.stopcar.presenter.view.IGetRandomId;
@@ -42,7 +43,7 @@ import okhttp3.RequestBody;
  */
 
 public class IndexActivity extends BaseActivity implements View.OnClickListener, IGetRandomId,
-        ICreateAccount,ICreateOrder {
+        ICreateAccount, ICreateOrder {
     private PagerBottomTabLayout page_botton_tavlayout;
     private ArrayList<HashMap<String, Object>> pr;
     private SpeechSynthesizer speechSynthesizer;
@@ -58,6 +59,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     //创建账号
     private CreateAccountPresenter createAccountPresenter;
     private CreateOrderPresenter orderPresenter;
+    private ModifyOrderPresenter modifyOrderPresenter;
     private List<String> randomIds;
 
     @Override
@@ -68,7 +70,8 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         presenter = new GetRandomIdPresenter(this, this);
         createAccountPresenter = new CreateAccountPresenter(this, this);
         orderPresenter = new CreateOrderPresenter(this, this);
-//        presenter.getRandomId();
+        modifyOrderPresenter = new ModifyOrderPresenter(this, this);
+        presenter.getRandomId();
     }
 
 
@@ -121,8 +124,9 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 //            pupopWindowUitls.dismiss();
 
         } else if (v == textView3) {
-            Toast.makeText(getApplicationContext(), textView3.getText(), Toast.LENGTH_LONG).show();
-            pupopWindowUitls.dismiss();
+            modifyOrderPresenter.createOrder();
+//            Toast.makeText(getApplicationContext(), textView3.getText(), Toast.LENGTH_LONG).show();
+//            pupopWindowUitls.dismiss();
 
         } else if (v == textView4) {
             Toast.makeText(getApplicationContext(), textView4.getText(), Toast.LENGTH_LONG).show();

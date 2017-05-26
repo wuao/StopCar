@@ -10,7 +10,6 @@ import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,19 +20,22 @@ import rx.schedulers.Schedulers;
  * Created by lin.woo on 2017/5/5.
  */
 
-public class CreateOrderPresenter extends BasePresenter<ICreateAccount> {
-    public CreateOrderPresenter(Context context, ICreateAccount view) {
+public class ModifyOrderPresenter extends BasePresenter<ICreateAccount> {
+    public ModifyOrderPresenter(Context context, ICreateAccount view) {
         super(context, view);
     }
 
-    public void createOrder(String userId) {
-        put("method", "park.order.create");
-        List<HashMap<String, Object>> list = new ArrayList<>();
-        put2("car_order_stop_state", "2");
+    public void createOrder() {
+        put("method", "park.order.write");
+        List<Object> listWrapper = new ArrayList<>();
+        put2("car_order_stop_state", "1");
         put2("car_order_state", "1");
-        put2("car_order_user_id", userId);
-        list.add(map2);
-        put("args", list);
+        List<Integer> listId = new ArrayList<>();
+        listId.add(26);
+
+        listWrapper.add(listId);
+        listWrapper.add(map2);
+        put("args", listWrapper);
 
         ApiExecutor.getInstance().getCreateOrder(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
