@@ -19,19 +19,23 @@ import rx.Observable;
  */
 
 public interface ApiService {
-    //获取随机账号
-    @GET("api/rest")
-    Observable<WrapperEntity> getRandomNumber(@Query("args") String data);
 
-    //创建账号
+    //根据唯一设备号获取 查询
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity> getRandomUser(@Field("args") String args);
 
-    //创建账号
+    //创建订单
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity> getCreateOrder(@Field("args") String args);
+
+    //创建账号
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity> getCreateUserInfo(@Field("args") String args);
+
+
 
     //订单查询
     @GET("api/rest")
@@ -46,12 +50,10 @@ public interface ApiService {
     @GET("api/rest")
     Observable<WrapperEntity<List<UserInfoEntity>>>  queryUser(@Query("args") String args);
 
-
     //提交反馈信息
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity>  createHelpInfo(@Field("args") String args);
-
 
 
     //创建车辆信息
@@ -63,7 +65,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity>  updataCarInfo(@Field("args") String args);
-
 
     //获取车辆信息
     @FormUrlEncoded

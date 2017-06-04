@@ -13,10 +13,10 @@ import android.widget.RelativeLayout;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.activity.mine.CarInfoActivity;
+import com.sanxiongdi.stopcar.activity.mine.PayMyWalletActivity;
 import com.sanxiongdi.stopcar.activity.mine.UserMineSeting;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
-import com.sanxiongdi.stopcar.uitls.view.PupopWindowUitls;
 
 /**
  * Created by wuaomall@gmail.com on 2017/4/7.
@@ -25,7 +25,6 @@ import com.sanxiongdi.stopcar.uitls.view.PupopWindowUitls;
 public class UserInfoFragement extends BaseFrament implements View.OnClickListener {
 
     private Context mContext;
-    private PupopWindowUitls pupopWindowUitls;
     private  View view,rootview;
     private Toolbar toolbar;
     private RootLayout mrootLayout;
@@ -48,7 +47,7 @@ public class UserInfoFragement extends BaseFrament implements View.OnClickListen
             startActivity(new Intent(mContext, CarInfoActivity.class));
 
         }if (v ==my_money){
-            startActivity(new Intent(mContext, CarInfoActivity.class));
+            startActivity(new Intent(mContext, PayMyWalletActivity.class));
         }if (v ==customer_service){
             startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:18677179827")));
         }

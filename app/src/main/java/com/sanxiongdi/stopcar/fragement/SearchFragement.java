@@ -57,9 +57,6 @@ public class SearchFragement  extends BaseFrament{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
           view = inflater.inflate(R.layout.search_fragement, container, false);
         toolbar=(Toolbar)view.findViewById(R.id.tool_bar);
-
-
-
         IntentFilter filter = new IntentFilter();
         //开始查找
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
@@ -82,7 +79,6 @@ public class SearchFragement  extends BaseFrament{
 
     @Override
     protected void initDate(Bundle  mbundle) {
-
     }
 
     @Override

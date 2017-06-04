@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rela_share_popup"
+                    android:background="@drawable/woolenglass">
+
+
+            <TextView
+                android:text="充值金额"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"/>
+
+            <EditText
+                android:textColor="@color/white"
+                android:id="@+id/my_edit_wallet"
+                android:layout_width="280dp"
+                android:inputType="number"
+                android:hint="请输入充值金额"
+                android:layout_marginRight="15dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView"
+                android:layout_marginStart="13dp"/>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="265dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/Wechat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_wechtmont"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/wechatnicefriend" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/Wechat_Nice_Friend"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:layout_marginTop="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/zhifubao_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_wecht"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/zhifubao" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zhifubao"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:layout_marginTop="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_my_colse"
+                android:layout_marginTop="20dp"/>
+        </FrameLayout>
+
+
+    </RelativeLayout>

@@ -38,7 +38,7 @@ public class UserMineSeting extends BaseActivity implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.usermenage_updata_info);
-        userInfoSetingPresenter = new UserInfoSetingPresenter(getApplicationContext(), this);
+        userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
         userInfoSetingPresenter.queryuserinfo(6);
         findView();
         setListeners();
@@ -249,5 +249,13 @@ public class UserMineSeting extends BaseActivity implements View.OnClickListener
 
     }
 
+    @Override
+    public void queryByPhoneUserInfoSuccess(List<UserInfoEntity> list) {
 
+    }
+
+    @Override
+    public void creatUserInfoSuccess(WrapperEntity list) {
+
+    }
 }

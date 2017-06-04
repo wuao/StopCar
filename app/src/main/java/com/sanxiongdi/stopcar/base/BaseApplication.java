@@ -11,7 +11,6 @@ import com.brtbeacon.sdk.IBle;
 import com.brtbeacon.sdk.utils.L;
 import com.sanxiongdi.stopcar.uitls.BaseSyatemHelperUitls;
 import com.sanxiongdi.stopcar.uitls.LogUtils;
-import com.sanxiongdi.stopcar.uitls.SharedPreferencesUtil;
 
 /**
  * Application config
@@ -24,9 +23,10 @@ public class BaseApplication extends Application {
 
     private static BaseApplication sBaseApplication;
     private static Context mContext;
-    private SharedPreferencesUtil sharedPreferencesUtil;
     private static String TAG = BaseApplication.class.getName();
     private BRTBeaconManager beaconManager;
+    public static Application application = null;
+    public static Context context = null;
     public BaseApplication() {
     }
     public BaseApplication(Context context) {

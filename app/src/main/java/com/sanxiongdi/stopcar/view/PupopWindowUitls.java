@@ -1,4 +1,4 @@
-package com.sanxiongdi.stopcar.uitls.view;
+package com.sanxiongdi.stopcar.view;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;

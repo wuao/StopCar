@@ -4,4 +4,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
- </resources>
+    <string name="wallet_my">我 的 余 额</string>
+
+    <string name="my_menoey">$</string>
+    <string name="my_chongzhi">充   值</string>
+
+    <string name="zhifubao">支 付 宝</string>
+    <string name="Wechat_Nice_Friend">微  信</string>
+    <string name="btn_close">取    消</string>
+
+
+
+
+</resources>

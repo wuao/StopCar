@@ -1,16 +1,12 @@
 package com.sanxiongdi.stopcar.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
 import com.sanxiongdi.stopcar.presenter.view.IGetRandomId;
 
-import java.lang.reflect.Array;
-import java.util.HashMap;
 import java.util.List;
 
 import rx.Subscriber;
@@ -31,7 +27,7 @@ public class GetRandomIdPresenter extends BasePresenter<IGetRandomId> {
         put("method", "res.users.random_id");
         put("args", map2);
         ;
-        ApiExecutor.getInstance().getRandomNumber(initGson().toJson(map1))
+        ApiExecutor.getInstance().getRandomUser(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WrapperEntity>() {

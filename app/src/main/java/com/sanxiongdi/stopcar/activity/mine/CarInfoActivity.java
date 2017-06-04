@@ -53,7 +53,6 @@ public class CarInfoActivity extends BaseActivity implements View.OnClickListene
         text_back_uitls = (TextView) findViewById(R.id.user_menage_tool_bar).findViewById(R.id.text_back_uitls);
         edit_uitl_save = (TextView) findViewById(R.id.user_menage_tool_bar).findViewById(R.id.edit_uitl_save);
 
-
         car_name_edit = (EditText) findViewById(R.id.car_name).findViewById(R.id.edit_uitls);
         car_number_edit = (EditText) findViewById(R.id.car_number).findViewById(R.id.edit_uitls);
         car_pailiang_edit = (EditText) findViewById(R.id.car_pailiang).findViewById(R.id.edit_uitls);
