@@ -98,6 +98,7 @@ public class SearchFragement  extends BaseFrament{
             @Override
             public void onRefresh() {
 //                initblue();
+                layout_swipe_refresh.setRefreshing(false);
                 initlook();
             }
         });
@@ -121,9 +122,11 @@ public class SearchFragement  extends BaseFrament{
                 //初始化数据列表
                 mDeviceList.clear();
                 mAdapter.notifyDataSetChanged();
+                layout_swipe_refresh.setRefreshing(false);
             }
             else if( BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 showToast("加载完成");
+                layout_swipe_refresh.setRefreshing(false);
             }
             else if( BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -138,22 +141,30 @@ public class SearchFragement  extends BaseFrament{
                 }
                 else {
                     showToast("加载完成");
+                    layout_swipe_refresh.setRefreshing(false);
+
+
                 }
             }
             else if( BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action) ) {
                 BluetoothDevice remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if( remoteDevice == null ) {
                     showToast("no device");
+                    layout_swipe_refresh.setRefreshing(false);
                     return;
                 }
                 int status = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,0);
                 if( status == BluetoothDevice.BOND_BONDED) {
+                    layout_swipe_refresh.setRefreshing(false);
                     showToast("Bonded " + remoteDevice.getName());
                 }
                 else if( status == BluetoothDevice.BOND_BONDING){
+                    layout_swipe_refresh.setRefreshing(false);
                     showToast("Bonding " + remoteDevice.getName());
                 }
                 else if(status == BluetoothDevice.BOND_NONE){
+                    layout_swipe_refresh.setRefreshing(false);
+
                     showToast("Not bond " + remoteDevice.getName());
                 }
             }
@@ -197,7 +208,6 @@ public class SearchFragement  extends BaseFrament{
         mBondedDeviceList = mController.getBondedDeviceList();
         mAdapter.refresh(mBondedDeviceList);
         mListView.setOnItemClickListener(null);
-
     }
 
 
