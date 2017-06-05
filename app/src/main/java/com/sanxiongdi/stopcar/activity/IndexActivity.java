@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.fragement.OrderFragement;
@@ -335,6 +336,11 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     }
 
 
+    @Override
+    public void getUserByIdBalance(List<Balance> list) {
+
+    }
+
     public void setvesion() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 检查该权限是否已经获取
@@ -343,7 +349,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
                 // 如果没有授予该权限，就去提示用户请求
                 showDialogTipUserRequestPermission();
             }else {
-                setuserinfo();
+//                setuserinfo();
             }
         }
     }

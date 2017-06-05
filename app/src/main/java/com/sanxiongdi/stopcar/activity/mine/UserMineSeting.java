@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.presenter.UserInfoSetingPresenter;
@@ -256,6 +257,12 @@ public class UserMineSeting extends BaseActivity implements View.OnClickListener
 
     @Override
     public void creatUserInfoSuccess(WrapperEntity list) {
+
+    }
+
+
+    @Override
+    public void getUserByIdBalance(List<Balance> list) {
 
     }
 }

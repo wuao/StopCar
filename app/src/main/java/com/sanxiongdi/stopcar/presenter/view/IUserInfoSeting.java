@@ -1,5 +1,6 @@
 package com.sanxiongdi.stopcar.presenter.view;
 
+import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 
@@ -19,6 +20,7 @@ public interface IUserInfoSeting {
     void updataUserInfoSuccess(WrapperEntity list);
     void creatUserInfoSuccess(WrapperEntity list);
 
+    void getUserByIdBalance(List<Balance> list);
 
 
 }

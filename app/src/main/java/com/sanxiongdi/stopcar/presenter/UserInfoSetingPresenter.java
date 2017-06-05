@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sanxiongdi.stopcar.base.BasePresenter;
+import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
@@ -17,8 +18,6 @@ import java.util.Map;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.R.attr.id;
 
 /**
  * Created by wuaomall@gmail.com on 2017/5/15.
@@ -54,6 +53,7 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         list.add("login_date");
         list.add("car_user_online");
         list.add("car_user_vip_out_date");
+        list.add("balance");
         lists2.add(lists);
         lists2.add(list);
         put("args", lists2);
@@ -171,8 +171,8 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         List<Object> list = new ArrayList<>();
         List<List<Object>> lists2 = new ArrayList<>();
         list.add("car_user_phone_id");
-        list.add("=");
-        list.add(id);
+        list.add(":");
+        list.add(car_user_phone_id);
         lists.add(list);
         list = new ArrayList<>();
         list.add("name");
@@ -208,6 +208,49 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
                             view.queryUserInfoFailure(false, -1, "当前设备id查询失败,请检查网络！");
                         } else
                             view.queryUserInfoSuccess(listWrapperEntity.result);
+                    }
+                });
+    }
+
+
+    /**
+     * 根据账户id 查询余额
+     * @param id
+     */
+    public void getUserByIdBalance(int id) {
+        put("method", "res.users.search_read");
+        List<Object> lists = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
+        List<List<Object>> lists2 = new ArrayList<>();
+        list.add("id");
+        list.add("=");
+        list.add(id);
+        lists.add(list);
+        list = new ArrayList<>();
+        list.add("balance");
+        lists2.add(lists);
+        lists2.add(list);
+        put("args", lists2);
+        ApiExecutor.getInstance().getUserByIdBalance(initGson().toJson(map1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<WrapperEntity<List<Balance>>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(WrapperEntity<List<Balance>> listWrapperEntity) {
+                        if (listWrapperEntity == null || listWrapperEntity.state != 1) {
+                            view.queryUserInfoFailure(false, -1, "获取用户余额失败,请检查网络！");
+                        } else
+                            view.getUserByIdBalance(listWrapperEntity.result);
                     }
                 });
     }

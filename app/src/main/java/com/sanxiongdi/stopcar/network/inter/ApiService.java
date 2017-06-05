@@ -1,5 +1,6 @@
 package com.sanxiongdi.stopcar.network.inter;
 
+import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.CarInfoEntity;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
@@ -36,6 +37,12 @@ public interface ApiService {
     Observable<WrapperEntity> getCreateUserInfo(@Field("args") String args);
 
 
+    //根据用户id 查询用户余额
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity<List<Balance>>> getUserByIdBalance(@Field("args") String args);
+
+
 
     //订单查询
     @GET("api/rest")
@@ -70,5 +77,21 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity<List<CarInfoEntity>>>  getCarInfo(@Field("args") String args);
+
+
+
+    //钱包充值
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity> createWallet(@Field("args") String args);
+
+
+
+    //交易记录
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity> createTransaction(@Field("args") String args);
+
+
 
 }
