@@ -70,7 +70,8 @@ public class WalletPresenter  extends BasePresenter<Iwallet> {
     }
 
     /**
-     *  交易记录
+     *  扣款
+     *  amount  前面加上- 或者+ 来进行 扣款和充值
      * @param  wallet
      */
     public void createTransaction(Wallet wallet) {
@@ -79,7 +80,6 @@ public class WalletPresenter  extends BasePresenter<Iwallet> {
         List<Object> lists = new ArrayList<>();
         Map<String, Object> listparam = new HashMap<>();
         listparam.put(wallet.user_id, wallet.user_id);
-        listparam.put(wallet.order_id, wallet.order_id);
         listparam.put(wallet.amount, wallet.amount);
         listparam.put(wallet.state, wallet.state);
         lists.add(listparam);
@@ -103,7 +103,7 @@ public class WalletPresenter  extends BasePresenter<Iwallet> {
                         if (wrapperEntity == null || wrapperEntity.state != 1) {
                             view.Walletfaile(false, -1, "付款失败,请检查网络！");
                         } else
-                            view.createWallet(wrapperEntity);
+                            view.createTransaction(wrapperEntity);
                     }
                 });
     }

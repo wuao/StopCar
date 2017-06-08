@@ -28,7 +28,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- BRTSDK服务 -->
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
@@ -63,8 +63,8 @@
         android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
+        android:icon="@drawable/ic_on"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:icon,android:theme">
 
@@ -93,7 +93,6 @@
         <activity
             android:name="com.sanxiongdi.stopcar.MainActivity"
             android:enabled="true"
-
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!---->
         <activity

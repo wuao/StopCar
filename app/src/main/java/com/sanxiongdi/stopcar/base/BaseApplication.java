@@ -6,11 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.DisplayMetrics;
 
+import com.brtbeacon.sdk.BRTBeacon;
 import com.brtbeacon.sdk.BRTBeaconManager;
+import com.brtbeacon.sdk.BRTThrowable;
 import com.brtbeacon.sdk.IBle;
+import com.brtbeacon.sdk.callback.BRTBeaconManagerListener;
 import com.brtbeacon.sdk.utils.L;
 import com.sanxiongdi.stopcar.uitls.BaseSyatemHelperUitls;
 import com.sanxiongdi.stopcar.uitls.LogUtils;
+
+import java.util.ArrayList;
 
 /**
  * Application config
@@ -24,12 +29,13 @@ public class BaseApplication extends Application {
     private static BaseApplication sBaseApplication;
     private static Context mContext;
     private static String TAG = BaseApplication.class.getName();
-    private BRTBeaconManager beaconManager;
+    public BRTBeaconManager beaconManager;
     public static Application application = null;
     public static Context context = null;
     public BaseApplication() {
     }
     public BaseApplication(Context context) {
+
         context = this.getApplicationContext();
     }
     @Override
@@ -41,6 +47,29 @@ public class BaseApplication extends Application {
             //初始化第三方的sdk
             InstanceSDK();
             printAppParameter();
+
+
+            beaconManager.setBRTBeaconManagerListener(new BRTBeaconManagerListener() {
+                @Override
+                public void onUpdateBeacon(ArrayList<BRTBeacon> arrayList) {
+
+                }
+
+                @Override
+                public void onNewBeacon(BRTBeacon brtBeacon) {
+
+                }
+
+                @Override
+                public void onGoneBeacon(BRTBeacon brtBeacon) {
+
+                }
+
+                @Override
+                public void onError(BRTThrowable brtThrowable) {
+
+                }
+            });
             //第一次启动
 
         }
@@ -117,6 +146,9 @@ public class BaseApplication extends Application {
         beaconManager.registerApp("e15a34ddca0440718d29f2bc21fe6c30");
         // 开启Beacon扫描服务
         beaconManager.startService();
+
+
+
     }
 
     /**
@@ -149,5 +181,7 @@ public class BaseApplication extends Application {
          SharedPreferences sPreferences = getSharedPreferences("first", Context.MODE_PRIVATE);
          return  sPreferences.getString("FIRST_INSTALL","");
      }
+
+
 
 }

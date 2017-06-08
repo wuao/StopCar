@@ -16,9 +16,13 @@ import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
+import com.sanxiongdi.stopcar.entity.Wallet;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.presenter.UserInfoSetingPresenter;
+import com.sanxiongdi.stopcar.presenter.WalletPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IUserInfoSeting;
+import com.sanxiongdi.stopcar.presenter.view.Iwallet;
+import com.sanxiongdi.stopcar.uitls.StringUtils;
 import com.sanxiongdi.stopcar.view.PypPopView;
 
 import java.util.List;
@@ -29,13 +33,15 @@ import static com.sanxiongdi.stopcar.base.BaseApplication.context;
  * Created by wuaomall@gmail.com on 2017/6/1.
  */
 
-public class PayMyWalletActivity extends BaseActivity implements View.OnClickListener ,IUserInfoSeting{
+public class PayMyWalletActivity extends BaseActivity implements View.OnClickListener ,IUserInfoSeting,Iwallet,PypPopView.OnBackGetBranch{
 
     private TextView my_yue,edit_uitl_save;
     private Button  btn;
     private PypPopView pypPopView;
     private ImageView imageView;
     private UserInfoSetingPresenter userInfoSetingPresenter;
+    private WalletPresenter walletPresenter;
+    private String branch;
 
 
 
@@ -45,7 +51,9 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.wallet_main_view);
         pypPopView=new PypPopView(this);
         userInfoSetingPresenter=new UserInfoSetingPresenter(this,this);
+        walletPresenter=new WalletPresenter(this,this);
         userInfoSetingPresenter.getUserByIdBalance(1);
+        pypPopView.setOnBackGetBranch(PayMyWalletActivity.this);
         findView();
 
 
@@ -149,21 +157,24 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getExtras().getString("pay_result");
                 if (result.equals("success")){
-
                     //支付成功就发送数据到钱包表
+                    Log.i("YYDD",branch);
+                    Wallet wallet=new Wallet();
+                    wallet.amount=branch;
+                    wallet.state="1";
+                    wallet.user_id="1";
+                    walletPresenter.createWallet(wallet);
 
-
-                    Toast.makeText(this,"支付成功",Toast.LENGTH_SHORT).show();
                 }else if (result.equals("fail")){
                     Log.i("PAY",data.getExtras().getString("error_msg").toString());
-                    Toast.makeText(this,"支付失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"充值失败",Toast.LENGTH_SHORT).show();
 
                 }else if (result.equals("cancel")){
-                    Toast.makeText(this,"支付取消",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"充值取消",Toast.LENGTH_SHORT).show();
 
 
                 }else if (result.equals("invalid")){
-                    Toast.makeText(this,"支付无效",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"充值无效",Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -176,9 +187,9 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
                  * "cancel"  - user canceld
                  * "invalid" - payment plugin not installed
                  */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-                showMsg(result, errorMsg, extraMsg);
+//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+//                showMsg(result, errorMsg, extraMsg);
             }
         }
     }
@@ -192,11 +203,40 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
         if (null !=msg2 && msg2.length() != 0) {
             str += "\n" + msg2;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(str);
         builder.setTitle("提示");
         builder.setPositiveButton("OK", null);
         builder.create().show();
     }
 
+
+    @Override
+    public void createWallet(WrapperEntity list) {
+
+        if (!StringUtils.checkNull(list.result)){
+            Toast.makeText(context,"充值成功",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void Walletfaile(boolean isRequest, int code, String msg) {
+        if (code == -1) {
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void createTransaction(WrapperEntity list) {
+        if (!StringUtils.checkNull(list.result)){
+            Toast.makeText(context,"支付成功",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Override
+    public void getBranch(String branch) {
+        this.branch=branch;
+    }
 }

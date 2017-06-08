@@ -45,6 +45,7 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
     private EditText my_edit_wallet;
     private static String YOUR_URL ="http://218.244.151.190/demo/charge";
     public static final String CHARGE_URL = YOUR_URL;
+    public  OnBackGetBranch onBackGetBranch=null;
 
     /**
      * 微信支付渠道
@@ -115,17 +116,24 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
                 //  new PaymentTask().execute(new PaymentRequest(CHANNEL_UPACP, amount));
                 Toast.makeText(context,"请输入金额",Toast.LENGTH_SHORT).show();
             }else {
+                if (onBackGetBranch!=null){
+                    onBackGetBranch.getBranch(my_edit_wallet.getText().toString().trim());
+                }
                 new PaymentTask().execute(new PaymentRequest(CHANNEL_WECHAT, amount));
 
+                dismiss();
             }
 
         }else  if (v == zhifubao_pay){
             if (StringUtils.checkNull(my_edit_wallet.getText().toString().trim())){
                 Toast.makeText(context,"请输入金额",Toast.LENGTH_SHORT).show();
             }else {
+                if (onBackGetBranch!=null){
+                    onBackGetBranch.getBranch(my_edit_wallet.getText().toString().trim());
+                }
                 new PaymentTask().execute(new PaymentRequest(CHANNEL_ALIPAY, amount));
+                dismiss();
             }
-
 
         }else if (v ==img_close ){
 
@@ -233,6 +241,16 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
             this.channel = channel;
             this.amount = amount;
         }
+    }
+
+
+    public  interface   OnBackGetBranch{
+
+        void getBranch(String branch);
+    }
+
+    public void setOnBackGetBranch(OnBackGetBranch onBackGetBranch) {
+        this.onBackGetBranch = onBackGetBranch;
     }
 }
 

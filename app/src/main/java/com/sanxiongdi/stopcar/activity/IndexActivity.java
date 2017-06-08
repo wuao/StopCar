@@ -21,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.tts.client.SpeechSynthesizer;
+import com.brtbeacon.sdk.BRTBeacon;
+import com.brtbeacon.sdk.BRTBeaconManager;
+import com.brtbeacon.sdk.BRTThrowable;
+import com.brtbeacon.sdk.callback.BRTBeaconManagerListener;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.entity.Balance;
@@ -87,6 +91,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     private List<String> randomIds;
     private UserInfoEntity userInfoEntity;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.index_main);
@@ -98,7 +103,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         modifyOrderPresenter = new ModifyOrderPresenter(this, this);
         userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
         presenter.getRandomId();
-
         setvesion();
 
     }
@@ -124,7 +128,37 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 
         controller.addTabItemClickListener(listener);
 
+        BRTBeaconManagerListener beaconManagerListener =new BRTBeaconManagerListener() {
+            @Override
+            public void onUpdateBeacon(ArrayList<BRTBeacon> arrayList) {
 
+            }
+
+            @Override
+            public void onNewBeacon(BRTBeacon brtBeacon) {
+
+                if (brtBeacon.getMacAddress().equals("000000000001")){
+                    // 进入 MacAddress 为"000000000001 的Beacon
+                    //弹出框提示 如果有通知就不在提醒
+
+
+
+                }
+            }
+
+            @Override
+            public void onGoneBeacon(BRTBeacon brtBeacon) {
+                if (brtBeacon.getApSsid().equals("000000000001")){
+                    // 离开 MacAddress 为"000000000001 的Beacon
+                }
+            }
+
+            @Override
+            public void onError(BRTThrowable brtThrowable) {
+
+            }
+        };
+        BRTBeaconManager.getInstance(this).setBRTBeaconManagerListener(beaconManagerListener);
     }
 
     @Override
@@ -216,18 +250,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     }
 
 
-    /**
-     * 启动Pupopwindow
-     */
-    public void startPupopwindow(final List<String> list) {
-        showPupopwindow();
-        pupopWindowUitls.initShareView(pupopview);
-        getInstance();
-        textView1.setText("用户名1");
-        textView2.setText("用户名2");
-        textView3.setText("用户名3");
-        textView4.setText("用户名4");
-    }
 
     //获取随机号
     @Override
@@ -442,7 +464,16 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
                     Toast.makeText(this, "权限获取成功", Toast.LENGTH_SHORT).show();
                 }
             }
+        }else if (requestCode==999){
+
         }
+
+
     }
+
+
+
+
+
 
 }
