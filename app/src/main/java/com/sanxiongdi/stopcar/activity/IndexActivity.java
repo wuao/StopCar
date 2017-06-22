@@ -2,6 +2,7 @@ package com.sanxiongdi.stopcar.activity;
 
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,12 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.tts.client.SpeechSynthesizer;
-import com.brtbeacon.sdk.BRTBeacon;
-import com.brtbeacon.sdk.BRTBeaconManager;
-import com.brtbeacon.sdk.BRTThrowable;
-import com.brtbeacon.sdk.callback.BRTBeaconManagerListener;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.base.BaseApplication;
 import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
@@ -53,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.majiajie.pagerbottomtabstrip.Controller;
 import me.majiajie.pagerbottomtabstrip.PagerBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.TabItemBuilder;
@@ -90,6 +89,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     private UserInfoSetingPresenter userInfoSetingPresenter;
     private List<String> randomIds;
     private UserInfoEntity userInfoEntity;
+    private NotificationManager mNotificationManager;
 
 
     @Override
@@ -97,17 +97,15 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         setContentView(R.layout.index_main);
         super.onCreate(savedInstanceState);
         findView();
+        BaseApplication.getInstance().getBRTBeaconManager().startService();
         presenter = new GetRandomIdPresenter(this, this);
         createAccountPresenter = new CreateAccountPresenter(this, this);
         orderPresenter = new CreateOrderPresenter(this, this);
         modifyOrderPresenter = new ModifyOrderPresenter(this, this);
         userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
         presenter.getRandomId();
-        setvesion();
-
+         setvesion();
     }
-
-
     @Override
     protected void findView() {
         page_botton_tavlayout = (PagerBottomTabLayout) findViewById(R.id.tab_page);
@@ -125,40 +123,31 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
                 .addTabItem(R.drawable.seting, "设置", testColors[3])
                 .setMode(TabLayoutMode.HIDE_TEXT | TabLayoutMode.CHANGE_BACKGROUND_COLOR)
                 .build();
-
         controller.addTabItemClickListener(listener);
+        if (getIntent().getStringExtra("NotificationManager")!=null){
+            if (getIntent().getStringExtra("NotificationManager").equals("true")){
+                //跳转成功 就设置为0
+                new SharedPreferenceUtils().setIntDataIntoSP("NotificationManager","NotificationManager",0);
+                //弹出对话框 创建订单
+                SweetAlertDialog pDialog =new SweetAlertDialog(BaseApplication.mContext, SweetAlertDialog.WARNING_TYPE);
+                pDialog.setTitleText("是否停车")
+                        .setCancelText("取消")
+                        .setConfirmText("确认")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(final SweetAlertDialog sDialog) {
+                                // 创建订单 清楚当前adpter  获取当前数据  刷新界面
+                                sDialog.cancel();
 
-        BRTBeaconManagerListener beaconManagerListener =new BRTBeaconManagerListener() {
-            @Override
-            public void onUpdateBeacon(ArrayList<BRTBeacon> arrayList) {
-
+                            }
+                        }).show();
             }
-
-            @Override
-            public void onNewBeacon(BRTBeacon brtBeacon) {
-
-                if (brtBeacon.getMacAddress().equals("000000000001")){
-                    // 进入 MacAddress 为"000000000001 的Beacon
-                    //弹出框提示 如果有通知就不在提醒
+        }
 
 
 
-                }
-            }
 
-            @Override
-            public void onGoneBeacon(BRTBeacon brtBeacon) {
-                if (brtBeacon.getApSsid().equals("000000000001")){
-                    // 离开 MacAddress 为"000000000001 的Beacon
-                }
-            }
 
-            @Override
-            public void onError(BRTThrowable brtThrowable) {
-
-            }
-        };
-        BRTBeaconManager.getInstance(this).setBRTBeaconManagerListener(beaconManagerListener);
     }
 
     @Override
@@ -470,8 +459,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 
 
     }
-
-
 
 
 

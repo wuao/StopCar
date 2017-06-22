@@ -48,6 +48,11 @@ public interface ApiService {
     @GET("api/rest")
     Observable<WrapperEntity<List<QueryOrderEntity>>> getQueryOrder(@Query("args") String args);
 
+    //根据订单name 查询订单详情
+    @GET("api/rest")
+    Observable<WrapperEntity<List<QueryOrderEntity>>> getOrderByNmae(@Query("args") String args);
+
+
     //更新用户信息
     @FormUrlEncoded
     @POST("api/rest")

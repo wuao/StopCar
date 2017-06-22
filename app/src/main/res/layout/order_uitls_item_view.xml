@@ -70,58 +70,59 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:background="#FFF8F4"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:background="#FFF8F4"-->
+        <!--android:orientation="horizontal">-->
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
+        <!--<View-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="0.5"/>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="0.5">-->
 
-            <Button
-                android:id="@+id/cancle_btn_order"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_uitls_shape"
-                android:text="取   消"
-                android:layout_marginTop="2dp"
-                android:textSize="14sp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
+            <!--<Button-->
+                <!--android:id="@+id/cancle_btn_order"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/button_uitls_shape"-->
+                <!--android:text="取   消"-->
+                <!---->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:textSize="14sp"/>-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="0.5">-->
 
-            <Button
-                android:id="@+id/authorize_btn_order"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_uitls_shape"
-                android:text="授   权"
-                android:layout_marginTop="2dp"
-                android:textSize="14sp"/>
-        </LinearLayout>
+            <!--<Button-->
+                <!--android:id="@+id/authorize_btn_order"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/button_uitls_shape"-->
+                <!--android:text="授   权"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:textSize="14sp"/>-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-            <Button
-                android:id="@+id/see_btn_order"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_uitls_shape"
-                android:text="查   看"
-                android:textSize="14sp"/>
-        </LinearLayout>
-    </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="0.5">-->
+            <!--<Button-->
+                <!--android:id="@+id/see_btn_order"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/button_uitls_shape"-->
+                <!--android:text="查   看"-->
+                <!--android:textSize="14sp"/>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
     <View
     android:background="@android:color/black"

@@ -48,9 +48,7 @@ public class SearchRecylerHolder extends BaseRecyclerViewHolder<String> {
         this.inc_order_number=(LinearLayout) view.findViewById(R.id.inc_order_number);
         this.inc_order_time=(LinearLayout) view.findViewById(R.id.inc_order_time);
         this.inc_order_money=(LinearLayout) view.findViewById(R.id.inc_order_money);
-        button1=(Button)view.findViewById(R.id.cancle_btn_order);
-        button2=(Button)view.findViewById(R.id.authorize_btn_order);
-        button3=(Button)view.findViewById(R.id.see_btn_order);
+
    }
 
 

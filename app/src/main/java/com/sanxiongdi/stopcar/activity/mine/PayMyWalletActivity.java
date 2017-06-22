@@ -55,8 +55,7 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
         userInfoSetingPresenter.getUserByIdBalance(1);
         pypPopView.setOnBackGetBranch(PayMyWalletActivity.this);
         findView();
-
-
+        setListeners();
     }
 
 
@@ -67,7 +66,7 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
         btn=(Button)findViewById(R.id.my_wallet_btn);
         my_yue=(TextView)findViewById(R.id.my_yue);
         edit_uitl_save.setVisibility(View.GONE);
-        setListeners();
+
     }
 
     @Override

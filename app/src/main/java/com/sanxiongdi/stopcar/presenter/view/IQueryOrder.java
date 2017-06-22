@@ -13,4 +13,13 @@ public interface IQueryOrder {
     void queryOrderSuccess(List<QueryOrderEntity> list);
 
     void queryOrderFailure(boolean isRequest, int code, String msg);
+
+
+
+    void queryOrderDetailsFailure(boolean isRequest, int code, String msg);
+
+    void queryOrderDetailsSuccess(List<QueryOrderEntity> list);
+
+
+
 }

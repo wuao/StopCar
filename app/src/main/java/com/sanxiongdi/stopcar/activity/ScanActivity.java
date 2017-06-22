@@ -2,6 +2,9 @@ package com.sanxiongdi.stopcar.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,7 +28,9 @@ import com.brtbeacon.sdk.BRTBeaconManager;
 import com.brtbeacon.sdk.BRTThrowable;
 import com.brtbeacon.sdk.callback.BRTBeaconManagerListener;
 import com.sanxiongdi.stopcar.R;
+import com.sanxiongdi.stopcar.base.BaseApplication;
 import com.sanxiongdi.stopcar.uitls.AppConfigUitls;
+import com.sanxiongdi.stopcar.uitls.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,6 +59,9 @@ public class ScanActivity extends AppCompatActivity  implements OnItemClickListe
     private ArrayAdapter<BRTBeacon> beaconAdapter = null;
     private BRTBeaconManager beaconManager = null;
     private int clickAction = 0;
+    private NotificationManager mNotificationManager;
+    private  SharedPreferenceUtils sharedPreferenceUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +69,8 @@ public class ScanActivity extends AppCompatActivity  implements OnItemClickListe
 
         clickAction = getIntent().getIntExtra(KEY_ACTION_TYPE, 0);
         listView = (ListView)findViewById(R.id.listView);
-
+        sharedPreferenceUtils=new SharedPreferenceUtils();
+        sharedPreferenceUtils.setIntDataIntoSP("NotificationManager","NotificationManager",0);
         beaconAdapter = new ArrayAdapter<BRTBeacon>(this, R.layout.item_device_info, android.R.id.text1, beaconList){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -75,14 +85,20 @@ public class ScanActivity extends AppCompatActivity  implements OnItemClickListe
 
                 BRTBeacon beacon = getItem(position);
                  if (beacon.getName()!=null||beacon.getBattery()!=0){
-                     String c=new String(beacon.getUserData());
-                     tvRssi.setText(String.valueOf(beacon.getRssi()));
-                     tvName.setText(String.valueOf(beacon.getName()));
-                     tvAddr.setText(beacon.getMacAddress());
-                     tvMajor.setText(String.valueOf(beacon.getDeviceMode()));
-                     tvMinor.setText(String.valueOf(beacon.getBattery()));
-                     tvUuid.setText(String.valueOf(AppConfigUitls.byteArrayToHexStr(beacon.getUserData())));
-                     beaconList2.add(beacon.getMacAddress());
+                     if (String.valueOf(AppConfigUitls.byteArrayToHexStr(beacon.getUserData())).equals("88888888")){
+                         showNotificaiton();
+                     }
+                         String c=new String(beacon.getUserData());
+                         tvRssi.setText(String.valueOf(beacon.getRssi()));
+                         tvName.setText(String.valueOf(beacon.getName()));
+                         tvAddr.setText(beacon.getMacAddress());
+                         tvMajor.setText(String.valueOf(beacon.getDeviceMode()));
+                         tvMinor.setText(String.valueOf(beacon.getBattery()));
+                         tvUuid.setText(String.valueOf(AppConfigUitls.byteArrayToHexStr(beacon.getUserData())));
+
+                         beaconList2.add(beacon.getMacAddress());
+
+
                  }
 
 
@@ -110,7 +126,8 @@ public class ScanActivity extends AppCompatActivity  implements OnItemClickListe
 
         beaconManager = BRTBeaconManager.getInstance(this);
 //        beaconManager.setBRTBeaconManagerListener(scanListener);
-        beaconManager.stopRanging();
+        beaconManager.startService();
+        beaconManager.startRanging();
         beaconManager.setBRTBeaconManagerListener(null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
         if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -119,9 +136,6 @@ public class ScanActivity extends AppCompatActivity  implements OnItemClickListe
         }else{
             checkBluetoothValid();
         }
-
-
-
     }
 
 
@@ -264,5 +278,42 @@ public class ScanActivity extends AppCompatActivity  implements OnItemClickListe
 
     }
 
+    /**
+     * 发送通知
+     */
+    public  void  showNotificaiton(){
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setContentTitle("您已进入自动停车场附件")//设置通知栏标题
+                .setContentText("是否需要停车")
+                .setTicker("新消息") //通知首次出现在通知栏，带上升动画效果的
+                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
+                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
+                .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+                .setSmallIcon(R.drawable.ic_launcher);//设置通知小ICON
+        mBuilder.setContentIntent(getDefalutIntent(2));
+
+          if (true){
+          //检查当前用户是存在进行中的订单 如果存在就不发送了
+
+        }else {
+              if (sharedPreferenceUtils.getIntValueFromSP("NotificationManager","NotificationManager")==0){
+                  //说明是第一次 可以发送
+                  mNotificationManager.notify(2, mBuilder.build());
+                  sharedPreferenceUtils.setIntDataIntoSP("NotificationManager","NotificationManager",1);
+          }
+      }
+
+    }
+
+    public PendingIntent getDefalutIntent(int flags){
+        Intent intent = new Intent(BaseApplication.mContext, IndexActivity.class);
+        intent.putExtra("NotificationManager","true");
+        PendingIntent pendingIntent= PendingIntent.getActivity(this, flags, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return pendingIntent;
+    }
 
 }

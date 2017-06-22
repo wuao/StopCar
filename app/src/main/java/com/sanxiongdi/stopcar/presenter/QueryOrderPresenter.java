@@ -36,7 +36,7 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
         maps = new HashMap<>();
     }
 
-    private void getRandomId(String state) {
+    public void getRandomId(String state) {
 
         put("method", "park.order.search_read");
         List<Object> lists = new ArrayList<>();
@@ -75,7 +75,7 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
         return offset;
     }
 
-    private void setData1() {
+    public void setData1() {
         put("method", "park.order.search_read");
         List<Object> lists = new ArrayList<>();
         List<String> list = new ArrayList<>();
@@ -99,7 +99,54 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
         put("kwargs", maps);
     }
 
+    /**
+     * 根据name  查询订单详情
+     * @param name
+     */
+    public  void  getOrderByNmae(String  name){
+        put("method", "park.order.search_read");
+        List<Object> lists = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
+        List<List<Object>> lists2 = new ArrayList<>();
+        list.add("name");
+        list.add("=");
+        list.add(name);
+        lists.add(list);
+        list = new ArrayList<>();
+        list.add("name");
+        list.add("car_order_number");
+        list.add("car_order_start_date");
+        list.add("car_order_user_id");
+        list.add("car_order_stop_date");
+        list.add("car_order_authorize_id");
+        list.add("car_order_state");
+        list.add("car_order_stop_state");
+        list.add("car_order_user_id");
+        list.add("car_order_id");
+        lists2.add(lists);
+        lists2.add(list);
+        put("args", lists2);
 
+        ApiExecutor.getInstance().getOrderByNmae(initGson().toJson(map1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<WrapperEntity<List<QueryOrderEntity>>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                    @Override
+                    public void onNext(WrapperEntity<List<QueryOrderEntity>> wrapperEntity) {
+                        if (wrapperEntity == null || wrapperEntity.state != 1) {
+                            view.queryOrderDetailsFailure(false, -1, "");
+                        } else
+                            view.queryOrderDetailsSuccess(wrapperEntity.result);
+                    }
+                });
+
+    }
     public void queryFinishOrder() {
         maps.put("limit", limit);
         maps.put("offset", offset = 0);
@@ -147,5 +194,11 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
         maps.put("offset", offset += 10);
         getRandomId(ORDER_STATE_AUTH);
     }
+
+
+
+
+
+
 
 }

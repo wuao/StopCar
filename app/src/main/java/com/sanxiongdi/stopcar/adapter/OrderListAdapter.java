@@ -1,7 +1,6 @@
 package com.sanxiongdi.stopcar.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.sanxiongdi.stopcar.R;
@@ -12,7 +11,6 @@ import com.sanxiongdi.stopcar.holder.AuthOrderHolder;
 import com.sanxiongdi.stopcar.holder.CancelOrderHolder;
 import com.sanxiongdi.stopcar.holder.FinishOrderHolder;
 import com.sanxiongdi.stopcar.holder.ProceedOrderHolder;
-import com.sanxiongdi.stopcar.holder.ProceedRecylerHolder;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 
 import java.util.List;
@@ -29,12 +27,15 @@ public class OrderListAdapter extends BaseAdapter<QueryOrderEntity> {
     private static final int CANCEL = 2;//取消
     private static final int AUTH = 3;//转移
 
+
     public OrderListAdapter(Context context, List<QueryOrderEntity> mDatas) {
         super(context, mDatas);
     }
 
     @Override
     public int getItemViewType(int position) {
+
+
         switch (data.get(position).car_order_state) {
             case QueryOrderPresenter.ORDER_STATE_FINISH:
                 return FINISH;
@@ -74,4 +75,6 @@ public class OrderListAdapter extends BaseAdapter<QueryOrderEntity> {
         }
         return holder;
     }
+
+
 }

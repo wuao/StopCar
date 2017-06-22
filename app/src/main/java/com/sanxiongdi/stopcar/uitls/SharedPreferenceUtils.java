@@ -39,7 +39,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setStringDataIntoSP(String spName, String keyStr,
                                            String valueStr) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().putString(keyStr, valueStr).commit();
 
@@ -57,7 +57,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setBooleanDataIntoSP(String spName, String keyStr,
                                             Boolean valueStr) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().putBoolean(keyStr, valueStr).commit();
 	}
@@ -74,7 +74,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setIntDataIntoSP(String spName, String keyStr,
                                         int valueStr) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().putInt(keyStr, valueStr).commit();
 	}
@@ -91,7 +91,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setFloatDataIntoSP(String spName, String keyStr,
                                           Float valueStr) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().putFloat(keyStr, valueStr).commit();
 	}
@@ -108,7 +108,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setLongDataIntoSP(String spName, String keyStr,
                                          Long valueStr) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().putLong(keyStr, valueStr).commit();
 	}
@@ -125,7 +125,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setStringSetDataIntoSP(String spName, String keyStr,
                                               Set<String> valueStringSet) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().putStringSet(keyStr, valueStringSet);
 	}
@@ -141,7 +141,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static void setHashMapDataIntoSP(String spName,
 											HashMap<String, Object> keyValueMap) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		Editor editor = sp.edit();
 		if (keyValueMap != null && !keyValueMap.isEmpty()) {
@@ -192,7 +192,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static String getStringValueFromSP(String spName, String keyStr,
                                               String defaultValue) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.getString(keyStr, defaultValue);
 	}
@@ -223,7 +223,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static Float getFloatValueFromSP(String spName, String keyStr,
                                             Float defaultValue) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.getFloat(keyStr, defaultValue);
 	}
@@ -254,7 +254,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static int getIntValueFromSP(String spName, String keyStr,
                                         int defaultValue) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.getInt(keyStr, defaultValue);
 	}
@@ -285,7 +285,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static boolean getBooleanValueFromSP(String spName, String keyStr,
                                                 Boolean defaultValue) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.getBoolean(keyStr, defaultValue);
 	}
@@ -316,7 +316,7 @@ public class SharedPreferenceUtils {
 	 */
 	public static Long getLongValueFromSP(String spName, String keyStr,
                                           Long defaultValue) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.getLong(keyStr, defaultValue);
 	}
@@ -333,7 +333,7 @@ public class SharedPreferenceUtils {
 	public static Set<String> getStringSetValueFromSP(String spName,
                                                       String keyStr) {
 		Set<String> sets = new HashSet<String>();
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sets = sp.getStringSet(keyStr, null);
 		return sets;
@@ -351,7 +351,7 @@ public class SharedPreferenceUtils {
 	public static HashMap<String, Object> getHashMapValuesFromSP(String spName,
                                                                  HashMap<String, Object> keyValueMap) {
 		HashMap<String, Object> values = new HashMap<String, Object>();
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		if (keyValueMap != null && !keyValueMap.isEmpty()) {
 			Set<String> keySet = keyValueMap.keySet();
@@ -383,7 +383,7 @@ public class SharedPreferenceUtils {
 	 * @return
 	 */
 	public static Map<String, ?> getAllFromSP(String spName) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.getAll();
 	}
@@ -398,7 +398,7 @@ public class SharedPreferenceUtils {
 	 * @return
 	 */
 	public static boolean hasKeyInSP(String spName, String key) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		return sp.contains(key);
 	}
@@ -412,7 +412,7 @@ public class SharedPreferenceUtils {
 	 *            欲删除的缓存中的key值
 	 */
 	public static void deleteValueInSP(String spName, String key) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		if (sp.contains(key)) {
 			sp.edit().remove(key).commit();
@@ -426,7 +426,7 @@ public class SharedPreferenceUtils {
 	 *            缓存的名字
 	 */
 	public static void deleteAllInSP(String spName) {
-		SharedPreferences sp = BaseApplication.application
+		SharedPreferences sp = BaseApplication.mContext
 				.getSharedPreferences(spName, MODE_PRIVATE);
 		sp.edit().clear().commit();
 	}

@@ -122,6 +122,11 @@
             android:enabled="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <!--  问题反馈  -->
+        <activity
+            android:name="com.sanxiongdi.stopcar.activity.order.OrderDetailsActivity"
+            android:enabled="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 
         <!--    -->
@@ -162,6 +167,9 @@
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"/>
 
+
+
+        <service android:name=".service.BrtBeaconService"/>
 
     </application>
 

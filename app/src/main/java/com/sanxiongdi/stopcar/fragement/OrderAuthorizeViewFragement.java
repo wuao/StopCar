@@ -6,21 +6,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.sanxiongdi.stopcar.R;
-import com.sanxiongdi.stopcar.adapter.CancelRecyclerAdapter;
 import com.sanxiongdi.stopcar.adapter.OrderListAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
-import com.sanxiongdi.stopcar.uitls.RootLayout;
 import com.sanxiongdi.stopcar.uitls.recyclerview.OnLoadListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -117,5 +112,14 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
                 layout_swipe_refresh.setRefreshing(false);
             }
         });
+    }
+    @Override
+    public void queryOrderDetailsFailure(boolean isRequest, int code, String msg) {
+
+    }
+
+    @Override
+    public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
+
     }
 }

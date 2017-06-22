@@ -32,12 +32,11 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
     private TextView tvNumValue;
 
     private QueryOrderEntity bean;
-
+    public  GetOrderNumber getOrderNumber=null;
     public ProceedOrderHolder(View itemView) {
         super(itemView);
         init(itemView);
     }
-
 
     /**
      * 初始化
@@ -51,9 +50,9 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
         this.inc_order_number = (LinearLayout) view.findViewById(R.id.inc_order_number);
         this.inc_order_time = (LinearLayout) view.findViewById(R.id.inc_order_time);
         this.inc_order_money = (LinearLayout) view.findViewById(R.id.inc_order_money);
-        button1 = (Button) view.findViewById(R.id.cancle_btn_order);
-        button2 = (Button) view.findViewById(R.id.authorize_btn_order);
-        button3 = (Button) view.findViewById(R.id.see_btn_order);
+//        button1 = (Button) view.findViewById(R.id.cancle_btn_order);
+//        button2 = (Button) view.findViewById(R.id.authorize_btn_order);
+//        button3 = (Button) view.findViewById(R.id.see_btn_order);
         tvNumValue = (TextView) inc_order_number.getChildAt(0);
         tvNumName = (TextView) inc_order_number.getChildAt(1);
 
@@ -65,6 +64,9 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
     @Override
     public void onBindViewHolder(final int position, List<QueryOrderEntity> mData) {
         bean = mData.get(position);
+//        if (getOrderNumber!=null){
+//            getOrderNumber.GetOrderNumber(bean.name);
+//        }
         user_info_name.setText(bean.display_name);
         user_info_order_time.setText(bean.car_order_start_date);
         tvNumValue.setText(bean.name);
@@ -83,5 +85,18 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
                 order_info_proceed.setText("转移");
                 break;
         }
+    }
+
+
+
+    public  interface  GetOrderNumber{
+
+        void GetOrderNumber(String name);
+
+    }
+
+
+    public void setGetOrderNumber(GetOrderNumber getOrderNumber) {
+        this.getOrderNumber = getOrderNumber;
     }
 }
