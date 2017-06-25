@@ -181,15 +181,6 @@ public class BaseApplication extends Application {
 //                 showNotificaiton();
              }
             }
-//
-  //进入广播为88888888 的停车场附件78:4F:43:56:FC:B3
-//                new Handler().post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showNotificaiton();
-//                    }
-//                });
-//
         }
 
 
@@ -248,6 +239,9 @@ public class BaseApplication extends Application {
         PendingIntent pendingIntent= PendingIntent.getActivity(this, flags, new Intent(this,IndexActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
     }
+
+
+
 
 
 

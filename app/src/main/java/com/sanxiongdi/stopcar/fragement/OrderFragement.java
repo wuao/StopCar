@@ -57,7 +57,6 @@ public class OrderFragement extends BaseFrament{
     @Override
     public void  onClick(View view){
 
-
     }
 
     protected void initView() {
@@ -73,6 +72,7 @@ public class OrderFragement extends BaseFrament{
     }
     @Override
     protected void onsetListener() {
+        tableLayout.setOnClickListener(this);
 
     }
     @Override

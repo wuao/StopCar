@@ -34,8 +34,6 @@ public class OrderListAdapter extends BaseAdapter<QueryOrderEntity> {
 
     @Override
     public int getItemViewType(int position) {
-
-
         switch (data.get(position).car_order_state) {
             case QueryOrderPresenter.ORDER_STATE_FINISH:
                 return FINISH;

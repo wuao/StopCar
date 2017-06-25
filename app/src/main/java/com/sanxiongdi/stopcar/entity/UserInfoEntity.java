@@ -20,4 +20,5 @@ public class UserInfoEntity extends BaseEntity {
     public  String car_user_online;//是否在线 0  不在线 1在线 非必需
     public  String car_user_vip_out_date;//月卡到期时间 内部员工不需要收费 所以在写逻辑的时候需要注意
     public  String balance;//账户余额
+    public   int id;//用户id
 }

@@ -32,6 +32,10 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         maps = new HashMap<>();
     }
 
+    /**
+     * 更加当前用户id 查询当前信息
+     * @param id
+     */
     public void queryuserinfo(int id) {
         put("method", "res.users.search_read");
         List<Object> lists = new ArrayList<>();
@@ -54,6 +58,7 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         list.add("car_user_online");
         list.add("car_user_vip_out_date");
         list.add("balance");
+        list.add("id");
         lists2.add(lists);
         lists2.add(list);
         put("args", lists2);

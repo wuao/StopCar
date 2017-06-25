@@ -1,6 +1,7 @@
 package com.sanxiongdi.stopcar.fragement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.sanxiongdi.stopcar.R;
+import com.sanxiongdi.stopcar.activity.order.OrderDetailsActivity;
 import com.sanxiongdi.stopcar.adapter.OrderListAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
+import com.sanxiongdi.stopcar.holder.ItemClickSupport;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.uitls.recyclerview.OnLoadListener;
@@ -49,13 +52,31 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
     @Override
     protected void initDate(Bundle mbundle) {
         adapter = new OrderListAdapter(mContext, null);
-        mRecyclerView.setAdapter(adapter);
         presenter = new QueryOrderPresenter(mContext, this);
         presenter.queryCancelOrder();
     }
 
     @Override
     protected void onsetListener() {
+
+        ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                //跳转到详情页面
+                Intent intent=new Intent();
+                intent.putExtra("ordername",adapter.getData().get(position).name);
+                intent.setClass(getContext(), OrderDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
+        ItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int position) {
+                //                Toast.makeText(mContext, "support long click name:" + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
         mRecyclerView.addOnScrollListener(new OnLoadListener(llm) {
             @Override
             public void onLoadMore(int currentPage) {
@@ -122,6 +143,8 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
 
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
-
+        adapter.setData(list);
+        mRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -23,3 +23,27 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn com.alipay.**
+-keep class com.alipay.** {*;}
+
+-dontwarn  com.ta.utdid2.**
+-keep class com.ta.utdid2.** {*;}
+
+-dontwarn  com.ut.device.**
+-keep class com.ut.device.** {*;}
+
+-dontwarn  com.tencent.**
+-keep class com.tencent.** {*;}
+
+-dontwarn  com.unionpay.**
+-keep class com.unionpay.** {*;}
+
+-dontwarn com.pingplusplus.**
+-keep class com.pingplusplus.** {*;}
+
+-dontwarn com.baidu.**
+-keep class com.baidu.** {*;}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
