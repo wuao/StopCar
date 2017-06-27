@@ -15,6 +15,7 @@ import com.sanxiongdi.stopcar.adapter.OrderListAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.holder.ItemClickSupport;
+import com.sanxiongdi.stopcar.holder.ProceedOrderHolder;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.uitls.recyclerview.OnLoadListener;
@@ -28,37 +29,63 @@ import java.util.List;
  */
 
 public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder {
-
     private Context mContext;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout layout_swipe_refresh;
     private OrderListAdapter adapter;
     private QueryOrderPresenter presenter;
     private LinearLayoutManager llm;
-
+    private String ordername;
+    private ProceedOrderHolder proceedOrderHolder;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+
     }
+
+
+
 
     @Override
     protected int setLayoutResouceId() {
-
-        return R.layout.order_cancel_view;
-
+        return R.layout.order_proceed_view;
     }
 
     @Override
     protected void initDate(Bundle mbundle) {
-        adapter = new OrderListAdapter(mContext, null);
         presenter = new QueryOrderPresenter(mContext, this);
+        adapter = new OrderListAdapter(mContext, null);
+        mRecyclerView.setAdapter(adapter);
         presenter.queryCancelOrder();
-    }
+        //        proceedOrderHolder =new ProceedOrderHolder(mrootView);
+        //        proceedOrderHolder.setGetOrderNumber(this);
 
+    }
+    @Override
+    protected void initView() {
+        llm = new LinearLayoutManager(getContext());
+        mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.proceed_recycler_view);
+        layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_swipe_refresh);
+        mRecyclerView.setLayoutManager(llm);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //            mRecyclerView.setBackgroundResource(R.drawable.bitmap_hot_1);
+        layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
+        layout_swipe_refresh.setDistanceToTriggerSync(20);
+        layout_swipe_refresh.setColorSchemeResources(android.R.color.holo_red_light,
+                android.R.color.holo_blue_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
+        layout_swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.queryCancelOrder();
+
+            }
+        });
+    }
     @Override
     protected void onsetListener() {
-
         ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
@@ -76,7 +103,6 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
                 return false;
             }
         });
-
         mRecyclerView.addOnScrollListener(new OnLoadListener(llm) {
             @Override
             public void onLoadMore(int currentPage) {
@@ -84,32 +110,9 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
             }
         });
     }
-
     @Override
     public void onClick(View view) {
 
-
-    }
-
-    @Override
-    protected void initView() {
-        llm = new LinearLayoutManager(getContext());
-        mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.cancle_recycler_view);
-        layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_cancel_swipe_refresh);
-        mRecyclerView.setLayoutManager(llm);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
-        layout_swipe_refresh.setDistanceToTriggerSync(20);
-        layout_swipe_refresh.setColorSchemeResources(android.R.color.holo_red_light,
-                android.R.color.holo_blue_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
-        layout_swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.queryCancelOrder();
-            }
-        });
     }
 
     @Override
@@ -119,6 +122,12 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
         }
         adapter.getData().addAll(list);
         adapter.notifyDataSetChanged();
+
+        //        Animator spruceAnimator = new Spruce
+        //                .SpruceBuilder(mRecyclerView)
+        //                .sortWith(new LinearSort(/*interObjectDelay=*/100L, /*reversed=*/false, LinearSort.Direction.TOP_TO_BOTTOM))
+        //                .animateWith(new Animator[] {DefaultAnimations.shrinkAnimator(mRecyclerView, /*duration=*/800)})
+        //                .start();
         layout_swipe_refresh.post(new Runnable() {
             @Override
             public void run() {
@@ -136,6 +145,9 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
             }
         });
     }
+
+
+
     @Override
     public void queryOrderDetailsFailure(boolean isRequest, int code, String msg) {
 
@@ -143,8 +155,6 @@ public class OrderCancelViewFragement extends BaseFrament implements IQueryOrder
 
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
-        adapter.setData(list);
-        mRecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
     }
 }

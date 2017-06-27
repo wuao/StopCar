@@ -51,16 +51,11 @@ public class CancelOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity> 
         this.inc_order_number = (LinearLayout) view.findViewById(R.id.inc_order_number);
         this.inc_order_time = (LinearLayout) view.findViewById(R.id.inc_order_time);
         this.inc_order_money = (LinearLayout) view.findViewById(R.id.inc_order_money);
-//        button1 = (Button) view.findViewById(R.id.cancle_btn_order);
-//        button2 = (Button) view.findViewById(R.id.authorize_btn_order);
-//        button3 = (Button) view.findViewById(R.id.see_btn_order);
         tvNumValue = (TextView) inc_order_number.getChildAt(0);
         tvNumName = (TextView) inc_order_number.getChildAt(1);
 
         inc_order_time.setVisibility(View.INVISIBLE);
         inc_order_money.setVisibility(View.INVISIBLE);
-        button1.setVisibility(View.INVISIBLE);
-        button2.setVisibility(View.INVISIBLE);
     }
 
 
@@ -71,7 +66,7 @@ public class CancelOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity> 
         user_info_order_time.setText(bean.car_order_start_date);
         tvNumValue.setText(bean.name);
 
-        switch (bean.car_order_state) {
+        switch (bean.car_order_state){
             case "0":
                 order_info_proceed.setText("完成状态");
                 break;

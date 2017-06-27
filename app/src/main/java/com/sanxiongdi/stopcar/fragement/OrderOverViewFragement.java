@@ -50,7 +50,13 @@ public class OrderOverViewFragement extends BaseFrament implements IQueryOrder {
     protected void initDate(Bundle mbundle) {
         adapter = new OrderListAdapter(mContext, null);
         presenter = new QueryOrderPresenter(mContext, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         presenter.queryFinishOrder();
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -104,8 +110,6 @@ public class OrderOverViewFragement extends BaseFrament implements IQueryOrder {
             public void onLoadMore(int currentPage) {
                 presenter.queryFinishOrderMore();
 
-
-
             }
         });
     }
@@ -142,8 +146,9 @@ public class OrderOverViewFragement extends BaseFrament implements IQueryOrder {
 
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
-        adapter.setData(list);
-        mRecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        adapter.setData(list);
+//        mRecyclerView.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
+//        mRecyclerView.notify();
     }
 }

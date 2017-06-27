@@ -26,7 +26,7 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
     public static final String ORDER_STATE_FINISH = "0";//完成
     public static final String ORDER_STATE_PROCEED = "1";//未完成
     public static final String ORDER_STATE_CANCEL = "2";//取消
-    public static final String ORDER_STATE_AUTH = "3";//转移
+    public static final String ORDER_STATE_AUTH = "3";//授权
     private Map<String, Object> maps;
     private int limit = 10;
     private int offset = 0;
@@ -37,20 +37,30 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
     }
 
     public void getRandomId(String state) {
-
         put("method", "park.order.search_read");
         List<Object> lists = new ArrayList<>();
-        List<List<Object>> lists2 = new ArrayList<>();
         List<Object> list = new ArrayList<>();
-
+        List<List<Object>> lists2 = new ArrayList<>();
         list.add("car_order_state");
         list.add("=");
         list.add(state);
+        lists.add(list);
+        list = new ArrayList<>();
+        list.add("name");
+        list.add("car_order_number");
+        list.add("car_order_start_date");
+        list.add("car_order_user_id");
+        list.add("car_order_stop_date");
+        list.add("car_order_authorize_id");
+        list.add("car_order_state");
+        list.add("car_order_stop_state");
+        list.add("car_order_user_id");
+        list.add("car_order_id");
+        list.add("id");
+        lists2.add(lists);
         lists2.add(list);
-        lists.add(lists2);
-        put("args", map2);
+        put("args", lists2);
         put("kwargs", maps);
-
         ApiExecutor.getInstance().getQueryOrder(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -123,6 +133,7 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
         list.add("car_order_stop_state");
         list.add("car_order_user_id");
         list.add("car_order_id");
+        list.add("id");
         lists2.add(lists);
         lists2.add(list);
         put("args", lists2);

@@ -1,10 +1,10 @@
 package com.sanxiongdi.stopcar.holder;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sanxiongdi.StopContext;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseRecyclerViewHolder;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
@@ -24,12 +24,9 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
     public LinearLayout inc_order_number;    //订单编号
     public LinearLayout inc_order_time;      //订单创建时间
     public LinearLayout inc_order_money;     //金额
-    public Button button1;  //取消
-    public Button button2;  //授权
-    public Button button3;  //查看
 
-    private TextView tvNumName;
-    private TextView tvNumValue;
+    private TextView tvNumName,tvdata;
+    private TextView tvNumValue,tvdataname;
 
     private QueryOrderEntity bean;
     public  GetOrderNumber getOrderNumber=null;
@@ -50,27 +47,30 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
         this.inc_order_number = (LinearLayout) view.findViewById(R.id.inc_order_number);
         this.inc_order_time = (LinearLayout) view.findViewById(R.id.inc_order_time);
         this.inc_order_money = (LinearLayout) view.findViewById(R.id.inc_order_money);
-//        button1 = (Button) view.findViewById(R.id.cancle_btn_order);
-//        button2 = (Button) view.findViewById(R.id.authorize_btn_order);
-//        button3 = (Button) view.findViewById(R.id.see_btn_order);
         tvNumValue = (TextView) inc_order_number.getChildAt(0);
         tvNumName = (TextView) inc_order_number.getChildAt(1);
+        tvdata=(TextView) inc_order_time.getChildAt(0);
+        tvdataname=(TextView) inc_order_time.getChildAt(1);
 
-        inc_order_time.setVisibility(View.INVISIBLE);
+        inc_order_time.setVisibility(View.VISIBLE);
         inc_order_money.setVisibility(View.INVISIBLE);
+
     }
 
 
     @Override
     public void onBindViewHolder(final int position, List<QueryOrderEntity> mData) {
         bean = mData.get(position);
-//        if (getOrderNumber!=null){
-//            getOrderNumber.GetOrderNumber(bean.name);
-//        }
-        user_info_name.setText(bean.display_name);
-        user_info_order_time.setText(bean.car_order_start_date);
-        tvNumValue.setText(bean.name);
+        user_info_name.setText(StopContext.getInstance().getUserInfo().name);
+        tvdataname.setText("状态");
+        if ("false".equals(bean.car_order_start_date)){
+            user_info_order_time.setText("2017-09-12 12:21:20");
+            user_info_order_time.setVisibility(View.INVISIBLE);
+        }else {
+            user_info_order_time.setText(bean.car_order_start_date);
+        }
 
+        tvNumValue.setText(bean.name);
         switch (bean.car_order_state){
             case "0":
                 order_info_proceed.setText("完成状态");
@@ -85,6 +85,20 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
                 order_info_proceed.setText("转移");
                 break;
         }
+        switch (bean.car_order_stop_state){
+            case "0":
+                tvdata.setText("停放");
+                break;
+            case "1":
+                tvdata.setText("离开");
+                break;
+            case "2":
+                tvdata.setText("进场");
+                break;
+        }
+
+
+
     }
 
 

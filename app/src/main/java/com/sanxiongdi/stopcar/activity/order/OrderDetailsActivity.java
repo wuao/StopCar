@@ -39,7 +39,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 
 
     private LinearLayout lly_back, order_tool_bar;
-    private TextView edit_uitl_save,order_new_time;
+    private TextView edit_uitl_save,order_new_time,detalis_order_one,detalis_order;
     private Button zhifu_icon;
     private View view;
     private String ordername;
@@ -79,6 +79,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         order_name = (TextView) findViewById(R.id.order_name);
         order_new_time= (TextView) findViewById(R.id.order_new_time);
         zhifu_icon = (Button) findViewById(R.id.zhifu_icon);
+        detalis_order_one= (TextView) findViewById(R.id.detalis_order_one);
+        detalis_order= (TextView) findViewById(R.id.detalis_order);
         car_order_start_date = (TextView) findViewById(R.id.car_order_start_date);
         car_order_state = (TextView) findViewById(R.id.car_order_state);
         car_order_stop_state = (TextView) findViewById(R.id.car_order_stop_state);
@@ -174,8 +176,6 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
         if (list.size() != 0) {
-
-
             order_name.setText(list.get(0).name);
             car_order_start_date.setText(list.get(0).car_order_start_date);
 
@@ -194,22 +194,28 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 car_order_stop_state.setText("");
             }
             if (list.get(0).car_order_state.equals("0")) {
-                car_order_state.setText("完成");
                 zhifu_icon.setVisibility(View.GONE);
+                car_order_state.setText("完成");
+                detalis_order_one.setText("温馨提示:订单已经完成");
+                detalis_order.setText("已完成");
             } else if (list.get(0).car_order_state.equals("1")) {
                 zhifu_icon.setVisibility(View.VISIBLE);
                 car_order_state.setText("进行");
+                detalis_order_one.setText("温馨提示:订单进行中");
+                detalis_order.setText("进行中");
             } else if (list.get(0).car_order_state.equals("2")) {
                 zhifu_icon.setVisibility(View.GONE);
                 car_order_state.setText("取消");
+                detalis_order_one.setText("温馨提示:订单已取消");
+                detalis_order.setText("已取消");
             } else if (list.get(0).car_order_state.equals("3")) {
                 zhifu_icon.setVisibility(View.GONE);
                 car_order_state.setText("授权");
+                detalis_order_one.setText("温馨提示:订单已授权");
+                detalis_order.setText("已授权");
             } else if (list.get(0).car_order_state.equals("false")) {
                 car_order_state.setText("");
             }
-
-
         }
 
 
@@ -260,6 +266,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 
                 pDialog.cancel();
                 Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_SHORT).show();
+                finish();
                 vibrator.vibrate(200);
             }
         }

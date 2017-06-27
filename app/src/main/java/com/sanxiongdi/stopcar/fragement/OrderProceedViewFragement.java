@@ -121,6 +121,12 @@ public class OrderProceedViewFragement extends BaseFrament implements IQueryOrde
         }
         adapter.getData().addAll(list);
         adapter.notifyDataSetChanged();
+
+//        Animator spruceAnimator = new Spruce
+//                .SpruceBuilder(mRecyclerView)
+//                .sortWith(new LinearSort(/*interObjectDelay=*/100L, /*reversed=*/false, LinearSort.Direction.TOP_TO_BOTTOM))
+//                .animateWith(new Animator[] {DefaultAnimations.shrinkAnimator(mRecyclerView, /*duration=*/800)})
+//                .start();
         layout_swipe_refresh.post(new Runnable() {
             @Override
             public void run() {

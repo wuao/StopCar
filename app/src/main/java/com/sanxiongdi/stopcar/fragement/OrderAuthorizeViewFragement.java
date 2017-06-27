@@ -15,6 +15,7 @@ import com.sanxiongdi.stopcar.adapter.OrderListAdapter;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.holder.ItemClickSupport;
+import com.sanxiongdi.stopcar.holder.ProceedOrderHolder;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.uitls.recyclerview.OnLoadListener;
@@ -27,40 +28,47 @@ import java.util.List;
  */
 
 public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOrder {
-
     private Context mContext;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout layout_swipe_refresh;
     private OrderListAdapter adapter;
     private QueryOrderPresenter presenter;
     private LinearLayoutManager llm;
-
+    private String ordername;
+    private ProceedOrderHolder proceedOrderHolder;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+
     }
+
+
+
 
     @Override
     protected int setLayoutResouceId() {
-        return R.layout.order_authorize_view;
+        return R.layout.order_proceed_view;
     }
 
     @Override
     protected void initDate(Bundle mbundle) {
         presenter = new QueryOrderPresenter(mContext, this);
         adapter = new OrderListAdapter(mContext, null);
-
+        mRecyclerView.setAdapter(adapter);
         presenter.queryAuthOrder();
-    }
+        //        proceedOrderHolder =new ProceedOrderHolder(mrootView);
+        //        proceedOrderHolder.setGetOrderNumber(this);
 
+    }
     @Override
     protected void initView() {
         llm = new LinearLayoutManager(getContext());
-        mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.athorize_recycler_view);
-        layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_authorize_swipe_refresh);
+        mRecyclerView = (RecyclerView) mrootView.findViewById(R.id.proceed_recycler_view);
+        layout_swipe_refresh = (SwipeRefreshLayout) mrootView.findViewById(R.id.layout_swipe_refresh);
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        //            mRecyclerView.setBackgroundResource(R.drawable.bitmap_hot_1);
         layout_swipe_refresh.setProgressViewOffset(true, 0, 200);
         layout_swipe_refresh.setDistanceToTriggerSync(20);
         layout_swipe_refresh.setColorSchemeResources(android.R.color.holo_red_light,
@@ -71,10 +79,10 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
             @Override
             public void onRefresh() {
                 presenter.queryAuthOrder();
+
             }
         });
     }
-
     @Override
     protected void onsetListener() {
         ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
@@ -98,14 +106,11 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
             @Override
             public void onLoadMore(int currentPage) {
                 presenter.queryAuthOrderMore();
-
             }
         });
     }
-
     @Override
-    public void onClick(View v) {
-
+    public void onClick(View view) {
 
     }
 
@@ -116,13 +121,18 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
         }
         adapter.getData().addAll(list);
         adapter.notifyDataSetChanged();
+
+        //        Animator spruceAnimator = new Spruce
+        //                .SpruceBuilder(mRecyclerView)
+        //                .sortWith(new LinearSort(/*interObjectDelay=*/100L, /*reversed=*/false, LinearSort.Direction.TOP_TO_BOTTOM))
+        //                .animateWith(new Animator[] {DefaultAnimations.shrinkAnimator(mRecyclerView, /*duration=*/800)})
+        //                .start();
         layout_swipe_refresh.post(new Runnable() {
             @Override
             public void run() {
                 layout_swipe_refresh.setRefreshing(false);
             }
         });
-
     }
 
     @Override
@@ -134,6 +144,9 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
             }
         });
     }
+
+
+
     @Override
     public void queryOrderDetailsFailure(boolean isRequest, int code, String msg) {
 
@@ -141,8 +154,6 @@ public class OrderAuthorizeViewFragement extends BaseFrament implements IQueryOr
 
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
-        adapter.setData(list);
-        mRecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
     }
 }

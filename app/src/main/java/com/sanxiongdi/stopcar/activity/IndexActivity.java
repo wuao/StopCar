@@ -83,6 +83,7 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     }
     @Override
     protected void findView() {
+//        userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
         page_botton_tavlayout = (PagerBottomTabLayout) findViewById(R.id.tab_page);
         //用TabItemBuilder构建一个导航按钮
         TabItemBuilder tabItemBuilder = new TabItemBuilder(this).create()
@@ -222,8 +223,9 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     public void queryUserInfoSuccess(List<UserInfoEntity> list) {
         //查询到用户信息成功
         if (list.size() != 0) {
+            StopContext.getInstance().setUserInfo(GsonUtils.gsonString(list.get(0)));
             //将其转换成json 字符串 保存到偏好设置 使用 可转成对象在使用
-            SharedPreferenceUtils.setStringDataIntoSP("UserInfo", "UserInfo", GsonUtils.gsonString(list.get(0)));
+//            SharedPreferenceUtils.setStringDataIntoSP("UserInfo", "UserInfo", GsonUtils.gsonString(list.get(0)));
         }
 
     }
@@ -271,15 +273,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         startActivityForResult(intent, 123);
     }
 
-
-    private  void setuserinfo(){
-        String deviceId = PhoneUtils.getDeviceId(this).toString();
-        Log.i("AP", "" + deviceId);
-        if (!StringUtils.checkNull(deviceId)) {
-            userInfoSetingPresenter.querybyphoneuserinfo(Integer.valueOf(deviceId));
-
-        }
-    }
 
 
 

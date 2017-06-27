@@ -51,7 +51,6 @@ public class AuthOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity> {
         this.inc_order_number = (LinearLayout) view.findViewById(R.id.inc_order_number);
         this.inc_order_time = (LinearLayout) view.findViewById(R.id.inc_order_time);
         this.inc_order_money = (LinearLayout) view.findViewById(R.id.inc_order_money);
-
         tvNumValue = (TextView) inc_order_number.getChildAt(0);
         tvNumName = (TextView) inc_order_number.getChildAt(1);
 

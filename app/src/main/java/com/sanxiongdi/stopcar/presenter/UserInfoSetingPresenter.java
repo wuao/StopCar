@@ -170,13 +170,13 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
      * 根据设备号 查询是否存在用户
      * @param car_user_phone_id
      */
-    public void querybyphoneuserinfo(int car_user_phone_id) {
+    public void querybyphoneuserinfo(String car_user_phone_id) {
         put("method", "res.users.search_read");
         List<Object> lists = new ArrayList<>();
         List<Object> list = new ArrayList<>();
         List<List<Object>> lists2 = new ArrayList<>();
         list.add("car_user_phone_id");
-        list.add(":");
+        list.add("=");
         list.add(car_user_phone_id);
         lists.add(list);
         list = new ArrayList<>();

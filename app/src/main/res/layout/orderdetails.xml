@@ -21,18 +21,22 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/detalis_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2.5dp"
             android:text="进行中"
+            android:visibility="gone"
             android:textColor="#3c8df1"
             android:textSize="17sp"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/detalis_order_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2.5dp"
+            android:visibility="gone"
             android:text="温馨提示:订单正在进行中"
             android:textColor="#3c8df1"
             android:textSize="17sp"
@@ -240,6 +244,7 @@
 
     <Button
         android:id="@+id/zhifu_icon"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/defalutTitleColor"
