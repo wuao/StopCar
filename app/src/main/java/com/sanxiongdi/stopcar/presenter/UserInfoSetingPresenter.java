@@ -194,7 +194,7 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         lists2.add(lists);
         lists2.add(list);
         put("args", lists2);
-        ApiExecutor.getInstance().queryUser(initGson().toJson(map1))
+        ApiExecutor.getInstance().getUserByPhoneID(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WrapperEntity<List<UserInfoEntity>>>() {
@@ -210,9 +210,9 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
                     @Override
                     public void onNext(WrapperEntity<List<UserInfoEntity>> listWrapperEntity) {
                         if (listWrapperEntity == null || listWrapperEntity.state != 1) {
-                            view.queryUserInfoFailure(false, -1, "当前设备id查询失败,请检查网络！");
+                            view.queryByPhoneUserInfoFailure(false, -1, "当前设备id查询失败,请检查网络！");
                         } else
-                            view.queryUserInfoSuccess(listWrapperEntity.result);
+                            view.queryByPhoneUserInfoSuccess(listWrapperEntity.result);
                     }
                 });
     }

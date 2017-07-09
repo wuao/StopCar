@@ -73,17 +73,19 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.index_main);
         super.onCreate(savedInstanceState);
-        findView();
+
         BaseApplication.getInstance().getBRTBeaconManager().startService();
         presenter = new GetRandomIdPresenter(this, this);
         orderPresenter = new CreateOrderPresenter(this, this);
         modifyOrderPresenter = new ModifyOrderPresenter(this, this);
         userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
         presenter.getRandomId();
+        findView();
     }
     @Override
     protected void findView() {
-//        userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
+
+         userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
         page_botton_tavlayout = (PagerBottomTabLayout) findViewById(R.id.tab_page);
         //用TabItemBuilder构建一个导航按钮
         TabItemBuilder tabItemBuilder = new TabItemBuilder(this).create()
@@ -153,19 +155,19 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
             switch (index) {
                 case 0:
                     transaction.replace(R.id.frameLayout, new OrderFragement());
-                    transaction.commit();
+                    transaction.commitAllowingStateLoss();
                     break;
                 case 1:
                     transaction.replace(R.id.frameLayout, new SearchFragement());
-                    transaction.commit();
+                    transaction.commitAllowingStateLoss();
                     break;
                 case 2:
                     transaction.replace(R.id.frameLayout, new UserInfoFragement());
-                    transaction.commit();
+                    transaction.commitAllowingStateLoss();
                     break;
                 case 3:
                     transaction.replace(R.id.frameLayout, new SetingFragement());
-                    transaction.commit();
+                    transaction.commitAllowingStateLoss();
                     break;
             }
         }
@@ -230,6 +232,9 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
+
+
+
     @Override
     public void updataUserInfoSuccess(WrapperEntity list) {
     }
@@ -249,6 +254,10 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
+    @Override
+    public void queryByPhoneUserInfoFailure(boolean isRequest, int code, String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void creatUserInfoSuccess(WrapperEntity list) {

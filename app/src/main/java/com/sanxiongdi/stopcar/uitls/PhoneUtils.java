@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -84,13 +83,11 @@ public class PhoneUtils {
 
         TelephonyManager telephonyManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneImei = telephonyManager.getDeviceId();
-        if (!TextUtils.isEmpty(phoneImei)) {
-            // 如果存在，直接返回
-            return phoneImei;
-        } else {
-            return null;
+        String phoneImei = null;
+        if ( telephonyManager.getDeviceId()!=null){
+            phoneImei=telephonyManager.getDeviceId();
         }
+        return phoneImei;
     }
 
     /**

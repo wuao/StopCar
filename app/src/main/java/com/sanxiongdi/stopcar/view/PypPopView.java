@@ -78,7 +78,7 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
         this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setFocusable(true);
         this.setBackgroundDrawable(ContextCompat.getDrawable(context, R.color.transparent));
-        Wechat=(LinearLayout) view.findViewById(R.id.Wechat);
+//        Wechat=(LinearLayout) view.findViewById(R.id.Wechat);
         zhifubao_pay=(LinearLayout) view.findViewById(R.id.zhifubao_pay);
         img_close=(ImageView)view.findViewById(R.id.img_close);
         my_edit_wallet=(EditText)view.findViewById(R.id.my_edit_wallet);
@@ -89,7 +89,7 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
 
 
     public void initListener() {
-        Wechat.setOnClickListener(this);
+//        Wechat.setOnClickListener(this);
         zhifubao_pay.setOnClickListener(this);
         img_close.setOnClickListener(this);
     }

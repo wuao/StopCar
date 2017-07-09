@@ -7,7 +7,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.tts.client.SpeechError;
+import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.SpeechSynthesizerListener;
+import com.baidu.tts.client.SynthesizerTool;
+import com.baidu.tts.client.TtsMode;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
+import com.sanxiongdi.stopcar.base.BaseApplication;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
@@ -25,6 +33,11 @@ import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.presenter.view.Iwallet;
 import com.sanxiongdi.stopcar.uitls.StringUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -35,11 +48,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by wuaomall@gmail.com on 2017/6/21.
  */
 
-public class OrderDetailsActivity extends BaseActivity implements View.OnClickListener, IQueryOrder,Iwallet {
+public class OrderDetailsActivity extends BaseActivity implements View.OnClickListener, IQueryOrder, Iwallet, SpeechSynthesizerListener {
 
 
     private LinearLayout lly_back, order_tool_bar;
-    private TextView edit_uitl_save,order_new_time,detalis_order_one,detalis_order;
+    private TextView edit_uitl_save, order_new_time, detalis_order_one, detalis_order;
     private Button zhifu_icon;
     private View view;
     private String ordername;
@@ -48,13 +61,32 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private SensorManager sensorManager;
     private Vibrator vibrator;
     private ShakeListener shakeListener;
-    private  SweetAlertDialog pDialog;
-    private  WalletPresenter walletPresenter;
+    private SweetAlertDialog pDialog;
+    private WalletPresenter walletPresenter;
+    private String mSampleDirPath;
+    private static final String SAMPLE_DIR_NAME = "baiduTTS";
+    private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
+    private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
+    private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
+    private static final String LICENSE_FILE_NAME = "temp_license";
+    private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
+    private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
+    private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
+
+    private static final int PRINT = 0;
+    private static final int UI_CHANGE_INPUT_TEXT_SELECTION = 1;
+    private static final int UI_CHANGE_SYNTHES_TEXT_SELECTION = 2;
+    private static final String TAG = "MainActivity";
+
+    // 语音合成客户端
+    private SpeechSynthesizer mSpeechSynthesizer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.orderdetails);
+        initialEnv();
+        startTTS();
         orderPresenter = new QueryOrderPresenter(this, this);
         if (!StringUtils.checkNull(getIntent().getStringExtra("ordername"))) {
             ordername = getIntent().getStringExtra("ordername");
@@ -77,10 +109,10 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         lly_back = (LinearLayout) findViewById(R.id.order_tool_bar).findViewById(R.id.lly_back);
 
         order_name = (TextView) findViewById(R.id.order_name);
-        order_new_time= (TextView) findViewById(R.id.order_new_time);
+        order_new_time = (TextView) findViewById(R.id.order_new_time);
         zhifu_icon = (Button) findViewById(R.id.zhifu_icon);
-        detalis_order_one= (TextView) findViewById(R.id.detalis_order_one);
-        detalis_order= (TextView) findViewById(R.id.detalis_order);
+        detalis_order_one = (TextView) findViewById(R.id.detalis_order_one);
+        detalis_order = (TextView) findViewById(R.id.detalis_order);
         car_order_start_date = (TextView) findViewById(R.id.car_order_start_date);
         car_order_state = (TextView) findViewById(R.id.car_order_state);
         car_order_stop_state = (TextView) findViewById(R.id.car_order_stop_state);
@@ -132,8 +164,9 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         if (v == lly_back) {
             finish();
         } else if (v == zhifu_icon) {
-//            Toast.makeText(getApplicationContext(),"2222",Toast.LENGTH_SHORT).show();
-              pDialog =new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+            mSpeechSynthesizer.speak("落叶偏偏");
+            //            Toast.makeText(getApplicationContext(),"2222",Toast.LENGTH_SHORT).show();
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
             pDialog.setTitleText("是否支付")
                     .setContentText("支付20元,点击确认")
                     .setCancelText("取消")
@@ -142,14 +175,14 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                         @Override
                         public void onClick(final SweetAlertDialog sDialog) {
                             //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
-                            Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_SHORT).show();
-//                            Wallet wallet=new Wallet();
-//                            wallet.user_id= StopContext.getInstance().getUserInfo().id+"";
-//                            wallet.amount="20";
-//                            wallet.state="1";
-//                            walletPresenter.createTransaction(wallet);
+                            Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
+                            //                            Wallet wallet=new Wallet();
+                            //                            wallet.user_id= StopContext.getInstance().getUserInfo().id+"";
+                            //                            wallet.amount="20";
+                            //                            wallet.state="1";
+                            //                            walletPresenter.createTransaction(wallet);
                             finish();
-                            sDialog.cancel();
+                            sDialog.dismiss();
                         }
                     }).show();
 
@@ -263,9 +296,9 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             // 当加速度的差值大于指定的阈值，认为这是一个摇晃
             if (delta > shakeThreshold) {
                 //发送数据
-
-                pDialog.cancel();
-                Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_SHORT).show();
+                pDialog.dismiss();
+                startTTS();
+                Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
                 finish();
                 vibrator.vibrate(200);
             }
@@ -292,6 +325,162 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+    // 初始化语音合成客户端并启动
+    private void startTTS() {
+        // 获取语音合成对象实例
+        mSpeechSynthesizer = SpeechSynthesizer.getInstance();
+        // 设置context
+        this.mSpeechSynthesizer.setContext(BaseApplication.mContext);
+        // 设置语音合成状态监听器
+        this.mSpeechSynthesizer.setSpeechSynthesizerListener(this);
+        // 设置在线语音合成授权，需要填入从百度语音官网申请的api_key和secret_key
+        this.mSpeechSynthesizer.setApiKey("e8UM0BOkIxOqGBqbAGGHRkBP", "I5A4vchDNjs22GCrzv0anmuMs0llUY4b");
+        // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
+        this.mSpeechSynthesizer.setAppId("9818545");
+        //        // 设置语音合成文本模型文件
+//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/"
+//                + TEXT_MODEL_NAME);
+//        // 声学模型文件路径 (离线引擎使用)
+//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/"
+//                + SPEECH_FEMALE_MODEL_NAME);
+//        // 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
+//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"
+//                + LICENSE_FILE_NAME);
+        //        // 获取语音合成授权信息
+//        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0setContext");
+//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+        mSpeechSynthesizer.initTts(TtsMode.ONLINE);
+
+    }
+
+    public void onError(String arg0, SpeechError arg1) {
+        // 监听到出错，在此添加相关操作
+        Log.d("TAG","监听到出错");
+
+    }
+
+    public void onSpeechFinish(String arg0) {
+        // 监听到播放结束，在此添加相关操作
+        Log.d("TAG","播放结束");
+    }
+
+    public void onSpeechProgressChanged(String arg0, int arg1) {
+        // 监听到播放进度有变化，在此添加相关操作
+        Log.d("TAG","播放进度有变化");
+
+    }
+
+    public void onSpeechStart(String arg0) {
+        // 监听到合成并播放开始，在此添加相关操作
+        Log.d("TAG","合成并播放开始"+arg0);
+
+
+    }
+
+    public void onSynthesizeDataArrived(String arg0, byte[] arg1, int arg2) {
+        // 监听到有合成数据到达，在此添加相关操作
+        Log.d("TAG","有合成数据到达");
+    }
+
+    public void onSynthesizeFinish(String arg0) {
+        // 监听到合成结束，在此添加相关操作
+        Log.d("TAG","合成结束");
+
+
+    }
+
+    public void onSynthesizeStart(String arg0) {
+        // 监听到合成开始，在此添加相关操作
+        Log.d("TAG","合成开始"+arg0);
+    }
+
+    private void initialEnv() {
+        if (mSampleDirPath == null) {
+            String sdcardPath = Environment.getExternalStorageDirectory().toString();
+            mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
+        }
+        makeDir(mSampleDirPath);
+        copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+        copyFromAssetsToSdcard(false, LICENSE_FILE_NAME, mSampleDirPath + "/" + LICENSE_FILE_NAME);
+        copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/"
+                + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/"
+                + ENGLISH_SPEECH_MALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/"
+                + ENGLISH_TEXT_MODEL_NAME);
+    }
+    private void makeDir(String dirPath) {
+        File file = new File(dirPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+    /**
+     * 将工程需要的资源文件拷贝到SD卡中使用（授权文件为临时授权文件，请注册正式授权）
+     *
+     * @param isCover 是否覆盖已存在的目标文件
+     * @param source
+     * @param dest
+     */
+    private void copyFromAssetsToSdcard(boolean isCover, String source, String dest) {
+        File file = new File(dest);
+        if (isCover || (!isCover && !file.exists())) {
+            InputStream is = null;
+            FileOutputStream fos = null;
+            try {
+                is = getResources().getAssets().open(source);
+                String path = dest;
+                fos = new FileOutputStream(path);
+                byte[] buffer = new byte[1024];
+                int size = 0;
+                while ((size = is.read(buffer, 0, 1024)) >= 0) {
+                    fos.write(buffer, 0, size);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 打印引擎so库版本号及基本信息和model文件的基本信息
+     */
+    private void printEngineInfo() {
+        toPrint("EngineVersioin=" + SynthesizerTool.getEngineVersion());
+        toPrint("EngineInfo=" + SynthesizerTool.getEngineInfo());
+        String textModelInfo = SynthesizerTool.getModelInfo(mSampleDirPath + "/" + TEXT_MODEL_NAME);
+        toPrint("textModelInfo=" + textModelInfo);
+        String speechModelInfo = SynthesizerTool.getModelInfo(mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+        toPrint("speechModelInfo=" + speechModelInfo);
+    }
+    private void toPrint(String str) {
+//        Message msg = Message.obtain();
+//        msg.obj = str;
+//        this.mHandler.sendMessage(msg);
+
+        Toast.makeText(BaseApplication.mContext,str,Toast.LENGTH_SHORT).show();
+
+    }
 
 
 

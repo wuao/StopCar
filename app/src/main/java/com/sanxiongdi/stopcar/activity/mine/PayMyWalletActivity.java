@@ -238,4 +238,9 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
     public void getBranch(String branch) {
         this.branch=branch;
     }
+
+    @Override
+    public void queryByPhoneUserInfoFailure(boolean isRequest, int code, String msg) {
+
+    }
 }

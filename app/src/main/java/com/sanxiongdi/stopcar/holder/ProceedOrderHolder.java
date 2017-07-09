@@ -1,7 +1,7 @@
 package com.sanxiongdi.stopcar.holder;
 
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sanxiongdi.StopContext;
@@ -21,9 +21,9 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
     public TextView user_info_name;      //订单创建人
     public TextView user_info_order_time;// 订单创建时间
     public TextView order_info_proceed;  //是否在进行中
-    public LinearLayout inc_order_number;    //订单编号
-    public LinearLayout inc_order_time;      //订单创建时间
-    public LinearLayout inc_order_money;     //金额
+    public RelativeLayout inc_order_number;    //订单编号
+    public RelativeLayout inc_order_time;      //订单创建时间
+    public RelativeLayout inc_order_money;     //金额
 
     private TextView tvNumName,tvdata;
     private TextView tvNumValue,tvdataname;
@@ -44,13 +44,13 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
         this.user_info_name = (TextView) view.findViewById(R.id.user_info_name);
         this.user_info_order_time = (TextView) view.findViewById(R.id.user_info_order_time);
         this.order_info_proceed = (TextView) view.findViewById(R.id.order_info_proceed);
-        this.inc_order_number = (LinearLayout) view.findViewById(R.id.inc_order_number);
-        this.inc_order_time = (LinearLayout) view.findViewById(R.id.inc_order_time);
-        this.inc_order_money = (LinearLayout) view.findViewById(R.id.inc_order_money);
-        tvNumValue = (TextView) inc_order_number.getChildAt(0);
-        tvNumName = (TextView) inc_order_number.getChildAt(1);
-        tvdata=(TextView) inc_order_time.getChildAt(0);
-        tvdataname=(TextView) inc_order_time.getChildAt(1);
+        this.inc_order_number = (RelativeLayout) view.findViewById(R.id.inc_order_number);
+        this.inc_order_time = (RelativeLayout) view.findViewById(R.id.inc_order_time);
+        this.inc_order_money = (RelativeLayout) view.findViewById(R.id.inc_order_money);
+        tvNumValue = (TextView) inc_order_number.getChildAt(1);
+        tvNumName = (TextView) inc_order_number.getChildAt(0);
+        tvdata=(TextView) inc_order_time.getChildAt(1);
+        tvdataname=(TextView) inc_order_time.getChildAt(0);
 
         inc_order_time.setVisibility(View.VISIBLE);
         inc_order_money.setVisibility(View.INVISIBLE);
@@ -62,7 +62,7 @@ public class ProceedOrderHolder extends BaseRecyclerViewHolder<QueryOrderEntity>
     public void onBindViewHolder(final int position, List<QueryOrderEntity> mData) {
         bean = mData.get(position);
         user_info_name.setText(StopContext.getInstance().getUserInfo().name);
-        tvdataname.setText("状态");
+        tvdataname.setText("车辆状态");
         if ("false".equals(bean.car_order_start_date)){
             user_info_order_time.setText("2017-09-12 12:21:20");
             user_info_order_time.setVisibility(View.INVISIBLE);

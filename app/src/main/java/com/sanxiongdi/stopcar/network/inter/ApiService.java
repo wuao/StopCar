@@ -42,7 +42,9 @@ public interface ApiService {
     @POST("api/rest")
     Observable<WrapperEntity<List<Balance>>> getUserByIdBalance(@Field("args") String args);
 
-
+    //根据手机唯一设备号获取用户信息
+    @GET("api/rest")
+    Observable<WrapperEntity<List<UserInfoEntity>>>  getUserByPhoneID (@Query("args") String args);
 
     //订单查询
     @GET("api/rest")

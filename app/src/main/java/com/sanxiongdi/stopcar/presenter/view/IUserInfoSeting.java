@@ -16,6 +16,7 @@ public interface IUserInfoSeting {
     void queryUserInfoFailure(boolean isRequest, int code, String msg);
     void queryUserInfoSuccess(List<UserInfoEntity> list);
     void queryByPhoneUserInfoSuccess(List<UserInfoEntity> list);
+    void queryByPhoneUserInfoFailure(boolean isRequest, int code, String msg);
 
     void updataUserInfoSuccess(WrapperEntity list);
     void creatUserInfoSuccess(WrapperEntity list);

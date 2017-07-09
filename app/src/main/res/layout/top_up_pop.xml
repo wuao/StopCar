@@ -42,29 +42,29 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/Wechat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/Wechat"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
 
-                    <ImageView
-                        android:id="@+id/img_wechtmont"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/wechatnicefriend" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/img_wechtmont"-->
+                        <!--android:layout_width="60dp"-->
+                        <!--android:layout_height="60dp"-->
+                        <!--android:background="@drawable/wechatnicefriend" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/Wechat_Nice_Friend"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:layout_marginTop="5dp"/>
-                </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="@string/Wechat_Nice_Friend"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textSize="18sp"-->
+                        <!--android:layout_marginTop="5dp"/>-->
+                <!--</LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/zhifubao_pay"

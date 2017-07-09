@@ -265,4 +265,9 @@ public class UserMineSeting extends BaseActivity implements View.OnClickListener
     public void getUserByIdBalance(List<Balance> list) {
 
     }
+
+    @Override
+    public void queryByPhoneUserInfoFailure(boolean isRequest, int code, String msg) {
+
+    }
 }
