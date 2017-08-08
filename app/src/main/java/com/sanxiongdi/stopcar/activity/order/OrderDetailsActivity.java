@@ -22,6 +22,10 @@ import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.SynthesizerTool;
 import com.baidu.tts.client.TtsMode;
+import com.google.gson.Gson;
+import com.mt.sdk.ble.model.BLEBaseAction;
+import com.mt.sdk.ble.model.ErroCode;
+import com.mt.sdk.ble.model.WriteCharactAction;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.base.BaseApplication;
@@ -38,8 +42,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -100,6 +107,9 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         shakeListener = new ShakeListener();
         sensorManager.registerListener(shakeListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), sensorManager.SENSOR_DELAY_NORMAL);
+
+        isNotification(getIntent().getStringExtra("out"));
+
     }
 
     @Override
@@ -165,10 +175,9 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             finish();
         } else if (v == zhifu_icon) {
             mSpeechSynthesizer.speak("落叶偏偏");
-            //            Toast.makeText(getApplicationContext(),"2222",Toast.LENGTH_SHORT).show();
             pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
             pDialog.setTitleText("是否支付")
-                    .setContentText("支付20元,点击确认")
+                    .setContentText("支付20元,摇一摇或者点击确认支付")
                     .setCancelText("取消")
                     .setConfirmText("确认")
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -176,16 +185,26 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                         public void onClick(final SweetAlertDialog sDialog) {
                             //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
                             Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
-                            //                            Wallet wallet=new Wallet();
-                            //                            wallet.user_id= StopContext.getInstance().getUserInfo().id+"";
-                            //                            wallet.amount="20";
-                            //                            wallet.state="1";
-                            //                            walletPresenter.createTransaction(wallet);
-                            finish();
+//                            Wallet wallet = new Wallet();
+//                            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
+//                            wallet.amount = "20";
+//                            wallet.state = "1";
+//                            walletPresenter.createTransaction(wallet);
+                            List<String> list = new ArrayList<>();
+                            list.add("1");
+                            list.add("1");
+                            HashMap<String, Object> map2 = new HashMap<>();
+                            map2.put("ZJKZ", list);
+                            map2.put("YYBB", "支付23元");
+                            map2.put("CN", "123");
+                            if (BaseApplication.isConnBule) {
+                                send(new Gson().toJson(map2));
+                            }
+                            Log.d("===", "发送数据" + new Gson().toJson(map2));
                             sDialog.dismiss();
+                            finish();
                         }
                     }).show();
-
 
         }
     }
@@ -338,61 +357,61 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
         this.mSpeechSynthesizer.setAppId("9818545");
         //        // 设置语音合成文本模型文件
-//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/"
-//                + TEXT_MODEL_NAME);
-//        // 声学模型文件路径 (离线引擎使用)
-//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/"
-//                + SPEECH_FEMALE_MODEL_NAME);
-//        // 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
-//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"
-//                + LICENSE_FILE_NAME);
+        //        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/"
+        //                + TEXT_MODEL_NAME);
+        //        // 声学模型文件路径 (离线引擎使用)
+        //        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/"
+        //                + SPEECH_FEMALE_MODEL_NAME);
+        //        // 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
+        //        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"
+        //                + LICENSE_FILE_NAME);
         //        // 获取语音合成授权信息
-//        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
+        //        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
         this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0setContext");
-//        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+        //        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
         mSpeechSynthesizer.initTts(TtsMode.ONLINE);
 
     }
 
     public void onError(String arg0, SpeechError arg1) {
         // 监听到出错，在此添加相关操作
-        Log.d("TAG","监听到出错");
+        Log.d("TAG", "监听到出错");
 
     }
 
     public void onSpeechFinish(String arg0) {
         // 监听到播放结束，在此添加相关操作
-        Log.d("TAG","播放结束");
+        Log.d("TAG", "播放结束");
     }
 
     public void onSpeechProgressChanged(String arg0, int arg1) {
         // 监听到播放进度有变化，在此添加相关操作
-        Log.d("TAG","播放进度有变化");
+        Log.d("TAG", "播放进度有变化");
 
     }
 
     public void onSpeechStart(String arg0) {
         // 监听到合成并播放开始，在此添加相关操作
-        Log.d("TAG","合成并播放开始"+arg0);
+        Log.d("TAG", "合成并播放开始" + arg0);
 
 
     }
 
     public void onSynthesizeDataArrived(String arg0, byte[] arg1, int arg2) {
         // 监听到有合成数据到达，在此添加相关操作
-        Log.d("TAG","有合成数据到达");
+        Log.d("TAG", "有合成数据到达");
     }
 
     public void onSynthesizeFinish(String arg0) {
         // 监听到合成结束，在此添加相关操作
-        Log.d("TAG","合成结束");
+        Log.d("TAG", "合成结束");
 
 
     }
 
     public void onSynthesizeStart(String arg0) {
         // 监听到合成开始，在此添加相关操作
-        Log.d("TAG","合成开始"+arg0);
+        Log.d("TAG", "合成开始" + arg0);
     }
 
     private void initialEnv() {
@@ -412,12 +431,14 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/"
                 + ENGLISH_TEXT_MODEL_NAME);
     }
+
     private void makeDir(String dirPath) {
         File file = new File(dirPath);
         if (!file.exists()) {
             file.mkdirs();
         }
     }
+
     /**
      * 将工程需要的资源文件拷贝到SD卡中使用（授权文件为临时授权文件，请注册正式授权）
      *
@@ -473,15 +494,84 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         String speechModelInfo = SynthesizerTool.getModelInfo(mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
         toPrint("speechModelInfo=" + speechModelInfo);
     }
-    private void toPrint(String str) {
-//        Message msg = Message.obtain();
-//        msg.obj = str;
-//        this.mHandler.sendMessage(msg);
 
-        Toast.makeText(BaseApplication.mContext,str,Toast.LENGTH_SHORT).show();
+    private void toPrint(String str) {
+        //        Message msg = Message.obtain();
+        //        msg.obj = str;
+        //        this.mHandler.sendMessage(msg);
+
+        Toast.makeText(BaseApplication.mContext, str, Toast.LENGTH_SHORT).show();
 
     }
 
 
+    /**
+     * 从通知栏点击进来的
+     *
+     * @param data
+     */
+    private void isNotification(String data) {
+        if (data != null && data.equals("out")) {
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+            pDialog.setTitleText("是否支付")
+                    .setContentText("支付20元,摇一摇或者点击确认支付")
+                    .setCancelText("取消")
+                    .setConfirmText("确认")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(final SweetAlertDialog sDialog) {
+                            //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
+                            Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
+                            //                            Wallet wallet = new Wallet();
+                            //                            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
+                            //                            wallet.amount = "20";
+                            //                            wallet.state = "1";
+                            //                            walletPresenter.createTransaction(wallet);
+                            List<String> list = new ArrayList<>();
+                            list.add("1");
+                            list.add("1");
+                            HashMap<String, Object> map2 = new HashMap<>();
+                            map2.put("ZJKZ", list);
+                            map2.put("YYBB", "支付23元");
+                            map2.put("CN", "123");
+                            if (BaseApplication.isConnBule) {
+                                send(new Gson().toJson(map2));
+                            }
+                            Log.d("===", "发送数据" + new Gson().toJson(map2));
+                            sDialog.dismiss();
+//                            finish();
+                        }
+                    }).show();
+        }
 
+
+    }
+
+    /**
+     * 发送消息到客户端
+     *
+     * @param msg
+     */
+    private void send(String msg) {
+        try{
+        BaseApplication.bleBase.addWriteDatasAction(new WriteCharactAction(null, msg.getBytes("GBK"), new BLEBaseAction.Option(1000)) {
+            @Override
+            public void onSuccess() {
+                Log.d("===", "发送数据成功");
+                super.onSuccess();
+            }
+
+            @Override
+            public void onFail(ErroCode erro) {
+                Log.d("===", "发送数据失败");
+                super.onFail(erro);
+            }
+
+        });
+
+        }catch ( UnsupportedEncodingException e){
+            Log.d("===", "获取字节流失败异常--"+e.getMessage());
+        }
+
+    }
 }

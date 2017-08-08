@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sanxiongdi.StopContext;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.entity.Balance;
@@ -40,7 +41,7 @@ public class UserMineSeting extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.usermenage_updata_info);
         userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
-        userInfoSetingPresenter.queryuserinfo(6);
+        userInfoSetingPresenter.queryuserinfo(StopContext.getInstance().getUserInfo().id);
         findView();
         setListeners();
     }

@@ -63,7 +63,7 @@ public class ApiExecutor {
                     .method(oldRequest.method(), oldRequest.body())
                     .url(authorizedUrlBuilder.build())
                     .build();
-            Log.d("log---", URLDecoder.decode(oldRequest.toString(),"UTF-8"));
+            Log.d("===", URLDecoder.decode(oldRequest.toString(),"UTF-8"));
             return chain.proceed(newRequest);
         }
     }

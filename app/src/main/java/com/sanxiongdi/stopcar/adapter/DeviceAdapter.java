@@ -3,6 +3,8 @@ package com.sanxiongdi.stopcar.adapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.ParcelUuid;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,9 @@ public class DeviceAdapter extends BaseAdapter {
         //显示名称
         line1.setText(device.getName());
         //显示地址
-        line2.setText(device.getAddress());
+        ParcelUuid[] parcelUuid=device.getUuids();
+        Log.d("===","======UUID"+parcelUuid[0]);
+        line2.setText(parcelUuid[i]+"");
 
         return itemView;
     }

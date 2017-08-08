@@ -82,10 +82,11 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         presenter.getRandomId();
         findView();
     }
+
     @Override
     protected void findView() {
 
-         userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
+        //         userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
         page_botton_tavlayout = (PagerBottomTabLayout) findViewById(R.id.tab_page);
         //用TabItemBuilder构建一个导航按钮
         TabItemBuilder tabItemBuilder = new TabItemBuilder(this).create()
@@ -102,26 +103,10 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
                 .setMode(TabLayoutMode.HIDE_TEXT | TabLayoutMode.CHANGE_BACKGROUND_COLOR)
                 .build();
         controller.addTabItemClickListener(listener);
-        if (getIntent().getStringExtra("NotificationManager")!=null){
-            if (getIntent().getStringExtra("NotificationManager").equals("true")){
-                //跳转成功 就设置为0
-                new SharedPreferenceUtils().setIntDataIntoSP("NotificationManager","NotificationManager",0);
-                //弹出对话框 创建订单
-                SweetAlertDialog pDialog =new SweetAlertDialog(BaseApplication.mContext, SweetAlertDialog.WARNING_TYPE);
-                pDialog.setTitleText("是否停车")
-                        .setCancelText("取消")
-                        .setConfirmText("确认")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(final SweetAlertDialog sDialog) {
-                                // 创建订单 清楚当前adpter  获取当前数据  刷新界面
-                                sDialog.cancel();
 
-                            }
-                        }).show();
-            }
-        }
+        isNotification(getIntent().getStringExtra("input"));
     }
+
 
     @Override
     protected void getInstance() {
@@ -227,12 +212,10 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         if (list.size() != 0) {
             StopContext.getInstance().setUserInfo(GsonUtils.gsonString(list.get(0)));
             //将其转换成json 字符串 保存到偏好设置 使用 可转成对象在使用
-//            SharedPreferenceUtils.setStringDataIntoSP("UserInfo", "UserInfo", GsonUtils.gsonString(list.get(0)));
+            //            SharedPreferenceUtils.setStringDataIntoSP("UserInfo", "UserInfo", GsonUtils.gsonString(list.get(0)));
         }
 
     }
-
-
 
 
     @Override
@@ -283,9 +266,24 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     }
 
 
+    private void isNotification(String data) {
 
-
-
+        if (data != null && data.equals("input")) {
+            new SharedPreferenceUtils().setIntDataIntoSP("NotificationManager", "NotificationManager", 0);
+            //弹出对话框 创建订单
+            SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+            pDialog.setTitleText("是否停车")
+                    .setCancelText("取消")
+                    .setConfirmText("确认")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(final SweetAlertDialog sDialog) {
+                            // 创建订单 清楚当前adpter  获取当前数据  刷新界面
+                            sDialog.cancel();
+                        }
+                    }).show();
+        }
+    }
 
 
 }

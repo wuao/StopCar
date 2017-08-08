@@ -10,9 +10,11 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelUuid;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,58 +119,71 @@ public class SearchFragement  extends BaseFrament{
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if( BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action) ) {
-                showToast("加载中");
-                //初始化数据列表
-                mDeviceList.clear();
+//            if( BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action) ) {
+//                showToast("加载中");
+//                //初始化数据列表
+//                mDeviceList.clear();
+//                mAdapter.notifyDataSetChanged();
+//                layout_swipe_refresh.setRefreshing(false);
+//            }
+//              if( BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+//                showToast("加载完成");
+//                  layout_swipe_refresh.setRefreshing(false);
+//                  BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                  mDeviceList.add(device);
+//                  mAdapter.notifyDataSetChanged();
+//
+//
+//            }
+
+            if (action.equals(BluetoothDevice.ACTION_FOUND)) {
+                //每扫描到一个设备，系统都会发送此广播。
+                BluetoothDevice scanDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                mDeviceList.add(scanDevice);
+                ParcelUuid[] parcelUuids=scanDevice.getUuids();
+                Log.d("===","----------"+parcelUuids[0]);
                 mAdapter.notifyDataSetChanged();
-                layout_swipe_refresh.setRefreshing(false);
             }
-            else if( BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                showToast("加载完成");
-                layout_swipe_refresh.setRefreshing(false);
+                //            else if( BluetoothDevice.ACTION_FOUND.equals(action)) {
+//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                //找到一个，添加一个
+//                mDeviceList.add(device);
+//                mAdapter.notifyDataSetChanged();
+//            }
+//            else if( BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
+//                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE,0);
+//                if( scanMode == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+//                    showToast("加载中");
+//                }
+//                else {
+//                    showToast("加载完成");
+//                    layout_swipe_refresh.setRefreshing(false);
+//
+//
+//                }
             }
-            else if( BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //找到一个，添加一个
-                mDeviceList.add(device);
-                mAdapter.notifyDataSetChanged();
-            }
-            else if( BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
-                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE,0);
-                if( scanMode == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-                    showToast("加载中");
-                }
-                else {
-                    showToast("加载完成");
-                    layout_swipe_refresh.setRefreshing(false);
-
-
-                }
-            }
-            else if( BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action) ) {
-                BluetoothDevice remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if( remoteDevice == null ) {
-                    showToast("no device");
-                    layout_swipe_refresh.setRefreshing(false);
-                    return;
-                }
-                int status = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,0);
-                if( status == BluetoothDevice.BOND_BONDED) {
-                    layout_swipe_refresh.setRefreshing(false);
-                    showToast("Bonded " + remoteDevice.getName());
-                }
-                else if( status == BluetoothDevice.BOND_BONDING){
-                    layout_swipe_refresh.setRefreshing(false);
-                    showToast("Bonding " + remoteDevice.getName());
-                }
-                else if(status == BluetoothDevice.BOND_NONE){
-                    layout_swipe_refresh.setRefreshing(false);
-
-                    showToast("Not bond " + remoteDevice.getName());
-                }
-            }
-        }
+//            else if( BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action) ) {
+//                BluetoothDevice remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                if( remoteDevice == null ) {
+//                    showToast("no device");
+//                    layout_swipe_refresh.setRefreshing(false);
+//                    return;
+//                }
+//                int status = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,0);
+//                if( status == BluetoothDevice.BOND_BONDED) {
+//                    layout_swipe_refresh.setRefreshing(false);
+//                    showToast("Bonded " + remoteDevice.getName());
+//                }
+//                else if( status == BluetoothDevice.BOND_BONDING){
+//                    layout_swipe_refresh.setRefreshing(false);
+//                    showToast("Bonding " + remoteDevice.getName());
+//                }
+//                else if(status == BluetoothDevice.BOND_NONE){
+//                    layout_swipe_refresh.setRefreshing(false);
+//
+//                    showToast("Not bond " + remoteDevice.getName());
+//                }
+//            }
     };
 
     private void showToast(String text) {

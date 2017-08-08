@@ -1,16 +1,11 @@
 package com.sanxiongdi.stopcar.base;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.TextureView;
-import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by lin.woo on 2017/5/4.
@@ -28,8 +23,14 @@ public class BasePresenter<T> {
     public BasePresenter(Context context, T view) {
         this.view = view;
         this.mContext = context;
+//        if ( StopContext.getInstance().getUserInfo().name!=null){
+//            put("login", StopContext.getInstance().getUserInfo().name);
+//        }
+//        if(StopContext.getInstance().getUserInfo().login!=null){
+//            put("password", StopContext.getInstance().getUserInfo().login);
+//        }
         put("login", "admin");
-        put("password", "admin");
+        put("password",  "admin");
         put("args", map2);
     }
 

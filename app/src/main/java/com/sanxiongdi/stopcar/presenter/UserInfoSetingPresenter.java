@@ -194,6 +194,7 @@ public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
         lists2.add(lists);
         lists2.add(list);
         put("args", lists2);
+        Log.d("OP",initGson().toJson(map1));
         ApiExecutor.getInstance().getUserByPhoneID(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

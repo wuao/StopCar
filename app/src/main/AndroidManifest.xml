@@ -98,12 +98,11 @@
             android:name="com.brtbeacon.sdk.BleService"
             android:enabled="true" />
 
-
-        <!--  扫描测试  -->
-        <activity
-            android:name="com.sanxiongdi.stopcar.activity.ScanActivity"
-            android:enabled="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!--&lt;!&ndash;  扫描测试  &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.sanxiongdi.stopcar.activity.ScanActivity"-->
+            <!--android:enabled="true"-->
+            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar" />-->
         <!--  首页  -->
         <activity
             android:name="com.sanxiongdi.stopcar.MainActivity"
