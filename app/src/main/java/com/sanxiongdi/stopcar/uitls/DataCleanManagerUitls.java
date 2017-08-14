@@ -21,10 +21,11 @@ public class DataCleanManagerUitls {
      */
     public static String getTotalCacheSize(Context context) throws Exception {
         long cacheSize = getFolderSize(context.getCacheDir());
+        long cachRisoSize=getFolderSize(new File("/sdcard/StopCar/"));
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             cacheSize += getFolderSize(context.getExternalCacheDir());
         }
-        return getFormatSize(cacheSize);
+        return getFormatSize(cacheSize+cachRisoSize);
     }
 
 
@@ -37,6 +38,7 @@ public class DataCleanManagerUitls {
         deleteDir(context.getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             deleteDir(context.getExternalCacheDir());
+            deleteDir(new File("/sdcard/StopCar/"));
         }
     }
 

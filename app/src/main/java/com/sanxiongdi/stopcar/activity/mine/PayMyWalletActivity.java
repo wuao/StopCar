@@ -102,17 +102,17 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
 
         if (v == btn) {
-            Wallet wallet = new Wallet();
-            wallet.amount = 200 + "";
-            wallet.state = "1";
-            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
-            walletPresenter.createWallet(wallet);
-            //            if (!pypPopView.isShowing()){
-            //                pypPopView.show();
-            //            }else{
-            //                pypPopView=new PypPopView(getApplicationContext());
-            //                pypPopView.show();
-            //            }
+//            Wallet wallet = new Wallet();
+//            wallet.amount = 200 + "";
+//            wallet.state = "1";
+//            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
+//            walletPresenter.createWallet(wallet);
+                        if (!pypPopView.isShowing()){
+                            pypPopView.show();
+                        }else{
+                            pypPopView=new PypPopView(getApplicationContext());
+                            pypPopView.show();
+                        }
         } else if (v == imageView) {
             finish();
         }

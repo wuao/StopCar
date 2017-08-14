@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.activity.setting.HelpInfoActivity;
+import com.sanxiongdi.stopcar.base.BaseApplication;
 import com.sanxiongdi.stopcar.base.BaseFrament;
 import com.sanxiongdi.stopcar.uitls.DataCleanManagerUitls;
 import com.sanxiongdi.stopcar.uitls.RootLayout;
@@ -117,7 +118,7 @@ public class SetingFragement extends BaseFrament  implements  View.OnClickListen
         help_center=(LinearLayout) view.findViewById(R.id.help_center);
         about_start=(LinearLayout) view.findViewById(R.id.about_start);
         try {
-            cash_size.setText(DataCleanManagerUitls.getTotalCacheSize(mContext).toString());
+            cash_size.setText(DataCleanManagerUitls.getTotalCacheSize(BaseApplication.mContext).toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
