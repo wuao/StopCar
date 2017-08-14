@@ -38,6 +38,7 @@ import com.sanxiongdi.stopcar.presenter.view.IUserInfoSeting;
 import com.sanxiongdi.stopcar.uitls.AppConfigUitls;
 import com.sanxiongdi.stopcar.uitls.BaseSyatemHelperUitls;
 import com.sanxiongdi.stopcar.uitls.BluetoothClient;
+import com.sanxiongdi.stopcar.uitls.CrashHandler;
 import com.sanxiongdi.stopcar.uitls.GsonUtils;
 import com.sanxiongdi.stopcar.uitls.LogUtils;
 import com.sanxiongdi.stopcar.uitls.PhoneUtils;
@@ -89,6 +90,11 @@ public class BaseApplication extends Application implements IUserInfoSeting {
         userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
         userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
         setFristInstallApplication();
+
+        //保存日志到本地 并且崩溃重启
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());
+
         if (suuorpsdk(mContext)) {
             //初始化第三方的sdk
             InstanceSDK();
@@ -242,7 +248,7 @@ public class BaseApplication extends Application implements IUserInfoSeting {
         public void onUpdateBeacon(ArrayList<BRTBeacon> arrayList) {
 
             for (int i = 0; i < arrayList.size(); i++) {
-                Log.d("===", "广播数据=====" + i + "------" + arrayList.get(i).getUuid());
+//                Log.d("===", "广播数据=====" + i + "------" + arrayList.get(i).getUuid());
                 //                Log.i("aaaa","有消息==BRTBeacon"+AppConfigUitls.byteArrayToHexStr(arrayList.get(0).getUserData()));
                 if (String.valueOf(AppConfigUitls.byteArrayToHexStr(arrayList.get(i).getUserData())).equals("88888888")) {
 //                    showNotificaiton();
@@ -360,6 +366,7 @@ public class BaseApplication extends Application implements IUserInfoSeting {
     public void queryUserInfoSuccess(List<UserInfoEntity> list) {
         if (list.size() != 0) {
             StopContext.getInstance().setUserInfo(GsonUtils.gsonString(list.get(0)));
+            userInfoSetingPresenter.getUserByIdBalance(StopContext.getInstance().getUserInfo().id);
         }
 
 
@@ -371,6 +378,8 @@ public class BaseApplication extends Application implements IUserInfoSeting {
         if (list.size() != 0) {
             //保用户信息到偏好设置
             StopContext.getInstance().setUserInfo(GsonUtils.gsonString(list.get(0)));
+            //根据用户id 去查询钱包金额
+            userInfoSetingPresenter.getUserByIdBalance(StopContext.getInstance().getUserInfo().id);
         } else if (list.size() == 0) {
             userInfoEntity = new UserInfoEntity();
             userInfoEntity.car_user_phone_id = PhoneUtils.getDeviceId(this);
@@ -401,6 +410,10 @@ public class BaseApplication extends Application implements IUserInfoSeting {
     @Override
     public void getUserByIdBalance(List<Balance> list) {
 
+
+        if (list!=null){
+            StopContext.getInstance().setbalance(GsonUtils.gsonString(list.get(0)));
+        }
     }
 
 

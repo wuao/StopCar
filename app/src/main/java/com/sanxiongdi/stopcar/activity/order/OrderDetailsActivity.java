@@ -26,13 +26,17 @@ import com.google.gson.Gson;
 import com.mt.sdk.ble.model.BLEBaseAction;
 import com.mt.sdk.ble.model.ErroCode;
 import com.mt.sdk.ble.model.WriteCharactAction;
+import com.sanxiongdi.StopContext;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.base.BaseApplication;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
+import com.sanxiongdi.stopcar.entity.Wallet;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
+import com.sanxiongdi.stopcar.presenter.ComputeAmountPresenter;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.WalletPresenter;
+import com.sanxiongdi.stopcar.presenter.view.IComputeAmount;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
 import com.sanxiongdi.stopcar.presenter.view.Iwallet;
 import com.sanxiongdi.stopcar.uitls.StringUtils;
@@ -55,7 +59,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by wuaomall@gmail.com on 2017/6/21.
  */
 
-public class OrderDetailsActivity extends BaseActivity implements View.OnClickListener, IQueryOrder, Iwallet, SpeechSynthesizerListener {
+public class OrderDetailsActivity extends BaseActivity implements View.OnClickListener, IQueryOrder, Iwallet, SpeechSynthesizerListener, IComputeAmount {
 
 
     private LinearLayout lly_back, order_tool_bar;
@@ -64,6 +68,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private View view;
     private String ordername;
     private QueryOrderPresenter orderPresenter;
+    private ComputeAmountPresenter computeAmountPresenter;
     private TextView order_name, car_order_start_date, car_order_state, car_order_stop_state, car_order_authorize_id;
     private SensorManager sensorManager;
     private Vibrator vibrator;
@@ -71,6 +76,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private SweetAlertDialog pDialog;
     private WalletPresenter walletPresenter;
     private String mSampleDirPath;
+    private String computeAmout;
     private static final String SAMPLE_DIR_NAME = "baiduTTS";
     private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
     private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
@@ -85,6 +91,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private static final int UI_CHANGE_SYNTHES_TEXT_SELECTION = 2;
     private static final String TAG = "MainActivity";
 
+
     // 语音合成客户端
     private SpeechSynthesizer mSpeechSynthesizer;
 
@@ -95,10 +102,13 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         initialEnv();
         startTTS();
         orderPresenter = new QueryOrderPresenter(this, this);
+        walletPresenter=new WalletPresenter(this,this);
+        computeAmountPresenter = new ComputeAmountPresenter(this, this);
         if (!StringUtils.checkNull(getIntent().getStringExtra("ordername"))) {
             ordername = getIntent().getStringExtra("ordername");
             //请求数据详情
             orderPresenter.getOrderByNmae(ordername);
+
         }
         findView();
         setListeners();
@@ -107,7 +117,6 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         shakeListener = new ShakeListener();
         sensorManager.registerListener(shakeListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), sensorManager.SENSOR_DELAY_NORMAL);
-
         isNotification(getIntent().getStringExtra("out"));
 
     }
@@ -174,41 +183,36 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         if (v == lly_back) {
             finish();
         } else if (v == zhifu_icon) {
-            mSpeechSynthesizer.speak("落叶偏偏");
+            //            mSpeechSynthesizer.speak("落叶偏偏");
             pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-            pDialog.setTitleText("是否支付")
-                    .setContentText("支付20元,摇一摇或者点击确认支付")
-                    .setCancelText("取消")
-                    .setConfirmText("确认")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(final SweetAlertDialog sDialog) {
-                            //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
-                            Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
-//                            Wallet wallet = new Wallet();
-//                            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
-//                            wallet.amount = "20";
-//                            wallet.state = "1";
-//                            walletPresenter.createTransaction(wallet);
-                            List<String> list = new ArrayList<>();
-                            list.add("1");
-                            list.add("1");
-                            HashMap<String, Object> map2 = new HashMap<>();
-                            map2.put("ZJKZ", list);
-                            map2.put("YYBB", "支付23元");
-                            map2.put("CN", "123");
-                            if (BaseApplication.isConnBule) {
-                                send(new Gson().toJson(map2));
-                            }
-                            Log.d("===", "发送数据" + new Gson().toJson(map2));
-                            sDialog.dismiss();
-                            finish();
-                        }
-                    }).show();
+            if (computeAmout != null) {
+                pDialog.setTitleText("是否支付")
+                        .setContentText("支付" + computeAmout + "元,摇一摇或者点击确认支付")
+                        .setCancelText("取消")
+                        .setConfirmText("确认")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(final SweetAlertDialog sDialog) {
+                                //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
+                                String mengey = StopContext.getInstance().getBalance().balance;
+                                if (!StringUtils.checkNull(mengey)) {
+                                    if (Double.parseDouble(mengey) > Double.parseDouble(computeAmout)) {
+                                        assembleData();
+                                        sDialog.dismiss();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "余额不足 请充值", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "没有钱啦 请充值哦", Toast.LENGTH_SHORT).show();
 
+                                }
+
+                            }
+                        }).show();
+            }
         }
     }
-
 
     @Override
     public void queryOrderSuccess(List<QueryOrderEntity> list) {
@@ -228,6 +232,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
         if (list.size() != 0) {
+            computeAmountPresenter.computeAmount(list.get(0).id);
             order_name.setText(list.get(0).name);
             car_order_start_date.setText(list.get(0).car_order_start_date);
 
@@ -341,6 +346,10 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void createTransaction(WrapperEntity list) {
+        if (list!=null){
+            Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -513,35 +522,28 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private void isNotification(String data) {
         if (data != null && data.equals("out")) {
             pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-            pDialog.setTitleText("是否支付")
-                    .setContentText("支付20元,摇一摇或者点击确认支付")
-                    .setCancelText("取消")
-                    .setConfirmText("确认")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(final SweetAlertDialog sDialog) {
-                            //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
-                            Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
-                            //                            Wallet wallet = new Wallet();
-                            //                            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
-                            //                            wallet.amount = "20";
-                            //                            wallet.state = "1";
-                            //                            walletPresenter.createTransaction(wallet);
-                            List<String> list = new ArrayList<>();
-                            list.add("1");
-                            list.add("1");
-                            HashMap<String, Object> map2 = new HashMap<>();
-                            map2.put("ZJKZ", list);
-                            map2.put("YYBB", "支付23元");
-                            map2.put("CN", "123");
-                            if (BaseApplication.isConnBule) {
-                                send(new Gson().toJson(map2));
+            if (computeAmout != null) {
+
+                pDialog.setTitleText("是否支付")
+                        .setContentText("支付" + computeAmout + "元,摇一摇或者点击确认支付")
+                        .setCancelText("取消")
+                        .setConfirmText("确认")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(final SweetAlertDialog sDialog) {
+                                //获取当前的余额是否有这么多 不然就跳转到充值页面 如果有就跳转到充值页面
+                                String mengey = StopContext.getInstance().getBalance().toString();
+                                if (Double.parseDouble(mengey) > Double.parseDouble(computeAmout)) {
+                                    assembleData();
+                                    sDialog.dismiss();
+                                    finish();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "余额不足 请充值", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            Log.d("===", "发送数据" + new Gson().toJson(map2));
-                            sDialog.dismiss();
-//                            finish();
-                        }
-                    }).show();
+                        }).show();
+
+            }
         }
 
 
@@ -553,25 +555,64 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
      * @param msg
      */
     private void send(String msg) {
-        try{
-        BaseApplication.bleBase.addWriteDatasAction(new WriteCharactAction(null, msg.getBytes("GBK"), new BLEBaseAction.Option(1000)) {
-            @Override
-            public void onSuccess() {
-                Log.d("===", "发送数据成功");
-                super.onSuccess();
-            }
+        try {
+            BaseApplication.bleBase.addWriteDatasAction(new WriteCharactAction(null, msg.getBytes("GBK"), new BLEBaseAction.Option(1000)) {
+                @Override
+                public void onSuccess() {
+                    Log.d("===", "发送数据成功");
+                    super.onSuccess();
+                }
 
-            @Override
-            public void onFail(ErroCode erro) {
-                Log.d("===", "发送数据失败");
-                super.onFail(erro);
-            }
+                @Override
+                public void onFail(ErroCode erro) {
+                    Log.d("===", "发送数据失败");
+                    super.onFail(erro);
+                }
 
-        });
+            });
 
-        }catch ( UnsupportedEncodingException e){
-            Log.d("===", "获取字节流失败异常--"+e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            Log.d("===", "获取字节流失败异常--" + e.getMessage());
         }
 
     }
+
+    @Override
+    public void computeAmount(WrapperEntity list) {
+
+        if (list != null) {
+            computeAmout = list.result.toString();
+            Log.d("===", computeAmout + "======computeAmout");
+        }
+
+
+    }
+
+    @Override
+    public void computeAmountFaile(boolean isRequest, int code, String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void assembleData() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("1");
+        HashMap<String, Object> map2 = new HashMap<>();
+        map2.put("ZJKZ", list);
+        map2.put("YYBB", "支付" + computeAmout + "元");
+        map2.put("CN", "123");
+        if (BaseApplication.isConnBule) {
+            send(new Gson().toJson(map2));
+        }
+        //扣款
+        Wallet wallet = new Wallet();
+        wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
+        wallet.amount = "-"+computeAmout;
+        wallet.state = "1";
+        walletPresenter.createTransaction(wallet);
+        Log.d("====", "发送数据" + new Gson().toJson(map2));
+
+    }
+
+
 }

@@ -100,5 +100,11 @@ public interface ApiService {
     Observable<WrapperEntity> createTransaction(@Field("args") String args);
 
 
+    //查询金额
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity> computeAmount(@Field("args") String args);
+
+
 
 }

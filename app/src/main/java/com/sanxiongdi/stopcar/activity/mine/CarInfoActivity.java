@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sanxiongdi.StopContext;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.entity.CarInfoEntity;
@@ -40,7 +41,7 @@ public class CarInfoActivity extends BaseActivity implements View.OnClickListene
 
         setContentView(R.layout.car_updata_info);
         carInfoPresenter=new CarInfoPresenter(getApplicationContext(),this);
-        carInfoPresenter.getCarInfo(7);
+        carInfoPresenter.getCarInfo(StopContext.getInstance().getUserInfo().id);
         wrapperEntity=new CarInfoEntity();
         findView();
         setListeners();

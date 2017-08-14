@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pingplusplus.android.Pingpp;
+import com.sanxiongdi.StopContext;
 import com.sanxiongdi.stopcar.R;
 import com.sanxiongdi.stopcar.base.BaseActivity;
 import com.sanxiongdi.stopcar.entity.Balance;
@@ -22,6 +23,7 @@ import com.sanxiongdi.stopcar.presenter.UserInfoSetingPresenter;
 import com.sanxiongdi.stopcar.presenter.WalletPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IUserInfoSeting;
 import com.sanxiongdi.stopcar.presenter.view.Iwallet;
+import com.sanxiongdi.stopcar.uitls.GsonUtils;
 import com.sanxiongdi.stopcar.uitls.StringUtils;
 import com.sanxiongdi.stopcar.view.PypPopView;
 
@@ -33,10 +35,10 @@ import static com.sanxiongdi.stopcar.base.BaseApplication.context;
  * Created by wuaomall@gmail.com on 2017/6/1.
  */
 
-public class PayMyWalletActivity extends BaseActivity implements View.OnClickListener ,IUserInfoSeting,Iwallet,PypPopView.OnBackGetBranch{
+public class PayMyWalletActivity extends BaseActivity implements View.OnClickListener, IUserInfoSeting, Iwallet, PypPopView.OnBackGetBranch {
 
-    private TextView my_yue,edit_uitl_save;
-    private Button  btn;
+    private TextView my_yue, edit_uitl_save;
+    private Button btn;
     private PypPopView pypPopView;
     private ImageView imageView;
     private UserInfoSetingPresenter userInfoSetingPresenter;
@@ -44,16 +46,16 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
     private String branch;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet_main_view);
-        pypPopView=new PypPopView(this);
-        userInfoSetingPresenter=new UserInfoSetingPresenter(this,this);
-        walletPresenter=new WalletPresenter(this,this);
-        userInfoSetingPresenter.getUserByIdBalance(1);
+        pypPopView = new PypPopView(this);
+        userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
+        walletPresenter = new WalletPresenter(this, this);
         pypPopView.setOnBackGetBranch(PayMyWalletActivity.this);
+        userInfoSetingPresenter.getUserByIdBalance(StopContext.getInstance().getUserInfo().id);
+
         findView();
         setListeners();
     }
@@ -61,10 +63,10 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void findView() {
-        imageView=(ImageView)findViewById(R.id.my_wallet_tool_bar).findViewById(R.id.img_back);
-        edit_uitl_save=(TextView) findViewById(R.id.my_wallet_tool_bar).findViewById(R.id.edit_uitl_save);
-        btn=(Button)findViewById(R.id.my_wallet_btn);
-        my_yue=(TextView)findViewById(R.id.my_yue);
+        imageView = (ImageView) findViewById(R.id.my_wallet_tool_bar).findViewById(R.id.img_back);
+        edit_uitl_save = (TextView) findViewById(R.id.my_wallet_tool_bar).findViewById(R.id.edit_uitl_save);
+        btn = (Button) findViewById(R.id.my_wallet_btn);
+        my_yue = (TextView) findViewById(R.id.my_yue);
         edit_uitl_save.setVisibility(View.GONE);
 
     }
@@ -99,16 +101,20 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
 
-        if (v == btn){
-            if (!pypPopView.isShowing()){
-                pypPopView.show();
-            }else{
-                pypPopView=new PypPopView(this);
-                pypPopView.show();
-            }
-        }else if (v ==imageView){
+        if (v == btn) {
+            Wallet wallet = new Wallet();
+            wallet.amount = 200 + "";
+            wallet.state = "1";
+            wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
+            walletPresenter.createWallet(wallet);
+            //            if (!pypPopView.isShowing()){
+            //                pypPopView.show();
+            //            }else{
+            //                pypPopView=new PypPopView(getApplicationContext());
+            //                pypPopView.show();
+            //            }
+        } else if (v == imageView) {
             finish();
-
         }
 
     }
@@ -142,8 +148,9 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void getUserByIdBalance(List<Balance> list) {
 
-        if (list.size()!=0){
-            my_yue.setText("￥"+list.get(0).balance.toString());
+        if (list.size() != 0) {
+            my_yue.setText("￥" + list.get(0).balance.toString());
+            StopContext.getInstance().setbalance(GsonUtils.gsonString(list.get(0)));
         }
     }
 
@@ -155,25 +162,25 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
         if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getExtras().getString("pay_result");
-                if (result.equals("success")){
-                    //支付成功就发送数据到钱包表
-                    Log.i("YYDD",branch);
-                    Wallet wallet=new Wallet();
-                    wallet.amount=branch;
-                    wallet.state="1";
-                    wallet.user_id="1";
+                if (result.equals("success")) {
+                    //支付成功就发送数据到钱包表 保存一份到本地数据
+                    userInfoSetingPresenter.getUserByIdBalance(StopContext.getInstance().getUserInfo().id);
+                    Wallet wallet = new Wallet();
+                    wallet.amount = branch;
+                    wallet.state = "1";
+                    wallet.user_id = StopContext.getInstance().getUserInfo().id + "";
                     walletPresenter.createWallet(wallet);
 
-                }else if (result.equals("fail")){
-                    Log.i("PAY",data.getExtras().getString("error_msg").toString());
-                    Toast.makeText(this,"充值失败",Toast.LENGTH_SHORT).show();
+                } else if (result.equals("fail")) {
+                    Log.i("PAY", data.getExtras().getString("error_msg").toString());
+                    Toast.makeText(this, "充值失败", Toast.LENGTH_SHORT).show();
 
-                }else if (result.equals("cancel")){
-                    Toast.makeText(this,"充值取消",Toast.LENGTH_SHORT).show();
+                } else if (result.equals("cancel")) {
+                    Toast.makeText(this, "充值取消", Toast.LENGTH_SHORT).show();
 
 
-                }else if (result.equals("invalid")){
-                    Toast.makeText(this,"充值无效",Toast.LENGTH_SHORT).show();
+                } else if (result.equals("invalid")) {
+                    Toast.makeText(this, "充值无效", Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -186,9 +193,9 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
                  * "cancel"  - user canceld
                  * "invalid" - payment plugin not installed
                  */
-//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-//                showMsg(result, errorMsg, extraMsg);
+                //                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+                //                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+                //                showMsg(result, errorMsg, extraMsg);
             }
         }
     }
@@ -196,10 +203,10 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
 
     public void showMsg(String title, String msg1, String msg2) {
         String str = title;
-        if (null !=msg1 && msg1.length() != 0) {
+        if (null != msg1 && msg1.length() != 0) {
             str += "\n" + msg1;
         }
-        if (null !=msg2 && msg2.length() != 0) {
+        if (null != msg2 && msg2.length() != 0) {
             str += "\n" + msg2;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -213,8 +220,8 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void createWallet(WrapperEntity list) {
 
-        if (!StringUtils.checkNull(list.result)){
-            Toast.makeText(context,"充值成功",Toast.LENGTH_SHORT).show();
+        if (!StringUtils.checkNull(list.result)) {
+            Toast.makeText(context, "充值成功", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -228,15 +235,15 @@ public class PayMyWalletActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void createTransaction(WrapperEntity list) {
-        if (!StringUtils.checkNull(list.result)){
-            Toast.makeText(context,"支付成功",Toast.LENGTH_SHORT).show();
+        if (!StringUtils.checkNull(list.result)) {
+            Toast.makeText(context, "支付成功", Toast.LENGTH_SHORT).show();
         }
     }
 
 
     @Override
     public void getBranch(String branch) {
-        this.branch=branch;
+        this.branch = branch;
     }
 
     @Override

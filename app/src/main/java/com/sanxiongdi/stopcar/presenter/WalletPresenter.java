@@ -1,6 +1,7 @@
 package com.sanxiongdi.stopcar.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.Wallet;
@@ -40,12 +41,13 @@ public class WalletPresenter  extends BasePresenter<Iwallet> {
         put("method", "park.wallet.create");
         List<Object> lists = new ArrayList<>();
         Map<String, Object> listparam = new HashMap<>();
-        listparam.put(wallet.user_id, wallet.user_id);
-        listparam.put(wallet.order_id, wallet.order_id);
-        listparam.put(wallet.amount, wallet.amount);
-        listparam.put(wallet.state, wallet.state);
+        listparam.put("user_id", wallet.user_id);
+        listparam.put("order_id", wallet.order_id);
+        listparam.put("amount", wallet.amount);
+        listparam.put("state", wallet.state);
         lists.add(listparam);
         put("args", lists);
+        Log.d("====",initGson().toJson(map1).toString());
         ApiExecutor.getInstance().createWallet(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -79,11 +81,14 @@ public class WalletPresenter  extends BasePresenter<Iwallet> {
         put("method", "park.wallet.create");
         List<Object> lists = new ArrayList<>();
         Map<String, Object> listparam = new HashMap<>();
-        listparam.put(wallet.user_id, wallet.user_id);
-        listparam.put(wallet.amount, wallet.amount);
-        listparam.put(wallet.state, wallet.state);
+        listparam.put("user_id", wallet.user_id);
+        listparam.put("order_id", wallet.order_id);
+        listparam.put("amount", wallet.amount);
+        listparam.put("state", wallet.state);
         lists.add(listparam);
         put("args", lists);
+        Log.d("====",initGson().toJson(map1).toString());
+
         ApiExecutor.getInstance().createTransaction(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

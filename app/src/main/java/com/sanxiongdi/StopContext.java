@@ -1,6 +1,7 @@
 package com.sanxiongdi;
 
 import com.google.gson.Gson;
+import com.sanxiongdi.stopcar.entity.Balance;
 import com.sanxiongdi.stopcar.entity.UserInfoEntity;
 import com.sanxiongdi.stopcar.uitls.SharedPreferenceUtils;
 import com.sanxiongdi.stopcar.uitls.StringUtils;
@@ -30,8 +31,26 @@ public class StopContext {
         }
     }
 
+
+    public Balance getBalance() {
+        String gson = SharedPreferenceUtils
+                .getStringValueFromSP("Balance", "Balance");
+        if (!StringUtils.checkNull(gson)) {
+            return new Gson().fromJson(gson, Balance.class);
+        } else {
+            return new Balance();
+        }
+    }
+
+
     public void setUserInfo(String gson) {
         SharedPreferenceUtils.setStringDataIntoSP("UserInfo", "UserInfo", gson);
     }
+
+    public void setbalance(String gson) {
+        SharedPreferenceUtils.setStringDataIntoSP("Balance", "Balance", gson);
+    }
+
+
 
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,11 +26,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 /**
  * Created by wuaomall@gmail.com on 2017/6/1.
@@ -77,11 +76,12 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setFocusable(true);
+        this.setTouchable(true);
         this.setBackgroundDrawable(ContextCompat.getDrawable(context, R.color.transparent));
-//        Wechat=(LinearLayout) view.findViewById(R.id.Wechat);
         zhifubao_pay=(LinearLayout) view.findViewById(R.id.zhifubao_pay);
         img_close=(ImageView)view.findViewById(R.id.img_close);
         my_edit_wallet=(EditText)view.findViewById(R.id.my_edit_wallet);
+        zhifubao_pay.setEnabled(false);
         initListener();
 
 
@@ -89,9 +89,30 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
 
 
     public void initListener() {
-//        Wechat.setOnClickListener(this);
         zhifubao_pay.setOnClickListener(this);
         img_close.setOnClickListener(this);
+        my_edit_wallet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               if (my_edit_wallet.getText().toString()!=null){
+                   zhifubao_pay.setEnabled(true);
+               }else {
+                   zhifubao_pay.setEnabled(false);
+               }
+
+
+            }
+        });
     }
 
     public void show() {
@@ -101,43 +122,21 @@ public class PypPopView extends PopupWindow implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String amountText = my_edit_wallet.getText().toString();
-        if (amountText.equals("")) return;
-
-        String replaceable = String.format("[%s, \\s.]", NumberFormat.getCurrencyInstance(Locale.CHINA).getCurrency().getSymbol(Locale.CHINA));
-        String cleanString = amountText.toString().replaceAll(replaceable, "");
-        int amount = Integer.valueOf(new BigDecimal(cleanString).toString());
-
-
-        if (v==Wechat){
-
-            if (StringUtils.checkNull(my_edit_wallet.getText().toString().trim())){
-               //调用微信充值界面
-                //  new PaymentTask().execute(new PaymentRequest(CHANNEL_UPACP, amount));
-                Toast.makeText(context,"请输入金额",Toast.LENGTH_SHORT).show();
-            }else {
-                if (onBackGetBranch!=null){
-                    onBackGetBranch.getBranch(my_edit_wallet.getText().toString().trim());
-                }
-                new PaymentTask().execute(new PaymentRequest(CHANNEL_WECHAT, amount));
-
-                dismiss();
-            }
-
-        }else  if (v == zhifubao_pay){
-            if (StringUtils.checkNull(my_edit_wallet.getText().toString().trim())){
+        if (v == zhifubao_pay){
+            String amountText = my_edit_wallet.getText().toString();
+            int amount = Integer.valueOf(amountText);
+            if (StringUtils.checkNull(my_edit_wallet.getText().toString())){
                 Toast.makeText(context,"请输入金额",Toast.LENGTH_SHORT).show();
             }else {
                 if (onBackGetBranch!=null){
                     onBackGetBranch.getBranch(my_edit_wallet.getText().toString().trim());
                 }
                 new PaymentTask().execute(new PaymentRequest(CHANNEL_ALIPAY, amount));
-                dismiss();
+                this.dismiss();
             }
 
         }else if (v ==img_close ){
-
-            dismiss();
+           this.dismiss();
         }
 
     }

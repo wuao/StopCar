@@ -253,6 +253,10 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void getUserByIdBalance(List<Balance> list) {
+    // 存储到偏好设置
+
+
+
 
     }
 
