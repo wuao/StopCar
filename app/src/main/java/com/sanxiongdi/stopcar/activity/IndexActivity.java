@@ -25,11 +25,10 @@ import com.sanxiongdi.stopcar.fragement.SetingFragement;
 import com.sanxiongdi.stopcar.fragement.UserInfoFragement;
 import com.sanxiongdi.stopcar.presenter.CreateOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.GetRandomIdPresenter;
-import com.sanxiongdi.stopcar.presenter.ModifyOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.UserInfoSetingPresenter;
-import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
 import com.sanxiongdi.stopcar.presenter.view.ICreateOrder;
 import com.sanxiongdi.stopcar.presenter.view.IGetRandomId;
+import com.sanxiongdi.stopcar.presenter.view.IModifyOrder;
 import com.sanxiongdi.stopcar.presenter.view.IUserInfoSeting;
 import com.sanxiongdi.stopcar.uitls.GsonUtils;
 import com.sanxiongdi.stopcar.uitls.PhoneUtils;
@@ -51,8 +50,7 @@ import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectListener;
  * Created by wuaomall@gmail.com on 2017/4/6.
  */
 
-public class IndexActivity extends BaseActivity implements View.OnClickListener, IGetRandomId,
-        ICreateAccount, ICreateOrder, IUserInfoSeting {
+public class IndexActivity extends BaseActivity implements View.OnClickListener, IGetRandomId, ICreateOrder, IUserInfoSeting,IModifyOrder {
     private PagerBottomTabLayout page_botton_tavlayout;
     int[] testColors = {0xFF00796B, 0xFF8D6E63, 0xFF2196F3, 0xFF607D8B, 0xFFF57C00};
     private String[] permissions = {Manifest.permission.READ_PHONE_STATE};
@@ -62,7 +60,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
     private GetRandomIdPresenter presenter;
     //创建账号
     private CreateOrderPresenter orderPresenter;
-    private ModifyOrderPresenter modifyOrderPresenter;
     private UserInfoSetingPresenter userInfoSetingPresenter;
     private List<String> randomIds;
     private UserInfoEntity userInfoEntity;
@@ -77,7 +74,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         BaseApplication.getInstance().getBRTBeaconManager().startService();
         presenter = new GetRandomIdPresenter(this, this);
         orderPresenter = new CreateOrderPresenter(this, this);
-        modifyOrderPresenter = new ModifyOrderPresenter(this, this);
         userInfoSetingPresenter = new UserInfoSetingPresenter(this, this);
         presenter.getRandomId();
         findView();
@@ -175,16 +171,6 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
-    //创建账号
-    @Override
-    public void createAccountSuccess() {
-
-    }
-
-    @Override
-    public void createAccountFailure(boolean isRequest, int code, String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void createOrderSuccess() {
@@ -257,6 +243,16 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
 
 
 
+    }
+
+    @Override
+    public void modifyOrderSuccess(WrapperEntity list) {
+        //创建订单成功
+    }
+
+    @Override
+    public void modifyOrderFailure(boolean isRequest, int code, String msg) {
+      //创建订单失败
 
     }
 

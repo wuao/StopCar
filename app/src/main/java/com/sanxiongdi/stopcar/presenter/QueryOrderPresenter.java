@@ -75,8 +75,10 @@ public class QueryOrderPresenter extends BasePresenter<IQueryOrder> {
                     public void onNext(WrapperEntity<List<QueryOrderEntity>> wrapperEntity) {
                         if (wrapperEntity == null || wrapperEntity.state != 1) {
                             view.queryOrderFailure(false, -1, "");
-                        } else
+                        } else{
                             view.queryOrderSuccess(wrapperEntity.result);
+                        }
+
                     }
                 });
     }

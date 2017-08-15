@@ -25,11 +25,9 @@ import rx.schedulers.Schedulers;
 
 public class UserInfoSetingPresenter extends BasePresenter<IUserInfoSeting> {
 
-    private Map<String, Object> maps;
 
     public UserInfoSetingPresenter(Context context, IUserInfoSeting view) {
         super(context, view);
-        maps = new HashMap<>();
     }
 
     /**

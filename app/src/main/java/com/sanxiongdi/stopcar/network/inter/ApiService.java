@@ -30,6 +30,17 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/rest")
     Observable<WrapperEntity> getCreateOrder(@Field("args") String args);
+    //支付完成修改订单状态
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity> updataOrder(@Field("args") String args);
+    //转移订单
+    @FormUrlEncoded
+    @POST("api/rest")
+    Observable<WrapperEntity> transferOrder(@Field("args") String args);
+
+
+
 
     //创建账号
     @FormUrlEncoded

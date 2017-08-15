@@ -87,6 +87,7 @@
             android:name="com.sanxiongdi.stopcar.activity.IndexActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -107,6 +108,7 @@
         <activity
             android:name="com.sanxiongdi.stopcar.MainActivity"
             android:enabled="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!---->
         <activity
@@ -140,6 +142,7 @@
         <activity
             android:name="com.sanxiongdi.stopcar.activity.order.OrderDetailsActivity"
             android:enabled="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 

@@ -5,12 +5,11 @@ import android.content.Context;
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
-import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
+import com.sanxiongdi.stopcar.presenter.view.IModifyOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,8 +20,8 @@ import rx.schedulers.Schedulers;
  * Created by lin.woo on 2017/5/5.
  */
 
-public class CreateOrderPresenter extends BasePresenter<ICreateAccount> {
-    public CreateOrderPresenter(Context context, ICreateAccount view) {
+public class CreateOrderPresenter extends BasePresenter<IModifyOrder> {
+    public CreateOrderPresenter(Context context, IModifyOrder view) {
         super(context, view);
     }
 
@@ -34,7 +33,6 @@ public class CreateOrderPresenter extends BasePresenter<ICreateAccount> {
         put2("car_order_user_id", userId);
         list.add(map2);
         put("args", list);
-
         ApiExecutor.getInstance().getCreateOrder(initGson().toJson(map1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

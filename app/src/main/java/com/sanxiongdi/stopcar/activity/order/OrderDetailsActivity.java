@@ -35,9 +35,11 @@ import com.sanxiongdi.stopcar.entity.Wallet;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.presenter.ComputeAmountPresenter;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
+import com.sanxiongdi.stopcar.presenter.UpdataOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.WalletPresenter;
 import com.sanxiongdi.stopcar.presenter.view.IComputeAmount;
 import com.sanxiongdi.stopcar.presenter.view.IQueryOrder;
+import com.sanxiongdi.stopcar.presenter.view.IUpdataOrder;
 import com.sanxiongdi.stopcar.presenter.view.Iwallet;
 import com.sanxiongdi.stopcar.uitls.StringUtils;
 
@@ -59,7 +61,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by wuaomall@gmail.com on 2017/6/21.
  */
 
-public class OrderDetailsActivity extends BaseActivity implements View.OnClickListener, IQueryOrder, Iwallet, SpeechSynthesizerListener, IComputeAmount {
+public class OrderDetailsActivity extends BaseActivity implements View.OnClickListener, IQueryOrder, Iwallet, SpeechSynthesizerListener, IComputeAmount,IUpdataOrder {
 
 
     private LinearLayout lly_back, order_tool_bar;
@@ -90,10 +92,11 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private static final int UI_CHANGE_INPUT_TEXT_SELECTION = 1;
     private static final int UI_CHANGE_SYNTHES_TEXT_SELECTION = 2;
     private static final String TAG = "MainActivity";
-
+    private   QueryOrderEntity queryOrderbena;
 
     // 语音合成客户端
     private SpeechSynthesizer mSpeechSynthesizer;
+    private UpdataOrderPresenter updataOrderPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         orderPresenter = new QueryOrderPresenter(this, this);
         walletPresenter=new WalletPresenter(this,this);
         computeAmountPresenter = new ComputeAmountPresenter(this, this);
+        updataOrderPresenter=new UpdataOrderPresenter(this, this);
         if (!StringUtils.checkNull(getIntent().getStringExtra("ordername"))) {
             ordername = getIntent().getStringExtra("ordername");
             //请求数据详情
@@ -183,7 +187,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         if (v == lly_back) {
             finish();
         } else if (v == zhifu_icon) {
-            //            mSpeechSynthesizer.speak("落叶偏偏");
+            mSpeechSynthesizer.speak("落叶偏偏");
             pDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
             if (computeAmout != null) {
                 pDialog.setTitleText("是否支付")
@@ -232,6 +236,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void queryOrderDetailsSuccess(List<QueryOrderEntity> list) {
         if (list.size() != 0) {
+            queryOrderbena=list.get(0);
+
             computeAmountPresenter.computeAmount(list.get(0).id);
             order_name.setText(list.get(0).name);
             car_order_start_date.setText(list.get(0).car_order_start_date);
@@ -260,6 +266,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 car_order_state.setText("进行");
                 detalis_order_one.setText("温馨提示:订单进行中");
                 detalis_order.setText("进行中");
+
             } else if (list.get(0).car_order_state.equals("2")) {
                 zhifu_icon.setVisibility(View.GONE);
                 car_order_state.setText("取消");
@@ -348,7 +355,12 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     public void createTransaction(WrapperEntity list) {
         if (list!=null){
             Toast.makeText(getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
-        }
+            //发送数据更改订单状态
+            if (queryOrderbena!=null){
+                updataOrderPresenter.updataOrder(queryOrderbena.id);
+            }
+
+            }
 
 
     }
@@ -592,7 +604,6 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     public void computeAmountFaile(boolean isRequest, int code, String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
-
     private void assembleData() {
         List<String> list = new ArrayList<>();
         list.add("1");
@@ -615,4 +626,14 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    @Override
+    public void updataOrderSuccess(WrapperEntity list) {
+        Log.d("====", "更新成功");
+        //刷新界面
+    }
+
+    @Override
+    public void updataOrderFailure(boolean isRequest, int code, String msg) {
+        Log.d("====", "失败");
+    }
 }

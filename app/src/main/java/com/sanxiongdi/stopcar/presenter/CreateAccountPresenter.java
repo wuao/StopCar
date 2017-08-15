@@ -1,20 +1,16 @@
 package com.sanxiongdi.stopcar.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.sanxiongdi.stopcar.base.BasePresenter;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
 import com.sanxiongdi.stopcar.network.inter.ApiExecutor;
-import com.sanxiongdi.stopcar.presenter.view.ICreateAccount;
+import com.sanxiongdi.stopcar.presenter.view.IModifyOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -24,8 +20,8 @@ import rx.schedulers.Schedulers;
  * Created by lin.woo on 2017/5/5.
  */
 
-public class CreateAccountPresenter extends BasePresenter<ICreateAccount> {
-    public CreateAccountPresenter(Context context, ICreateAccount view) {
+public class CreateAccountPresenter extends BasePresenter<IModifyOrder> {
+    public CreateAccountPresenter(Context context, IModifyOrder view) {
         super(context, view);
     }
 
