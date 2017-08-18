@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import com.sanxiongdi.stopcar.MainActivity;
 import com.sanxiongdi.stopcar.activity.IndexActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 
 /**
  * @desc :  基础Activity 的基类
@@ -16,6 +19,7 @@ import com.sanxiongdi.stopcar.activity.IndexActivity;
  * Created at 2016/11/2  14:49
  */
 public  abstract   class BaseActivity  extends AppCompatActivity  implements Toolbar.OnMenuItemClickListener{
+    public static EventBus eventBus;
     /**
      * 1  管理activity的生命周期
      * 2  定义activity 的栈
@@ -28,6 +32,8 @@ public  abstract   class BaseActivity  extends AppCompatActivity  implements Too
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
 
 
 
@@ -67,6 +73,17 @@ public  abstract   class BaseActivity  extends AppCompatActivity  implements Too
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        eventBus.unregister(this);
+    }
+    @Subscribe
+    public void baseSubscribe(BaseEvent baseEvent) {
+
     }
 
 

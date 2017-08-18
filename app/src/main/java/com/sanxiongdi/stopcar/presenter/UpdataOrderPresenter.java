@@ -55,7 +55,7 @@ public class UpdataOrderPresenter extends BasePresenter<IUpdataOrder> {
 
                     @Override
                     public void onNext(WrapperEntity wrapperEntity) {
-                        if (wrapperEntity != null || wrapperEntity.state != 1) {
+                        if (wrapperEntity == null || wrapperEntity.state != 1) {
                             view.updataOrderFailure(false, -1, "");
                         } else {
                             view.updataOrderSuccess(wrapperEntity);

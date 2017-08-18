@@ -59,6 +59,8 @@ public class OrderFragement extends BaseFrament{
 
     }
 
+
+
     protected void initView() {
         tableLayout.setTabMode(TabLayout.MODE_FIXED);
         viewList.add(new OrderProceedViewFragement() );

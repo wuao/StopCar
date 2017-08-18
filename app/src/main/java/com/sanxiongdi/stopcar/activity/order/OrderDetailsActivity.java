@@ -33,6 +33,7 @@ import com.sanxiongdi.stopcar.base.BaseApplication;
 import com.sanxiongdi.stopcar.entity.QueryOrderEntity;
 import com.sanxiongdi.stopcar.entity.Wallet;
 import com.sanxiongdi.stopcar.entity.WrapperEntity;
+import com.sanxiongdi.stopcar.event.OrderRrefeshEvent;
 import com.sanxiongdi.stopcar.presenter.ComputeAmountPresenter;
 import com.sanxiongdi.stopcar.presenter.QueryOrderPresenter;
 import com.sanxiongdi.stopcar.presenter.UpdataOrderPresenter;
@@ -68,6 +69,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private TextView edit_uitl_save, order_new_time, detalis_order_one, detalis_order;
     private Button zhifu_icon;
     private View view;
+    private int resout;
     private String ordername;
     private QueryOrderPresenter orderPresenter;
     private ComputeAmountPresenter computeAmountPresenter;
@@ -630,7 +632,13 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     public void updataOrderSuccess(WrapperEntity list) {
         Log.d("====", "更新成功");
         //刷新界面
+        resout=1;
+      //发送event
+        OrderRrefeshEvent event=new OrderRrefeshEvent();
+        event.setSuccess(true);
+        eventBus.post(event);
     }
+
 
     @Override
     public void updataOrderFailure(boolean isRequest, int code, String msg) {

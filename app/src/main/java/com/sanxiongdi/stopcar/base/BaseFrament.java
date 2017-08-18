@@ -8,12 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 /**
  * @desc :基础Fragment的基类
  * @author: wuaomall@gmail.com
  * Created at 2016/11/2  14:50
  */
 public abstract class BaseFrament extends Fragment implements View.OnClickListener {
+    public static EventBus eventBus;
     /**
      * 1 初始化布局文件
      * 2 初始化数据
@@ -29,6 +33,7 @@ public abstract class BaseFrament extends Fragment implements View.OnClickListen
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mActivity = (BaseActivity) activity;
+
     }
 
 
@@ -43,6 +48,8 @@ public abstract class BaseFrament extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mrootView = inflater.inflate(setLayoutResouceId(), container, false);
         mIsPrepare = true;
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
         initView();
         onsetListener();
         initDate(getArguments());
@@ -65,6 +72,15 @@ public abstract class BaseFrament extends Fragment implements View.OnClickListen
     public static void finsh(Context context) {
 
 
+    }
+    @Subscribe
+    public void baseSubscribe(BaseEvent baseEvent) {
+
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        eventBus.unregister(this);
     }
 
 

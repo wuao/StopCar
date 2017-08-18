@@ -79,10 +79,12 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         findView();
     }
 
+
+
+
     @Override
     protected void findView() {
 
-        //         userInfoSetingPresenter.querybyphoneuserinfo(PhoneUtils.getDeviceId(BaseApplication.mContext));
         page_botton_tavlayout = (PagerBottomTabLayout) findViewById(R.id.tab_page);
         //用TabItemBuilder构建一个导航按钮
         TabItemBuilder tabItemBuilder = new TabItemBuilder(this).create()
@@ -103,6 +105,22 @@ public class IndexActivity extends BaseActivity implements View.OnClickListener,
         isNotification(getIntent().getStringExtra("input"));
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
+
+        }
+    }
 
     @Override
     protected void getInstance() {

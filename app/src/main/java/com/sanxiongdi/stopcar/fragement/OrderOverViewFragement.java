@@ -58,7 +58,6 @@ public class OrderOverViewFragement extends BaseFrament implements IQueryOrder {
         presenter.queryFinishOrder();
         mRecyclerView.setAdapter(adapter);
     }
-
     @Override
     public void onClick(View view) {
 
